@@ -7,14 +7,13 @@ import java.util.StringTokenizer;
  * @author Jared Blackbrun
  */
 public class Geomorph {
-    public static final int NUM_ROTATIONS = 16; // This may or may not be used.
     String name;
     int id;
-    private GeomorphModel[] rotations;
+    private final GeomorphModel[] variantes;
     
     public Geomorph(String name, GeomorphModel ... models)  {
         this.name = name;
-        rotations = models;
+        variantes = models;
     }
     
     
@@ -25,7 +24,7 @@ public class Geomorph {
     
     
     public GeomorphModel getRotation(int rotation) {
-        return rotations[rotation % rotations.length];
+        return variantes[rotation % variantes.length];
     }
     
     
@@ -42,7 +41,7 @@ public class Geomorph {
             } else {
                 spec = 0.01f;
             }
-            for(GeomorphModel rotation : rotations) {
+            for(GeomorphModel rotation : variantes) {
                 rotation.setMaterial(mesh, path, spec);
             }
         }

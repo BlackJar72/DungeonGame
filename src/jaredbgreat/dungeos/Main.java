@@ -10,9 +10,13 @@ import com.jme3.math.ColorRGBA;
 import com.jme3.math.FastMath;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
+import com.jme3.scene.Geometry;
+import com.jme3.scene.Mesh;
 import com.jme3.scene.Node;
+import com.jme3.scene.shape.Sphere;
 import jaredbgreat.dungeos.componenet.geomorph.GeomorphModel;
 import jaredbgreat.dungeos.mapping.TestMap;
+import java.util.Random;
 
 /**
  * This is the Main Class of your Game. You should only do initialization here.
@@ -36,18 +40,12 @@ public class Main extends SimpleApplication {
         testmap.build(rootNode);
         
         
+        
         // Lastly lights
-        Vector3f ld = new Vector3f(1, -2, -3.5f).normalizeLocal();   
-        DirectionalLight dirlight = new DirectionalLight(ld, (ColorRGBA.White
-                .add((ColorRGBA.Yellow).mult(0.1f)))
-                .multLocal(0.5f)); 
-
-        AmbientLight aLight = new AmbientLight(ColorRGBA.White.mult(0.05f));
-        PointLight pLight = new PointLight(new Vector3f(0, 2, 0), (ColorRGBA.White.add(ColorRGBA.Yellow))
-                .multLocal(0.25f));
-        rootNode.addLight(dirlight);
-        rootNode.addLight(aLight);
-        rootNode.addLight(pLight);
+        addbasicTestLights();
+        //addExtraLights(10);
+        
+        
     }
 
     @Override
@@ -78,10 +76,35 @@ public class Main extends SimpleApplication {
     /*------------------------------------------------------------------------------------*/
     
     
+    private void addbasicTestLights() {        
+        Vector3f ld = new Vector3f(1, -2, -3.5f).normalizeLocal();   
+        DirectionalLight dirlight = new DirectionalLight(ld, (ColorRGBA.White
+                .add((ColorRGBA.Yellow).mult(0.1f)))
+                .multLocal(0.5f)); 
+
+        AmbientLight aLight = new AmbientLight(ColorRGBA.White.mult(0.05f));
+        PointLight pLight = new PointLight(new Vector3f(0, 3, 0), (ColorRGBA.White
+                    .add(ColorRGBA.Orange).add(ColorRGBA.Yellow))
+                .multLocal(0.10f));
+        Mesh lb = new Sphere(8, 8, 0.1f);
+        Material lm = new Material(assetManager, 
+                "Common/MatDefs/Misc/Unshaded.j3md");
+        lm.setColor("Color", ColorRGBA.White
+                    .add(ColorRGBA.Orange).add(ColorRGBA.Yellow).mult(0.3f));
+        Geometry lg = new Geometry("Light", lb);
+        lg.setMaterial(lm);
+        lg.setLocalTranslation(0, 3, 0);
+        rootNode.attachChild(lg);
+        rootNode.addLight(dirlight);
+        rootNode.addLight(aLight);
+        rootNode.addLight(pLight);
+    }
+    
+    
     private void makeTestScene() {
         //addFirstTestFloor();
         addBedroom();
-        addAnime();
+        //addAnime();
         //addTableScene();
     }
     
@@ -127,5 +150,18 @@ public class Main extends SimpleApplication {
                 "Models/test/Rin_2_(Native)/Rin_2_(Native).j3o");        
         rootNode.attachChild(anime.makeSpatialAt(1, 0, 0));
         rootNode.attachChild(anime.makeSpatialAt(-3.5f, 0.25f, -0.8f));
+    }
+    
+    
+    private void addExtraLights(int num) {
+        Random rand = new Random();
+        for(int i = 0; i < num; i++) {  
+        PointLight pLight = new PointLight(new Vector3f(rand.nextInt(10) - 5, 
+                        rand.nextInt(2) - 1, 
+                        rand.nextInt(10) - 5), 
+                    (ColorRGBA.White.add(ColorRGBA.randomColor()))
+                .multLocal(rand.nextFloat() / 10f));
+            rootNode.addLight(pLight);
+        }
     }
 }
