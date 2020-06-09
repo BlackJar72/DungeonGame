@@ -1,12 +1,14 @@
 package jaredbgreat.dungeos.componenet.geomorph;
 
+import com.jme3.math.Vector3f;
+import com.jme3.scene.Node;
 import jaredbgreat.dungeos.util.Registry;
 
 /**
  *
  * @author Jared Blackburn
  */
-public class GeomorphRegistry extends Registry<Geomorph> {
+public class GeomorphRegistry extends Registry<IGeomorph> {
     
     
     @Deprecated
@@ -14,7 +16,7 @@ public class GeomorphRegistry extends Registry<Geomorph> {
      * This exists only to add deprication; do not use this, use 
      * getGeomorph() instead (or getModel() for GeomorphModels).
      */  
-    public Geomorph get(int index) {
+    public IGeomorph get(int index) {
         return super.get(index);
     }
     
@@ -27,7 +29,7 @@ public class GeomorphRegistry extends Registry<Geomorph> {
      * @param id
      * @return 
      */
-    public Geomorph getGeomorph(int id) {
+    public IGeomorph getGeomorph(int id) {
         return super.get(id % 0xffff);
     }
     
@@ -41,12 +43,12 @@ public class GeomorphRegistry extends Registry<Geomorph> {
      * @param id
      * @return 
      */
-    public Geomorph getGeomorph(short id) {
+    public IGeomorph getGeomorph(short id) {
         return super.get(id);
     }
     
     /**
-     * This can be used to get a Geomorph model using an array; 
+     * This can be used to get a model (node) using an array; 
      * its is not intended for explicit use with literals but 
      * is the perfered way when using array data containing 
      * the full id and rotation data (as well as any sub-id 
@@ -55,8 +57,18 @@ public class GeomorphRegistry extends Registry<Geomorph> {
      * @param id
      * @return 
      */
-    public GeomorphModel getModel(int id) {
-        return super.get(id & 0xffff).getRotation((id >> 16) & 0xff);
+    public Node getModel(int id) {
+        return super.get(id & 0xffff).getModel((id >> 16) & 0xffff);
+    }
+        
+    
+    public Node makeSpatialAt(int id, float x, float y, float z)  {
+        return super.get(id & 0xffff).makeSpatialAt((id >> 16) & 0xffff, x, y, z);
+    }
+    
+    
+    public Node makeSpatialAt(int id, Vector3f location) {
+        return super.get(id & 0xffff).makeSpatialAt((id >> 16) & 0xffff, location);
     }
     
     
@@ -68,8 +80,8 @@ public class GeomorphRegistry extends Registry<Geomorph> {
      * @param rotation
      * @return 
      */
-    public GeomorphModel getModel(int id, int rotation) {
-        return super.get(id & 0xffff).getRotation(rotation);
+    public Node getModel(int id, int rotation) {
+        return super.get(id & 0xffff).getModel(rotation);
     }
     
     
@@ -81,8 +93,8 @@ public class GeomorphRegistry extends Registry<Geomorph> {
      * @param rotation
      * @return 
      */
-    public GeomorphModel getModel(short id, byte rotation) {
-        return super.get(id).getRotation(rotation);
+    public Node getModel(short id, byte rotation) {
+        return super.get(id).getModel(rotation);
     }
     
     

@@ -104,8 +104,8 @@ public class Main extends SimpleApplication {
     private void makeTestScene() {
         //addFirstTestFloor();
         addBedroom();
-        //addAnime();
-        //addTableScene();
+        addAnime();
+        addTableScene();
     }
     
     private void addFirstTestFloor() {                

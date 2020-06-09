@@ -7,9 +7,12 @@ package jaredbgreat.dungeos.componenet.geomorph;
 public class Geomorphs {
     public static final GeomorphRegistry REGISTRY = new GeomorphRegistry();
     public static final Geomorphs MORPHS = new Geomorphs();
+    static final GeomorphRegistry FLOORS   = new GeomorphRegistry();
+    static final GeomorphRegistry WALLS    = new GeomorphRegistry();
+    static final GeomorphRegistry CIELINGS = new GeomorphRegistry();
     
     
-    Geomorph simpleFloor = makeGeomorph("SimpleFloor", 
+    SimpleGeomorph simpleFloor = makeGeomorph("SimpleFloor", 
             "Models/geomorphs/simple/Geomorph-blank-floor", 16)
             .setMaterials("Floor:Textures/stone-hr.png", "Wall:Textures/stone-hr.png");
     
@@ -19,17 +22,17 @@ public class Geomorphs {
     }
     
     
-    private Geomorph makeGeomorph(String name, String rlbase, int num) {
+    private SimpleGeomorph makeGeomorph(String name, String rlbase, int num) {
         GeomorphModel[] models = new GeomorphModel[num];
         for(int i = 0; i < models.length; i++) {
             models[i] = new GeomorphModel(name, 
                 rlbase + makePaddedInt(i, 2) + ".j3o");
         }
-        return new Geomorph(name, models);
+        return new SimpleGeomorph(name, models);
     }
     
     
-    private Geomorph register(Geomorph geo) {
+    private SimpleGeomorph register(SimpleGeomorph geo) {
         REGISTRY.add(geo.name, geo);
         geo.setID(REGISTRY.getID(geo.name));
         return geo;

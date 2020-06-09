@@ -26,12 +26,14 @@ public class GeomorphModel {
         } else {
             template = new Node();
             template.attachChild(model);
-        }        
+        } 
+        template.setName(name);
+        //System.out.println(name + ": " + template + " -> " +template.getChildren());
     }
     
     
     public GeomorphModel setMaterial(String name, String path, float specular) {
-        System.out.println(template.getChildren());
+        //System.out.println(template.getChildren());
         Spatial component = template.getChild(name);
         // This fails quietly, since some variants in a group make lack some pieces;
         // e.g., the base form typically lacks any wall while others have walls.

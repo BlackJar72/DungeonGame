@@ -1,51 +1,66 @@
 package jaredbgreat.dungeos.componenet.geomorph;
 
-import java.util.StringTokenizer;
+import com.jme3.math.Vector3f;
+import com.jme3.scene.Node;
+import com.jme3.scene.Spatial;
 
 /**
- *
- * @author Jared Blackbrun
+ * This is a replacement for the original Geomorph classs to better
+ * and more flexibly handle combinations of elements (notable floor 
+ * wall combos, but maybe more later.
+ * 
+ * The plan goes like this (I think, so far):
+ *      Byte 1: Floor type
+ *      Byte 2: Wall type
+ *      Byte 3: Wall possition/variants
+ *      Byte 4: ??? (Reserved for future development
+ * 
+ * Hopefully that will do, I don't think I need more than 256 of 
+ * each componenent.
+ * 
+ * @author Jared Blackburn
  */
-public class Geomorph {
-    String name;
-    int id;
-    private final GeomorphModel[] variantes;
+public class Geomorph implements IGeomorph {
+    // Now, should this hold geomorphs models?  Or handles (ints) into a registry?
+    private GeomorphModel  floor;
+    private SimpleGeomorph walls;
+    private GeomorphModel  cieling;
     
-    public Geomorph(String name, GeomorphModel ... models)  {
-        this.name = name;
-        variantes = models;
+
+    @Override
+    public Geomorph setMaterials(String... mats) {
+        //TODO
+        return null;
     }
     
     
-    Geomorph setID(int id) {
-        this.id = id;
-        return this;
-    }
-    
-    
-    public GeomorphModel getRotation(int rotation) {
-        return variantes[rotation % variantes.length];
-    }
-    
-    
-    public Geomorph setMaterials(String ... mats) {
-        String mesh, path;
-        StringTokenizer tokens;
-        float spec;
-        for(String mat : mats) {
-            tokens = new StringTokenizer(mat, ":");
-            mesh = tokens.nextToken();
-            path = tokens.nextToken();
-            if(tokens.hasMoreTokens()) {
-                spec = Float.parseFloat(tokens.nextToken());
-            } else {
-                spec = 0.01f;
-            }
-            for(GeomorphModel rotation : variantes) {
-                rotation.setMaterial(mesh, path, spec);
-            }
+    @Override
+    public Node getModel(int variant) {
+        Node out = new Node();
+        out.attachChild(walls.getVariant(variant & 31).template.clone(true));
+        if((variant & 0x20) > 0) {
+            out.attachChild(floor.template.clone(true));
         }
-        return this;
+        if((variant & 0x40) > 0) {
+            out.attachChild(cieling.template.clone());
+        }
+        return out;
+    }
+    
+
+    @Override
+    public Node makeSpatialAt(int variant, float x, float y, float z) {
+        Node out = getModel(variant);
+        out.setLocalTranslation(x, y, z);
+        return out;
+    }
+
+    
+    @Override
+    public Node makeSpatialAt(int variant, Vector3f location) {
+        Node out = getModel(variant);
+        out.setLocalTranslation(location);
+        return out;
     }
     
 }
