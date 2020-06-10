@@ -74,7 +74,7 @@ public class Main extends SimpleApplication {
     
     
     private void addbasicTestLights() {
-        addFourPointLight(0.25f);
+        addFourPointLight(0.1f);
         PointLight pLight = new PointLight(new Vector3f(0, 2.5f, 0), (ColorRGBA.White
                     .add(ColorRGBA.Orange).add(ColorRGBA.Yellow))
                 .multLocal(0.20f));
