@@ -84,10 +84,10 @@ public class Main extends SimpleApplication {
                 .add((ColorRGBA.Yellow).mult(0.1f)))
                 .multLocal(0.05f)); 
 
-        AmbientLight aLight = new AmbientLight(ColorRGBA.White.mult(0.05f));
+        AmbientLight aLight = new AmbientLight(ColorRGBA.White.mult(0.01f));
         PointLight pLight = new PointLight(new Vector3f(0, 2.5f, 0), (ColorRGBA.White
                     .add(ColorRGBA.Orange).add(ColorRGBA.Yellow))
-                .multLocal(0.10f));
+                .multLocal(0.20f));
         Mesh lb = new Sphere(8, 8, 0.1f);
         Material lm = new Material(assetManager, 
                 "Common/MatDefs/Misc/Unshaded.j3md");
