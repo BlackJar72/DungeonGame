@@ -15,6 +15,7 @@ import com.jme3.scene.Mesh;
 import com.jme3.scene.Node;
 import com.jme3.scene.shape.Sphere;
 import jaredbgreat.dungeos.componenet.geomorph.GeomorphModel;
+import jaredbgreat.dungeos.componenet.geomorph.Geomorphs;
 import jaredbgreat.dungeos.mapping.TestMap;
 import java.util.Random;
 
@@ -33,6 +34,7 @@ public class Main extends SimpleApplication {
     @Override
     public void simpleInitApp() {
         GeomorphModel.setAssetManager(assetManager);
+        Geomorphs.init();
         
         makeTestScene();
         
@@ -80,10 +82,10 @@ public class Main extends SimpleApplication {
         Vector3f ld = new Vector3f(1, -2, -3.5f).normalizeLocal();   
         DirectionalLight dirlight = new DirectionalLight(ld, (ColorRGBA.White
                 .add((ColorRGBA.Yellow).mult(0.1f)))
-                .multLocal(0.5f)); 
+                .multLocal(0.05f)); 
 
         AmbientLight aLight = new AmbientLight(ColorRGBA.White.mult(0.05f));
-        PointLight pLight = new PointLight(new Vector3f(0, 3, 0), (ColorRGBA.White
+        PointLight pLight = new PointLight(new Vector3f(0, 2.5f, 0), (ColorRGBA.White
                     .add(ColorRGBA.Orange).add(ColorRGBA.Yellow))
                 .multLocal(0.10f));
         Mesh lb = new Sphere(8, 8, 0.1f);
@@ -93,7 +95,7 @@ public class Main extends SimpleApplication {
                     .add(ColorRGBA.Orange).add(ColorRGBA.Yellow).mult(0.3f));
         Geometry lg = new Geometry("Light", lb);
         lg.setMaterial(lm);
-        lg.setLocalTranslation(0, 3, 0);
+        lg.setLocalTranslation(0, 2.5f, 0);
         rootNode.attachChild(lg);
         rootNode.addLight(dirlight);
         rootNode.addLight(aLight);

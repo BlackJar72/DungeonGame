@@ -14,7 +14,7 @@ public class TestMap extends AbstractMap {
     List<Spatial> tiles = new ArrayList<>();
     
     public TestMap() {
-        int f = Geomorphs.MORPHS.getGeomorphID("SimpleFloor");
+        int f = Geomorphs.MORPHS.getGeomorphID("SimpleStone");
         room = new int[][]{{0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                            {0, 0, 0, 0, 0, 1, 1, 0, 0, 0},
                            {0, 0, 0, 1, 1, 1, 1, 1, 1, 1},
@@ -67,7 +67,7 @@ public class TestMap extends AbstractMap {
     
     
     private int findRotationFromBorders(int x, int z) {
-        int out = 0;
+        int out = 96;
         if(((x - 1) < 0) || (room[x - 1][z] != room[x][z])) out+= 1;
         if(((z + 1) == room[x].length) || (room[x][z + 1] != room[x][z])) out+= 8;
         if(((x + 1) == room.length) || (room[x + 1][z] != room[x][z])) out+= 4;

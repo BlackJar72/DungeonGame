@@ -52,7 +52,7 @@ public class GeomorphModel {
     }
     
     
-    public void setMaterials(String ... mats) {
+    public GeomorphModel setMaterials(String ... mats) {
         String mesh, path;
         StringTokenizer tokens;
         float spec;
@@ -67,6 +67,7 @@ public class GeomorphModel {
             }
             setMaterial(mesh, path, spec);
         }
+        return this;
     }
     
     

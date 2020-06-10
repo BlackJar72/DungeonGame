@@ -1,6 +1,5 @@
 package jaredbgreat.dungeos.componenet.geomorph;
 
-import com.jme3.scene.Node;
 import jaredbgreat.dungeos.util.Registry;
 
 /**
@@ -10,12 +9,12 @@ import jaredbgreat.dungeos.util.Registry;
 public class Geomorphs {
     public static final GeomorphRegistry REGISTRY = new GeomorphRegistry();
     public static final Geomorphs MORPHS = new Geomorphs();
-    static final Registry<GeomorphModel> FLOORS   = new Registry<>();
-    static final Registry<GeomorphModel> CIELINGS = new Registry<>();
-    static final Registry<SimpleGeomorph> WALLS   = new Registry<>();
+    static final Registry<GeomorphModel>  FLOORS   = new Registry<>();
+    static final Registry<GeomorphModel>  CIELINGS = new Registry<>();
+    static final Registry<SimpleGeomorph> WALLS    = new Registry<>();
     
     
-    SimpleGeomorph simpleFloor = makeGeomorph("SimpleFloor", 
+    SimpleGeomorph simpleFloor = makeSimpleGeomorph("SimpleFloor", 
             "Models/legacy/simple/Geomorph-blank-floor", 0, 16)
             .setMaterials("Floor:Textures/stone-hr.png", "Wall:Textures/stone-hr.png");
     
@@ -25,7 +24,12 @@ public class Geomorphs {
     }
     
     
-    private SimpleGeomorph makeGeomorph(String name, String rlbase, int starti, int endi) {
+    public static void init() {
+        MORPHS.addGeomorphs();        
+    }
+    
+    
+    private SimpleGeomorph makeSimpleGeomorph(String name, String rlbase, int starti, int endi) {
         GeomorphModel[] models = new GeomorphModel[endi];
         for(int i = 0; i < starti; i++) {
             models[i] = GeomorphModel.EMPTY;
@@ -75,26 +79,39 @@ public class Geomorphs {
     
     
     SimpleGeomorph getWalls(String name) {
-        return (SimpleGeomorph)WALLS.getFromName(name);
+        return WALLS.getFromName(name);
     }
     
     
     private void addFloors() {
-        
+        FLOORS.add("SimpleStone", new GeomorphModel("SimpleStone", 
+            "Models/geomorphs/floors/Geomorph-blank-floor.j3o")
+                .setMaterials("Floor:Textures/stone-hr.png"));
     }
     
     
     private void addWalls() {
-        
+       WALLS.add("SimpleStone", makeSimpleGeomorph("SimpleFloor", 
+            "Models/legacy/simple/Geomorph-blank-floor", 0, 16)
+            .setMaterials("Floor:Textures/stone-hr.png", "Wall:Textures/stone-hr.png"));
     }
     
     
     private void addCielings() {
+        CIELINGS.add("SimpleStone", new GeomorphModel("SimpleStone", 
+            "Models/geomorphs/cielings/Geomorph-blank-ciel.j3o")
+                .setMaterials("Floor:Textures/stone-hr.png"));
         
     }
     
     
     private void addGeomorphs() {
+        // First, setup components; these must be in place!
+        addFloors();
+        addCielings();
+        addWalls();
         
+        // Then, make the actual geomorphs!
+        register(new Geomorph("SimpleStone", "SimpleStone", "SimpleStone", "SimpleStone"));
     }
 }
