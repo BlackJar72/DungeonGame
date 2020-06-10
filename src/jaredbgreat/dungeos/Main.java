@@ -130,10 +130,10 @@ public class Main extends SimpleApplication {
     private void addTableScene() {                
         GeomorphModel tabletest = new GeomorphModel("setTable", 
                 "Models/test/TableScene001s/TableScene001s.j3o");        
-        rootNode.attachChild(tabletest.makeSpatialAt(0, 0, -1));            
+        rootNode.attachChild(tabletest.makeSpatialAt(3, 0, 2));            
         tabletest = new GeomorphModel("setTable", 
                 "Models/test/TableScene001s/TableScene001s-pbr.j3o");         
-        rootNode.attachChild(tabletest.makeSpatialAt(0, 0, -2.5f));        
+        rootNode.attachChild(tabletest.makeSpatialAt(3, 0, 0.5f));        
     }
     
     

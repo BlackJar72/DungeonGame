@@ -19,7 +19,8 @@ public class SimpleGeomorph implements IGeomorph {
     }
     
     
-    SimpleGeomorph setID(int id) {
+    @Override
+    public SimpleGeomorph setID(int id) {
         this.id = id;
         return this;
     }
@@ -44,8 +45,8 @@ public class SimpleGeomorph implements IGeomorph {
             } else {
                 spec = 0.01f;
             }
-            for(GeomorphModel rotation : variants) {
-                rotation.setMaterial(mesh, path, spec);
+            for(GeomorphModel variant : variants) {
+                variant.setMaterial(mesh, path, spec);
             }
         }
         return this;
@@ -68,6 +69,12 @@ public class SimpleGeomorph implements IGeomorph {
         Node out = getVariant(variant).template.clone(true);
         out.setLocalTranslation(location);
         return out;
+    }
+        
+    
+    @Override
+    public String getName() {
+        return name;
     }
     
 }

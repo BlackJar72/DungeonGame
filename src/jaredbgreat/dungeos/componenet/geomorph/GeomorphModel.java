@@ -7,12 +7,15 @@ import com.jme3.math.FastMath;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
+import java.util.StringTokenizer;
 
 /**
  *
  * @author Jared Blackburn
  */
 public class GeomorphModel {
+    private static final Node NULL = new Node("Empty");
+    public static final GeomorphModel EMPTY = new GeomorphModel(null, null);
     private static AssetManager assetman;
     final String name;
     Node template;
@@ -20,14 +23,18 @@ public class GeomorphModel {
     
     public GeomorphModel(String name, String path) {
         this.name = name;
-        Spatial model = assetman.loadModel(path);
-        if(model instanceof Node) {
-            template = (Node)model;
+        if(path == null) {
+            template = NULL;
         } else {
-            template = new Node();
-            template.attachChild(model);
-        } 
-        template.setName(name);
+            Spatial model = assetman.loadModel(path);
+            if(model instanceof Node) {
+                template = (Node)model;
+            } else {
+                template = new Node();
+                template.attachChild(model);
+            }
+            template.setName(name);
+        }
         //System.out.println(name + ": " + template + " -> " +template.getChildren());
     }
     
@@ -43,6 +50,25 @@ public class GeomorphModel {
         }
         return this;
     }
+    
+    
+    public void setMaterials(String ... mats) {
+        String mesh, path;
+        StringTokenizer tokens;
+        float spec;
+        for(String mat : mats) {
+            tokens = new StringTokenizer(mat, ":");
+            mesh = tokens.nextToken();
+            path = tokens.nextToken();
+            if(tokens.hasMoreTokens()) {
+                spec = Float.parseFloat(tokens.nextToken());
+            } else {
+                spec = 0.01f;
+            }
+            setMaterial(mesh, path, spec);
+        }
+    }
+    
     
     // FIXME: Is this really the best way, or should I have it attach them, too?
     public Node makeSpatialAt(float x, float y, float z) {

@@ -1,5 +1,8 @@
 package jaredbgreat.dungeos.componenet.geomorph;
 
+import com.jme3.scene.Node;
+import jaredbgreat.dungeos.util.Registry;
+
 /**
  *
  * @author Jared Blacburn
@@ -7,13 +10,13 @@ package jaredbgreat.dungeos.componenet.geomorph;
 public class Geomorphs {
     public static final GeomorphRegistry REGISTRY = new GeomorphRegistry();
     public static final Geomorphs MORPHS = new Geomorphs();
-    static final GeomorphRegistry FLOORS   = new GeomorphRegistry();
-    static final GeomorphRegistry WALLS    = new GeomorphRegistry();
-    static final GeomorphRegistry CIELINGS = new GeomorphRegistry();
+    static final Registry<GeomorphModel> FLOORS   = new Registry<>();
+    static final Registry<GeomorphModel> CIELINGS = new Registry<>();
+    static final Registry<SimpleGeomorph> WALLS   = new Registry<>();
     
     
     SimpleGeomorph simpleFloor = makeGeomorph("SimpleFloor", 
-            "Models/geomorphs/simple/Geomorph-blank-floor", 16)
+            "Models/legacy/simple/Geomorph-blank-floor", 0, 16)
             .setMaterials("Floor:Textures/stone-hr.png", "Wall:Textures/stone-hr.png");
     
     
@@ -22,9 +25,12 @@ public class Geomorphs {
     }
     
     
-    private SimpleGeomorph makeGeomorph(String name, String rlbase, int num) {
-        GeomorphModel[] models = new GeomorphModel[num];
-        for(int i = 0; i < models.length; i++) {
+    private SimpleGeomorph makeGeomorph(String name, String rlbase, int starti, int endi) {
+        GeomorphModel[] models = new GeomorphModel[endi];
+        for(int i = 0; i < starti; i++) {
+            models[i] = GeomorphModel.EMPTY;
+        }
+        for(int i = starti; i < models.length; i++) {
             models[i] = new GeomorphModel(name, 
                 rlbase + makePaddedInt(i, 2) + ".j3o");
         }
@@ -32,9 +38,10 @@ public class Geomorphs {
     }
     
     
-    private SimpleGeomorph register(SimpleGeomorph geo) {
-        REGISTRY.add(geo.name, geo);
-        geo.setID(REGISTRY.getID(geo.name));
+    private IGeomorph register(IGeomorph geo) {
+        String name = geo.getName();
+        REGISTRY.add(name, geo);
+        geo.setID(REGISTRY.getID(name));
         return geo;
     }
     
@@ -56,4 +63,38 @@ public class Geomorphs {
         return builder.toString();        
     }
     
+    
+    GeomorphModel getFloor(String name) {
+        return FLOORS.getFromName(name);
+    }
+    
+    
+    GeomorphModel getCieling(String name) {
+        return CIELINGS.getFromName(name);
+    }
+    
+    
+    SimpleGeomorph getWalls(String name) {
+        return (SimpleGeomorph)WALLS.getFromName(name);
+    }
+    
+    
+    private void addFloors() {
+        
+    }
+    
+    
+    private void addWalls() {
+        
+    }
+    
+    
+    private void addCielings() {
+        
+    }
+    
+    
+    private void addGeomorphs() {
+        
+    }
 }
