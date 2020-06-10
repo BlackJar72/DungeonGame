@@ -14,7 +14,8 @@ public class TestMap extends AbstractMap {
     List<Spatial> tiles = new ArrayList<>();
     
     public TestMap() {
-        int f = Geomorphs.MORPHS.getGeomorphID("BrickNStone");
+        int b = Geomorphs.MORPHS.getGeomorphID("SimpleStone");
+        int a = Geomorphs.MORPHS.getGeomorphID("BrickNStone");
         room = new int[][]{{0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                            {0, 0, 0, 0, 0, 1, 1, 0, 0, 0},
                            {0, 0, 0, 1, 1, 1, 1, 1, 1, 1},
@@ -28,16 +29,16 @@ public class TestMap extends AbstractMap {
                            {0, 0, 0, 0, 0, 0, 0, 1, 0, 0}
                           };
         geomodel = new int[][]{{0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                               {0, 0, 0, 0, 0, f, f, 0, 0, 0},
-                               {0, 0, 0, f, f, f, f, f, f, f},
-                               {f, f, f, f, f, f, f, f, f, f},
-                               {0, 0, 0, f, f, f, f, f, f, f},
-                               {0, 0, 0, f, f, f, f, f, f, f},
-                               {0, 0, 0, f, f, f, f, f, f, f},
-                               {0, 0, 0, f, f, f, f, f, f, f},
-                               {0, 0, 0, f, f, f, f, f, f, f},
-                               {0, 0, 0, f, f, f, f, f, f, f},
-                               {0, 0, 0, 0, 0, 0, 0, f, 0, 0}
+                               {0, 0, 0, 0, 0, a, a, 0, 0, 0},
+                               {0, 0, 0, a, a, a, a, a, a, a},
+                               {b, b, b, a, a, a, a, a, a, a},
+                               {0, 0, 0, a, a, a, a, a, a, a},
+                               {0, 0, 0, a, a, a, a, a, a, a},
+                               {0, 0, 0, a, a, a, a, a, a, a},
+                               {0, 0, 0, a, a, a, a, a, a, a},
+                               {0, 0, 0, a, a, a, a, a, a, a},
+                               {0, 0, 0, a, a, a, a, a, a, a},
+                               {0, 0, 0, 0, 0, 0, 0, b, 0, 0}
                           };
         simpleRefineMap();
     }

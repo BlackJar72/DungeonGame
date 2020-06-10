@@ -2,7 +2,6 @@ package jaredbgreat.dungeos;
 
 import com.jme3.app.SimpleApplication;
 import com.jme3.asset.AssetManager;
-import com.jme3.light.AmbientLight;
 import com.jme3.light.DirectionalLight;
 import com.jme3.light.PointLight;
 import com.jme3.material.Material;
@@ -36,7 +35,7 @@ public class Main extends SimpleApplication {
         GeomorphModel.setAssetManager(assetManager);
         Geomorphs.init();
         
-        makeTestScene();
+        //makeTestScene();
         
         TestMap testmap = new TestMap();
         testmap.build(rootNode);
@@ -44,9 +43,6 @@ public class Main extends SimpleApplication {
                 
         // Lastly lights
         addbasicTestLights();
-        //addExtraLights(5);
-        
-        
     }
 
     @Override
@@ -90,36 +86,18 @@ public class Main extends SimpleApplication {
         Geometry lg = new Geometry("Light", lb);
         lg.setMaterial(lm);
         lg.setLocalTranslation(0, 2.5f, 0);
+        pLight.setRadius(10);
         rootNode.attachChild(lg);
         rootNode.addLight(pLight);
     }
     
     
     private void makeTestScene() {
-        //addFirstTestFloor();
         addBedroom();
         addAnime();
         addTableScene();
     }
     
-    private void addFirstTestFloor() {                
-                GeomorphModel testgeo = new GeomorphModel("test", 
-                "Models/test/Geomorph-blank-floor/Geomorph-blank-floor.j3o")
-                .setMaterial("Floor", "Textures/stone-hr.png", 0.05f);        
-        int ij;
-        Node[] floorTiles = new Node[7 * 7];
-        for(int i = 0; i < 7; i++) 
-            for(int j = 0; j < 7; j++) {
-                ij = (i * 7) + j;
-                floorTiles[ij] = testgeo.makeSpatialAt((i - 3) * 3, 0, (j - 3) * 3);
-                rootNode.attachChild(floorTiles[ij]);
-                if(i == 3 & j == 3) {
-                    floorTiles[ij].getChild("Floor")
-                            .setMaterial(makeTexturedtMaterial(assetManager, 
-                                         "Textures/granite-black-hr.jpg", 0.05f));
-                }
-        }
-    }
     
     private void addTableScene() {                
         GeomorphModel tabletest = new GeomorphModel("setTable", 
@@ -150,11 +128,12 @@ public class Main extends SimpleApplication {
     private void addExtraLights(int num) {
         Random rand = new Random();
         for(int i = 0; i < num; i++) {  
-        PointLight pLight = new PointLight(new Vector3f(rand.nextInt(21) - 10, 
+            PointLight pLight = new PointLight(new Vector3f(rand.nextInt(21) - 10, 
                         rand.nextFloat() + 2, 
                         rand.nextInt(21) - 10), 
                     (ColorRGBA.White.add(ColorRGBA.randomColor()))
                 .multLocal(rand.nextFloat() / 10f));
+            pLight.setRadius(rand.nextFloat() * 5 + 5);
             rootNode.addLight(pLight);
         }
     }

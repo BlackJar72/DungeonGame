@@ -4,9 +4,13 @@ import com.jme3.asset.AssetManager;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.FastMath;
+import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
+import com.jme3.scene.Geometry;
+import com.jme3.scene.Mesh;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
+import com.jme3.scene.shape.Box;
 import java.util.StringTokenizer;
 
 /**
@@ -35,7 +39,31 @@ public class GeomorphModel {
             }
             template.setName(name);
         }
-        //System.out.println(name + ": " + template + " -> " +template.getChildren());
+    }
+    
+    
+    public GeomorphModel(String name, String mname, Mesh mesh, Vector3f position) {
+        this.name = name;
+        if(mesh == null) {
+            template = NULL;
+        } else {
+            Geometry geom = new Geometry(mname, mesh);
+            geom.setLocalTranslation(position);
+            template = new Node(name);
+            template.attachChild(geom);
+        }
+    }
+    
+    
+    static GeomorphModel makeSimpleFloor(String name) {
+        return new GeomorphModel(name, "Floor", 
+                new Box(1.5f, 0.25f, 1.5f), new Vector3f(0, -0.25f, 0));
+    }
+    
+    
+    static GeomorphModel makeSimpleCieling(String name) {
+        return new GeomorphModel(name, "Cieling", 
+                new Box(1.5f, 0.25f, 1.5f), new Vector3f(0, 3.25f, 0));
     }
     
     
@@ -66,6 +94,19 @@ public class GeomorphModel {
                 spec = 0.01f;
             }
             setMaterial(mesh, path, spec);
+        }
+        return this;
+    }
+    
+    
+    public GeomorphModel setScale(Vector2f scale, String ... mats) {
+        for(String mat : mats) {
+            Spatial thing = template.getChild(mat);
+            if((thing != null) && (thing instanceof Geometry)) {
+                Geometry geom = (Geometry)thing;
+                Mesh mesh = geom.getMesh();
+                mesh.scaleTextureCoordinates(scale);
+            }
         }
         return this;
     }

@@ -81,13 +81,21 @@ public class Geomorphs {
         FLOORS.add("SimpleStone", new GeomorphModel("SimpleStone", 
             "Models/geomorphs/floors/Geomorph-blank-floor.j3o")
                 .setMaterials("Floor:Textures/stone-hr.png"));
+        FLOORS.add("SimpleStoneDark", new GeomorphModel("SimpleStoneDark", 
+            "Models/geomorphs/floors/Geomorph-blank-floor.j3o")
+                .setMaterials("Floor:Textures/stone-dark-hr.png"));
+        FLOORS.add("Concrete", GeomorphModel.makeSimpleFloor("Concrete")
+                .setMaterials("Floor:Textures/stone-hr.png"));
     }
     
     
     private void addWalls() {
        WALLS.add("SimpleStone", makeSimpleGeomorph("SimpleFloor", 
             "Models/geomorphs/walls/simple/Geomorph-blank-wall", 1, 20)
-            .setMaterials("Floor:Textures/stone-hr.png", "Wall:Textures/stone-hr.png"));
+            .setMaterials("Wall:Textures/stone-hr.png"));
+       WALLS.add("SimpleStoneDark", makeSimpleGeomorph("SimpleFloorDark", 
+            "Models/geomorphs/walls/simple/Geomorph-blank-wall", 1, 20)
+            .setMaterials("Wall:Textures/stone-hr.png"));
        WALLS.add("RedBrick", makeSimpleGeomorph("RedBrick", 
             "Models/geomorphs/walls/brick/Geomorph-brick-floor", 1, 20));
     }
@@ -97,6 +105,11 @@ public class Geomorphs {
         CIELINGS.add("SimpleStone", new GeomorphModel("SimpleStone", 
             "Models/geomorphs/cielings/Geomorph-blank-ciel.j3o")
                 .setMaterials("Floor:Textures/stone-hr.png"));
+        CIELINGS.add("SimpleStoneDark", new GeomorphModel("SimpleStoneDark", 
+            "Models/geomorphs/cielings/Geomorph-blank-ciel.j3o")
+                .setMaterials("Floor:Textures/stone-dark-hr.png"));
+        CIELINGS.add("Concrete", GeomorphModel.makeSimpleCieling("Concrete")
+                .setMaterials("Cieling:Textures/stone-hr.png"));
         
     }
     
@@ -109,6 +122,6 @@ public class Geomorphs {
         
         // Then, make the actual geomorphs!
         register(new Geomorph("SimpleStone", "SimpleStone", "SimpleStone", "SimpleStone"));
-        register(new Geomorph("BrickNStone", "SimpleStone", "RedBrick", "SimpleStone"));
+        register(new Geomorph("BrickNStone", "Concrete", "RedBrick", "Concrete"));
     }
 }
