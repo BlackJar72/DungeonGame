@@ -14,14 +14,7 @@ public class Geomorphs {
     static final Registry<SimpleGeomorph> WALLS    = new Registry<>();
     
     
-    SimpleGeomorph simpleFloor = makeSimpleGeomorph("SimpleFloor", 
-            "Models/legacy/simple/Geomorph-blank-floor", 0, 16)
-            .setMaterials("Floor:Textures/stone-hr.png", "Wall:Textures/stone-hr.png");
-    
-    
-    private Geomorphs() {
-        register(simpleFloor);
-    }
+    private Geomorphs() {}
     
     
     public static void init() {
@@ -37,6 +30,7 @@ public class Geomorphs {
         for(int i = starti; i < models.length; i++) {
             models[i] = new GeomorphModel(name, 
                 rlbase + makePaddedInt(i, 2) + ".j3o");
+            System.out.println(rlbase + makePaddedInt(i, 2) + ".j3o");
         }
         return new SimpleGeomorph(name, models);
     }
@@ -92,8 +86,10 @@ public class Geomorphs {
     
     private void addWalls() {
        WALLS.add("SimpleStone", makeSimpleGeomorph("SimpleFloor", 
-            "Models/legacy/simple/Geomorph-blank-floor", 0, 16)
+            "Models/geomorphs/walls/simple/Geomorph-blank-wall", 1, 20)
             .setMaterials("Floor:Textures/stone-hr.png", "Wall:Textures/stone-hr.png"));
+       WALLS.add("RedBrick", makeSimpleGeomorph("RedBrick", 
+            "Models/geomorphs/walls/brick/Geomorph-brick-floor", 1, 20));
     }
     
     
@@ -113,5 +109,6 @@ public class Geomorphs {
         
         // Then, make the actual geomorphs!
         register(new Geomorph("SimpleStone", "SimpleStone", "SimpleStone", "SimpleStone"));
+        register(new Geomorph("BrickNStone", "SimpleStone", "RedBrick", "SimpleStone"));
     }
 }

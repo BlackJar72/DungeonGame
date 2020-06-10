@@ -41,11 +41,10 @@ public class Main extends SimpleApplication {
         TestMap testmap = new TestMap();
         testmap.build(rootNode);
         
-        
-        
+                
         // Lastly lights
         addbasicTestLights();
-        //addExtraLights(10);
+        //addExtraLights(5);
         
         
     }
@@ -158,9 +157,9 @@ public class Main extends SimpleApplication {
     private void addExtraLights(int num) {
         Random rand = new Random();
         for(int i = 0; i < num; i++) {  
-        PointLight pLight = new PointLight(new Vector3f(rand.nextInt(10) - 5, 
-                        rand.nextInt(2) - 1, 
-                        rand.nextInt(10) - 5), 
+        PointLight pLight = new PointLight(new Vector3f(rand.nextInt(21) - 10, 
+                        rand.nextFloat() + 2, 
+                        rand.nextInt(21) - 10), 
                     (ColorRGBA.White.add(ColorRGBA.randomColor()))
                 .multLocal(rand.nextFloat() / 10f));
             rootNode.addLight(pLight);

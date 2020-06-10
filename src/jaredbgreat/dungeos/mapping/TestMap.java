@@ -14,7 +14,7 @@ public class TestMap extends AbstractMap {
     List<Spatial> tiles = new ArrayList<>();
     
     public TestMap() {
-        int f = Geomorphs.MORPHS.getGeomorphID("SimpleStone");
+        int f = Geomorphs.MORPHS.getGeomorphID("BrickNStone");
         room = new int[][]{{0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                            {0, 0, 0, 0, 0, 1, 1, 0, 0, 0},
                            {0, 0, 0, 1, 1, 1, 1, 1, 1, 1},

@@ -59,7 +59,6 @@ public class Geomorph implements IGeomorph {
     
     @Override
     public Node getModel(int variant) {
-        System.out.println(variant + " -> " + (variant & 31));
         Node out = new Node();
         if((variant & 0x31) > 0) {
             out.attachChild(walls.getVariant(variant & 31).template.clone(true));
