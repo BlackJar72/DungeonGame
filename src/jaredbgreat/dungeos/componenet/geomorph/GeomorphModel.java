@@ -57,13 +57,13 @@ public class GeomorphModel {
     
     static GeomorphModel makeSimpleFloor(String name) {
         return new GeomorphModel(name, "Floor", 
-                new Box(1.5f, 0.25f, 1.5f), new Vector3f(0, -0.25f, 0));
+                new Box(1.5f, 0.115385f, 1.5f), new Vector3f(0, -0.115329f, 0));
     }
     
     
     static GeomorphModel makeSimpleCieling(String name) {
         return new GeomorphModel(name, "Cieling", 
-                new Box(1.5f, 0.25f, 1.5f), new Vector3f(0, 3.25f, 0));
+                new Box(1.5f, 0.115385f, 1.5f), new Vector3f(0, 3.1331725f, 0));
     }
     
     
