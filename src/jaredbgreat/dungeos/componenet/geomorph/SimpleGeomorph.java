@@ -51,6 +51,30 @@ public class SimpleGeomorph implements IGeomorph {
         }
         return this;
     }
+    
+    
+    @Override
+    public SimpleGeomorph setMaterialsNm(String ... mats) {
+        String mesh, nml, path;
+        StringTokenizer tokens;
+        float spec;
+        for(String mat : mats) {
+            tokens = new StringTokenizer(mat, ":");
+            mesh = tokens.nextToken();
+            path = tokens.nextToken();
+            nml  = tokens.nextToken();
+            if(tokens.hasMoreTokens()) {
+                spec = Float.parseFloat(tokens.nextToken());
+            } else {
+                spec = 0.01f;
+            }
+            for(GeomorphModel variant : variants) {
+                variant.setMaterial(mesh, path, nml, spec);
+            }
+        }
+        return this;
+    }
+    
 
     @Override
     public Node getModel(int variant) {

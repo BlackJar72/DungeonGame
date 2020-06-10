@@ -56,6 +56,22 @@ public class Geomorph implements IGeomorph {
         return this;
     }
     
+
+    @Deprecated
+    @Override
+    /**
+     * This is deprected; you should not use this method for 
+     * compound geomorphs (represented by this class), but 
+     * instead set it on each component separately before 
+     * combining them.
+     */
+    public Geomorph setMaterialsNm(String... mats) {
+        floor.setMaterialsNm(mats);
+        walls.setMaterialsNm(mats);
+        cieling.setMaterialsNm(mats);
+        return this;
+    }
+    
     
     @Override
     public Node getModel(int variant) {

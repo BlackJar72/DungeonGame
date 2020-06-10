@@ -11,7 +11,6 @@ import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Mesh;
-import com.jme3.scene.Node;
 import com.jme3.scene.shape.Sphere;
 import jaredbgreat.dungeos.componenet.geomorph.GeomorphModel;
 import jaredbgreat.dungeos.componenet.geomorph.Geomorphs;

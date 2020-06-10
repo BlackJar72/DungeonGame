@@ -30,7 +30,6 @@ public class Geomorphs {
         for(int i = starti; i < models.length; i++) {
             models[i] = new GeomorphModel(name, 
                 rlbase + makePaddedInt(i, 2) + ".j3o");
-            System.out.println(rlbase + makePaddedInt(i, 2) + ".j3o");
         }
         return new SimpleGeomorph(name, models);
     }

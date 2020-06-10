@@ -11,6 +11,7 @@ import com.jme3.scene.Mesh;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.shape.Box;
+import com.jme3.util.TangentBinormalGenerator;
 import java.util.StringTokenizer;
 
 /**
@@ -80,6 +81,20 @@ public class GeomorphModel {
     }
     
     
+    public GeomorphModel setMaterial(String name, String path, String normals, float specular) {
+        //System.out.println(template.getChildren());
+        Spatial component = template.getChild(name);
+        // This fails quietly, since some variants in a group make lack some pieces;
+        // e.g., the base form typically lacks any wall while others have walls.
+        // i.e., this is expected and intended to be null and do nothing at times.
+        if(component != null) {
+            TangentBinormalGenerator.generate((Geometry)component);
+            component.setMaterial(makeTexturedtMaterial(path, normals, specular));
+        }
+        return this;
+    }
+    
+    
     public GeomorphModel setMaterials(String ... mats) {
         String mesh, path;
         StringTokenizer tokens;
@@ -94,6 +109,26 @@ public class GeomorphModel {
                 spec = 0.01f;
             }
             setMaterial(mesh, path, spec);
+        }
+        return this;
+    }
+    
+    
+    public GeomorphModel setMaterialsNm(String ... mats) {
+        String mesh, nml, path;
+        StringTokenizer tokens;
+        float spec;
+        for(String mat : mats) {
+            tokens = new StringTokenizer(mat, ":");
+            mesh = tokens.nextToken();
+            path = tokens.nextToken();
+            nml  = tokens.nextToken();
+            if(tokens.hasMoreTokens()) {
+                spec = Float.parseFloat(tokens.nextToken());
+            } else {
+                spec = 0.01f;
+            }
+            setMaterial(mesh, path, nml, spec);
         }
         return this;
     }
@@ -136,6 +171,18 @@ public class GeomorphModel {
         Material mat = new Material(assetman, 
                 "Common/MatDefs/Light/Lighting.j3md");
         mat.setTexture("DiffuseMap", assetman.loadTexture(texture));
+        mat.setColor("Specular", ColorRGBA.Gray);
+        mat.setBoolean("UseMaterialColors", false);
+        mat.setFloat("Shininess", specular);
+        return mat;
+    }
+    
+    
+    public static Material makeTexturedtMaterial(String texture, String normal, float specular) {
+        Material mat = new Material(assetman, 
+                "Common/MatDefs/Light/Lighting.j3md");
+        mat.setTexture("DiffuseMap", assetman.loadTexture(texture));
+        mat.setTexture("NormalMap", assetman.loadTexture(normal));
         mat.setColor("Specular", ColorRGBA.Gray);
         mat.setBoolean("UseMaterialColors", false);
         mat.setFloat("Shininess", specular);
