@@ -77,13 +77,8 @@ public class Main extends SimpleApplication {
     /*------------------------------------------------------------------------------------*/
     
     
-    private void addbasicTestLights() {        
-        Vector3f ld = new Vector3f(1, -2, -3.5f).normalizeLocal();   
-        DirectionalLight dirlight = new DirectionalLight(ld, (ColorRGBA.White
-                .add((ColorRGBA.Yellow).mult(0.1f)))
-                .multLocal(0.05f)); 
-
-        AmbientLight aLight = new AmbientLight(ColorRGBA.White.mult(0.01f));
+    private void addbasicTestLights() {
+        addFourPointLight(0.05f);
         PointLight pLight = new PointLight(new Vector3f(0, 2.5f, 0), (ColorRGBA.White
                     .add(ColorRGBA.Orange).add(ColorRGBA.Yellow))
                 .multLocal(0.20f));
@@ -96,8 +91,6 @@ public class Main extends SimpleApplication {
         lg.setMaterial(lm);
         lg.setLocalTranslation(0, 2.5f, 0);
         rootNode.attachChild(lg);
-        rootNode.addLight(dirlight);
-        rootNode.addLight(aLight);
         rootNode.addLight(pLight);
     }
     
@@ -164,5 +157,23 @@ public class Main extends SimpleApplication {
                 .multLocal(rand.nextFloat() / 10f));
             rootNode.addLight(pLight);
         }
+    }
+    
+    
+    private void addFourPointLight(float brightness) {
+        DirectionalLight p1, p2, p3, p4;
+        Vector3f d1, d2, d3, d4;
+        d4 = new Vector3f(0, 1, 0);
+        d1 = new Vector3f(0.866025403784f, -0.5f, 0);
+        d2 = new Vector3f(-0.433012701892f, -0.5f, 0.75f).normalizeLocal();
+        d3 = new Vector3f(-0.433012701892f, -0.5f, -0.75f).normalizeLocal();
+        p1 = new DirectionalLight(d1, ColorRGBA.White.mult(brightness));
+        p2 = new DirectionalLight(d2, ColorRGBA.White.mult(brightness));
+        p3 = new DirectionalLight(d3, ColorRGBA.White.mult(brightness));
+        p4 = new DirectionalLight(d4, ColorRGBA.White.mult(brightness / 2.0f));
+        rootNode.addLight(p1);
+        rootNode.addLight(p2);
+        rootNode.addLight(p3);
+        rootNode.addLight(p4);        
     }
 }
