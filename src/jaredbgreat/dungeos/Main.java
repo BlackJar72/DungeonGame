@@ -2,6 +2,7 @@ package jaredbgreat.dungeos;
 
 import com.jme3.app.SimpleApplication;
 import com.jme3.asset.AssetManager;
+import com.jme3.bullet.BulletAppState;
 import com.jme3.light.DirectionalLight;
 import com.jme3.light.PointLight;
 import com.jme3.material.Material;
@@ -11,7 +12,9 @@ import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Mesh;
+import com.jme3.scene.Node;
 import com.jme3.scene.shape.Sphere;
+import jaredbgreat.dungeos.componenet.GeomorphManager;
 import jaredbgreat.dungeos.componenet.geomorph.GeomorphModel;
 import jaredbgreat.dungeos.componenet.geomorph.Geomorphs;
 import jaredbgreat.dungeos.mapping.TestMap;
@@ -23,6 +26,9 @@ import java.util.Random;
  * @author normenhansen
  */
 public class Main extends SimpleApplication {
+    GeomorphManager geomanager;
+    BulletAppState physics;
+    Node worldNode;
 
     public static void main(String[] args) {
         Main app = new Main();
@@ -30,14 +36,20 @@ public class Main extends SimpleApplication {
     }
 
     @Override
-    public void simpleInitApp() {
+    public void simpleInitApp() {        
+        physics = new BulletAppState();
+        worldNode = new Node("worldNode");
+        rootNode.attachChild(worldNode);        
+        stateManager.attach(physics);
+        geomanager = GeomorphManager.init(assetManager, worldNode, physics, worldNode);
+        
         GeomorphModel.setAssetManager(assetManager);
         Geomorphs.init();
         
         //makeTestScene();
         
         TestMap testmap = new TestMap();
-        testmap.build(rootNode);
+        testmap.build();
         
                 
         // Lastly lights

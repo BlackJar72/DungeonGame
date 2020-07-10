@@ -7,8 +7,8 @@ import jaredbgreat.dungeos.util.Registry;
  * @author Jared Blacburn
  */
 public class Geomorphs {
-    public static final GeomorphRegistry REGISTRY = new GeomorphRegistry();
-    public static final Geomorphs MORPHS = new Geomorphs();
+    public static final GeomorphRegistry  REGISTRY = new GeomorphRegistry();
+    public static final Geomorphs         MORPHS   = new Geomorphs();
     static final Registry<GeomorphModel>  FLOORS   = new Registry<>();
     static final Registry<GeomorphModel>  CIELINGS = new Registry<>();
     static final Registry<SimpleGeomorph> WALLS    = new Registry<>();

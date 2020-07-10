@@ -20,7 +20,7 @@ import java.util.StringTokenizer;
  */
 public class GeomorphModel {
     private static final Node NULL = new Node("Empty");
-    public static final GeomorphModel EMPTY = new GeomorphModel(null, null);
+    public  static final GeomorphModel EMPTY = new GeomorphModel(null, null);
     private static AssetManager assetman;
     final String name;
     Node template;

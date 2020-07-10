@@ -44,7 +44,7 @@ public class TestMap extends AbstractMap {
     }
     
     
-    public void build(Node parent) {
+    public void build() {
         float xoff = (room.length / 2);
         float zoff = (room[0].length / 2);        
         for(int i = 0; i < room.length; i++) 
@@ -53,7 +53,7 @@ public class TestMap extends AbstractMap {
                     Spatial tile = Geomorphs.REGISTRY.makeSpatialAt(geomodel[i][j], 
                            (i - xoff) * 3, 0, (j - zoff) * 3);
                     tiles.add(tile);
-                    parent.attachChild(tile);
+                    geoman.attachSpatial(tile);
                 }
         }
     }
