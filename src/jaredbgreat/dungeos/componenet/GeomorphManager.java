@@ -70,6 +70,14 @@ public class GeomorphManager {
         spatial.removeControl(RigidBodyControl.class);
         spatial.removeFromParent();
     }
+    
+    public Node getPhysicsNode() {
+        return phynode;
+    }
+    
+    public BulletAppState getPhysics() {
+        return physics;
+    }
         
     
     
