@@ -37,7 +37,7 @@ public class Main extends SimpleApplication {
         initGeomorphs();      
         stateManager.attach(new AppStateSinglePlayer());
         
-        makeTestScene();
+        //makeTestScene();
     }
     
     

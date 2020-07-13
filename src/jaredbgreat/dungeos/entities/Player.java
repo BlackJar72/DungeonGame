@@ -62,15 +62,6 @@ public class Player extends AbstractEntity {
     }
     
     
-    public void setFirstPerson() {
-        Node node = (Node)spatial;
-        if(node.hasChild(visual)) {
-            node.detachChild(visual);
-        }
-        player.setFirstPerson();
-    }
-    
-    
     public void die() {
         Node node = (Node)spatial;
         if(node.hasChild(visual)) {
