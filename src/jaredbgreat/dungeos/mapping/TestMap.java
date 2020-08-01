@@ -55,10 +55,10 @@ public class TestMap extends AbstractMap {
     
     private int findRotationFromBorders(int x, int z) {
         int out = 96;
-        if(((x - 1) < 0) || (room[x - 1][z] != room[x][z])) out+= 1;
+        if(((x - 1) <= 0) || (room[x - 1][z] != room[x][z])) out+= 1;
         if(((z + 1) == room[x].length) || (room[x][z + 1] != room[x][z])) out+= 8;
         if(((x + 1) == room.length) || (room[x + 1][z] != room[x][z])) out+= 4;
-        if(((z - 1) < 0) || (room[x][z - 1] != room[x][z])) out+= 2;
+        if(((z - 1) <= 0) || (room[x][z - 1] != room[x][z])) out+= 2;
         return out;
     }
     
