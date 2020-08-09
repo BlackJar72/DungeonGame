@@ -1,4 +1,4 @@
-package jaredbgreat.dldungeons.themes;
+package jaredbgreat.dungeos.mapping.dld;
 
 
 /* 

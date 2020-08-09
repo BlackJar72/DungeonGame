@@ -25,7 +25,7 @@ public class RoomList extends ArrayList<Room> {
 	
 	public RoomList(int slots) {
 		super(slots);
-		add(0, Room.roomNull);
+		add(0, Room.NULL);
 		numRooms = 0;
 	}
 	
