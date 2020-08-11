@@ -17,6 +17,9 @@ import jaredbgreat.dungeos.Main;
 import jaredbgreat.dungeos.componenet.GeomorphManager;
 import jaredbgreat.dungeos.entities.Player;
 import jaredbgreat.dungeos.mapping.TestMap;
+import jaredbgreat.dungeos.mapping.dld.DLDStyleMap;
+import jaredbgreat.dungeos.mapping.dld.Dungeon;
+import jaredbgreat.dungeos.mapping.dld.Sizes;
 import java.util.Random;
 
 /**
@@ -50,8 +53,10 @@ public class AppStateSinglePlayer extends BaseAppState {
     protected void onEnable() {
         
         // Create world from map
-        TestMap testmap = new TestMap();
-        testmap.build(); 
+        //TestMap testmap = new TestMap();
+        //testmap.build(); 
+        DLDStyleMap dldmap = new Dungeon(geomanager, Sizes.HUGE).makeMap();
+        dldmap.build();
                 
         player = new Player(this, phynode, physics);
         app.getStateManager().attach(new AppStateFirstPerson(player));
@@ -90,7 +95,7 @@ public class AppStateSinglePlayer extends BaseAppState {
     }
     
     private void addbasicTestLights() {
-        addFourPointLight(0.1f);
+        addFourPointLight(0.15f);
         PointLight pLight = new PointLight(new Vector3f(0, 2.5f, 0), (ColorRGBA.White
                     .add(ColorRGBA.Orange).add(ColorRGBA.Yellow))
                 .multLocal(0.20f));

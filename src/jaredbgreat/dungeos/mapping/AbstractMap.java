@@ -38,6 +38,16 @@ public class AbstractMap {
      */
     // TODO: Handle wall endcaps.
     public void build() {
+        
+        System.out.println();
+        for(int i = 0; i < geomodel.length; i++) {
+            for(int j = 0; j < geomodel[i].length; j++) {                
+                System.out.print((room[i][j] & 0xffff) + ", ");
+            }            
+            System.out.println();
+        }        
+        System.out.println();
+        
         float xoff = (room.length / 2);
         float zoff = (room[0].length / 2);        
         for(int i = 0; i < room.length; i++) 

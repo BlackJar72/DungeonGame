@@ -14,11 +14,11 @@ package jaredbgreat.dungeos.mapping.dld;
  */
 // FIXME: Sized should be devided by 3 to fit new scale. (or left big for testing?)
 public enum Sizes implements Autoselectable {
-	TINY 	(80,	39,		42,	12,	2,	2),
-	SMALL 	(96,	47,		50,	16,	3,	2),
-	MEDIUM	(112,	55,		58,	20,	4,	2),
-	LARGE	(144,	71,		82,	22,	5,	3),
-	HUGE	(176,	87,             112,	24,	6,	4);
+	TINY 	(27,	13,		42,	5,	2,	2),
+	SMALL 	(33,	16,		50,	6,	3,	2),
+	MEDIUM	(41,	20,		58,	7,	4,	2),
+	LARGE	(49,	24,		82,	8,	5,	3),
+	HUGE	(61,	30,             112,	9,	6,	4);
 	
 	public final int width;		// Distance across the dungeon zone
 	public final int radius;	// Square "radius" around center block (pre-calculated)

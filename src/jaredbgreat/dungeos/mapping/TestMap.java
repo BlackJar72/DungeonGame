@@ -1,9 +1,6 @@
 package jaredbgreat.dungeos.mapping;
 
-import com.jme3.scene.Spatial;
 import jaredbgreat.dungeos.componenet.geomorph.Geomorphs;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Purely a test class giveing a hypothetical small sections 
