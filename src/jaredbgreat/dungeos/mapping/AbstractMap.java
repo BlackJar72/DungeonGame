@@ -10,7 +10,7 @@ import java.util.List;
  *
  * @author Jared Blackburn
  */
-public class AbstractMap {
+public class AbstractMap implements ILevelMap {
     protected static GeomorphManager geoman;
     
     protected int[][] room;
@@ -37,6 +37,7 @@ public class AbstractMap {
      * not other objects (such as decorations).
      */
     // TODO: Handle wall endcaps.
+    @Override
     public void build() {
         
         System.out.println();

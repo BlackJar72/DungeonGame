@@ -56,6 +56,7 @@ public class PlayerControl extends AbstractEntityControl {
 
     @Override
     protected void controlUpdate(float tpf) {
+        //System.out.println(spatial.getWorldTranslation());
         Main app = (Main) game.getApplication();
         movement.set(0, 0, 0);
         movement.addLocal(dAxis, 0, wAxis);
