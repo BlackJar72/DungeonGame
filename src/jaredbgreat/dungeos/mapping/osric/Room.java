@@ -15,7 +15,7 @@ import java.util.Random;
 public class Room {
     int id, geomorph, x1, x2, z1, z2, y, h;
     List<Spatial> tiles;
-    Random random;
+    List<Doorway> doors;
     
     public Room(int x1, int x2, int z1, int z2) {
         this(x1, x2, z1, z2, 0, 1);
@@ -28,9 +28,6 @@ public class Room {
         this.z2 = z2;
         this.y  = y;
         this.h  = h;
-        // FIXME: This should probably come from the dungeon
-        random = new Random();
-        //System.out.println(x1 + ", " + x2 + ", " + z1 + ", " + z2);
     }
     
     
@@ -69,7 +66,7 @@ public class Room {
      * @param other
      * @return 
      */
-    public boolean removeOverlap(Room other) {
+    public boolean removeOverlap(Room other, Dungeon dungeon) {
         // Find the centers of the rooms.
         float x  = (((float)(x2 - x1)) / 2.0f);
         float z  = (((float)(z2 - z1)) / 2.0f);
@@ -82,14 +79,14 @@ public class Room {
             return false;
         //OK, now determine what changes to make an if they are feasible.
         float dx = x - ox, dz = z - oz;
-        if(random.nextBoolean()) {
+        if(dungeon.random.nextBoolean()) {
             removeOverlapX(other, dx);
         } else {
             removeOverlapZ(other, dz);
         }
         int sx = x2 - x1, sz = z2 - z1;
         // FIXME? Is this too small a size constraint?  (Each dim >= 2; room at least 2x3)
-        return ((sx * sx) > 1) && ((sz * sz) > 1) && ((sx * sz) > 5);
+        return ((sx * sx) > 1) && ((sz * sz) > 1);// && ((sx * sz) > 5);
     }
     
     
@@ -116,12 +113,24 @@ public class Room {
     }
     
     
+    public void addDoors() {
+        doors = new ArrayList<>();
+        doors.add(new Doorway((x2 - x1 - 1) / 2, z2 - z1 - 1, S));
+    }
+    
+    
+    
+    /**
+     * Builds the room into the world; this should not be 
+     * called until after all other processing for the room 
+     * has been done.
+     * 
+     * @param geoman 
+     */
     public void build(GeomorphManager geoman) {
-        //System.out.println(x1 + ", " + x2 + ", " + z1 + ", " + z2);
         tiles = new ArrayList<>((((x2 - x1) * (z2 - z1)) * 4) / 3);
         int sx   = x2 - x1, sz = z2 - z1;
         int[] tids = new int[sx * sz];
-        //System.out.println(sx + ", " + sz);
         for(int i = 0; i < tids.length; i++ ) {
             tids[i] = geomorph |= 96 << 16;
         }
@@ -136,6 +145,11 @@ public class Room {
                     = N.addWall(tids[j]);
             tids[j + ((sz - 1) * sx)] 
                     = S.addWall(tids[j + ((sz - 1) * sx)]);
+        }
+        if(doors != null) for(Doorway door : doors) {
+            int location = door.z * sx + door.x;
+            tids[location] 
+                    = door.add(tids[location]);
         }
         for(int i = 0; i < tids.length; i++) {
             Spatial tile = Geomorphs.REGISTRY.makeSpatialAt(tids[i], 

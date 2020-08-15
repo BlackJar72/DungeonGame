@@ -16,7 +16,7 @@ public enum ECardinal {
     
     ECardinal(int bits, int incx, int incz) {
         this.bits  = bits;
-        this.cbits = ~bits;
+        this.cbits = ~(bits << 16);
         this.incx  = incx;
         this.incz  = incz;
     }
@@ -28,7 +28,7 @@ public enum ECardinal {
     
     
     public int removeWall(int in) {
-        return in & (cbits << 16);
+        return in & (cbits);
     }
     
 }
