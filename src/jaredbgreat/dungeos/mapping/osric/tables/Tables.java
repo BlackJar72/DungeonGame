@@ -1,5 +1,7 @@
 package jaredbgreat.dungeos.mapping.osric.tables;
 
+import jaredbgreat.dungeos.mapping.osric.Dungeon;
+import jaredbgreat.dungeos.mapping.osric.Room;
 import java.util.Random;
 
 /**
@@ -81,10 +83,87 @@ public final class Tables {
                 out[0] = 6; out[1] = 4;
                 break;
             default: // Case 15-19, true random roll (in lieu of "special")
-                out[0] = random.nextInt(6) + 2;
-                out[1] = random.nextInt(6) + 2; 
+                out[0] = random.nextInt(5) + 2;
+                out[1] = random.nextInt(5) + 2; 
                 break;
                 
+        }        
+        return out;
+    }
+    
+    
+    /**
+     * Gets a number of exits for a room -- may be increased to 
+     * minimum of one if the room is an intermediary of a route.
+     * 
+     * This is likely to change; it is based on systems used in 
+     * quickly creating dungeons on the fly for TTRPGs.  I this 
+     * will be mixed with other things.
+     * 
+     * This is derived from the dice based random dungeons 
+     * tables found in the OSRIC tabletop RPG, which are 
+     * in turn ultimately based on ideas from the 1st 
+     * edition AD&D Dungeon Masters Gude by TSR inc.  
+     * Chnages made here are that there area no "special" 
+     * (weirdly shaped) rooms or rooms that would be no 
+     * wider than a hallway (and thus indistiguishable). 
+     * Instead, such content was replaced with true rng 
+     * rolls for some more varied length/width combinations.
+     * 
+     * @param dungeon
+     * @param room
+     * @return 
+     */
+    public static int getNumberOfDoors(Dungeon dungeon, Room room) {
+        int out = 1;        
+        switch(dungeon.getRandom().nextInt(20)) {
+            case 0:
+            case 1:
+            case 2:
+            case 3:
+                if(room.getArea() > 5) {
+                    out = 2;
+                } else {
+                    out = 1;
+                }
+            case 4:
+            case 5:
+            case 6:
+                if(room.getArea() > 5) {
+                    out = 3;
+                } else {
+                    out = 2;
+                }
+            case 7:
+            case 8:
+                if(room.getArea() > 5) {
+                    out = 4;
+                } else {
+                    out = 3;
+                }
+            case 9:
+            case 10:
+            case 11:
+                if(room.getArea() > 10) {
+                    out = 1;
+                } else {
+                    out = 0;
+                }
+            case 12:
+            case 13:
+            case 14:
+                if(room.getArea() > 15) {
+                    out = 1;
+                } else {
+                    out = 0;
+                }
+            case 15:
+            case 16:
+            case 17:
+            case 18:
+                out = dungeon.getRandom().nextInt(4) + 1;
+            default:
+                out = 1;
         }        
         return out;
     }

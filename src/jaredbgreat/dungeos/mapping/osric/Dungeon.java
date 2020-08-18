@@ -26,4 +26,9 @@ public class Dungeon {
         room.build(geoman);
     }
     
+    
+    public Random getRandom() {
+        return random;
+    }
+    
 }

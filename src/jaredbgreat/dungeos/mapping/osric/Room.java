@@ -44,6 +44,16 @@ public class Room {
     }
     
     
+    public int getArea() {
+        return (x2 - x1) * (z2 - z1);
+    }
+    
+    
+    public int getVolume() {
+        return (x2 - x1) * (z2 - z1) * h;
+    }
+    
+    
     /**
      * This uses AABB collision detection to determine if this room 
      * and another room "other" overlap each other.
@@ -113,6 +123,14 @@ public class Room {
     }
     
     
+    /**
+     * This adds doorways to the room, meaning points of exit; 
+     * this does not actually add doors (which may come later 
+     * as an occation addition to an exit.
+     * 
+     * FIXME: This is only a stand-in to test the door adding 
+     * and removal system.
+     */
     public void addDoors() {
         doors = new ArrayList<>();
         doors.add(new Doorway((x2 - x1 - 1) / 2, z2 - z1 - 1, S));
@@ -161,7 +179,7 @@ public class Room {
     
     
     public void cleanup() {
-        // TODO: Detatch all tiles, removing any physical and controls
+        // TODO: Detatch all tiles, removing any physic and other controls
     }
     
     
