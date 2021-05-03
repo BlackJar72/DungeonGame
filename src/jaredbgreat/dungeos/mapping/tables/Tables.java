@@ -1,6 +1,6 @@
-package jaredbgreat.dungeos.mapping.osric.tables;
+package jaredbgreat.dungeos.mapping.tables;
 
-import jaredbgreat.dungeos.mapping.osric.Dungeon;
+import jaredbgreat.dungeos.mapping.osric.RTDungeon;
 import jaredbgreat.dungeos.mapping.osric.Room;
 import java.util.Random;
 
@@ -82,11 +82,16 @@ public final class Tables {
             case 14:
                 out[0] = 6; out[1] = 4;
                 break;
-            default: // Case 15-19, true random roll (in lieu of "special")
+            case 15:
+            case 16:
+            case 17:
                 out[0] = random.nextInt(5) + 2;
                 out[1] = random.nextInt(5) + 2; 
                 break;
-                
+            default: // Case 18-19
+                out[0] = random.nextInt(7) + 2;
+                out[1] = random.nextInt(7) + 2; 
+                break;                
         }        
         return out;
     }
@@ -114,33 +119,36 @@ public final class Tables {
      * @param room
      * @return 
      */
-    public static int getNumberOfDoors(Dungeon dungeon, Room room) {
+    public static int getNumberOfDoors(RTDungeon dungeon, Room room) {
         int out = 1;        
         switch(dungeon.getRandom().nextInt(20)) {
             case 0:
             case 1:
             case 2:
             case 3:
-                if(room.getArea() > 5) {
+                if(room.getArea() > 6) {
                     out = 2;
                 } else {
                     out = 1;
                 }
+                break;
             case 4:
             case 5:
             case 6:
-                if(room.getArea() > 5) {
+                if(room.getArea() > 6) {
                     out = 3;
                 } else {
                     out = 2;
                 }
+                break;
             case 7:
             case 8:
-                if(room.getArea() > 5) {
+                if(room.getArea() > 6) {
                     out = 4;
                 } else {
                     out = 3;
                 }
+                break;
             case 9:
             case 10:
             case 11:
@@ -149,6 +157,7 @@ public final class Tables {
                 } else {
                     out = 0;
                 }
+                break;
             case 12:
             case 13:
             case 14:
@@ -157,15 +166,17 @@ public final class Tables {
                 } else {
                     out = 0;
                 }
+                break;
             case 15:
             case 16:
             case 17:
             case 18:
                 out = dungeon.getRandom().nextInt(4) + 1;
+                break;
             default:
                 out = 1;
         }        
-        return out;
+        return Math.max(Math.min(out, ((room.getPerimeter() + 1) / 3) - 1), 0);
     }
     
 }

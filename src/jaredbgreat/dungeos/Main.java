@@ -10,6 +10,7 @@ import com.jme3.math.FastMath;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 import com.jme3.scene.Node;
+import com.jme3.system.AppSettings;
 import jaredbgreat.dungeos.appstates.AppStateSinglePlayer;
 import jaredbgreat.dungeos.componenet.GeomorphManager;
 import jaredbgreat.dungeos.componenet.geomorph.GeomorphModel;
@@ -27,6 +28,9 @@ public class Main extends SimpleApplication {
     Node worldNode;
 
     public static void main(String[] args) {
+        AppSettings settings = new AppSettings(true);
+        settings.setTitle("Dungeon Game");
+        settings.setVSync(true);
         Main app = new Main();
         app.start();
     }

@@ -45,12 +45,17 @@ public class Room {
     
     
     public int getArea() {
-        return (x2 - x1) * (z2 - z1);
+        return (x2 - x1 + 1) * (z2 - z1 + 1);
     }
     
     
     public int getVolume() {
-        return (x2 - x1) * (z2 - z1) * h;
+        return (x2 - x1 + 1) * (z2 - z1 + 1) * h;
+    }
+    
+    
+    public int getPerimeter() {
+        return ((x2 - x1) + (z2 - z1) + 2) * 2;
     }
     
     
@@ -76,7 +81,7 @@ public class Room {
      * @param other
      * @return 
      */
-    public boolean removeOverlap(Room other, Dungeon dungeon) {
+    public boolean removeOverlap(Room other, RTDungeon dungeon) {
         // Find the centers of the rooms.
         float x  = (((float)(x2 - x1)) / 2.0f);
         float z  = (((float)(z2 - z1)) / 2.0f);
