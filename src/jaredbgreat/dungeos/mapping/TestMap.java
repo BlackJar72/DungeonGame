@@ -1,6 +1,6 @@
 package jaredbgreat.dungeos.mapping;
 
-import jaredbgreat.dungeos.componenet.geomorph.Geomorphs;
+import jaredbgreat.dungeos.componenent.geomorph.Geomorphs;
 
 /**
  * Purely a test class giveing a hypothetical small sections 

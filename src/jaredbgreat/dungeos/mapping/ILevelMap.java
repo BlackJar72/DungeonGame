@@ -6,8 +6,8 @@
 package jaredbgreat.dungeos.mapping;
 
 import com.jme3.scene.Spatial;
-import jaredbgreat.dungeos.componenet.GeomorphManager;
-import jaredbgreat.dungeos.componenet.geomorph.Geomorphs;
+import jaredbgreat.dungeos.componenent.GeomorphManager;
+import jaredbgreat.dungeos.componenent.geomorph.Geomorphs;
 import static jaredbgreat.dungeos.mapping.AbstractMap.geoman;
 
 /**

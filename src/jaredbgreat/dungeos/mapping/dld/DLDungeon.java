@@ -5,9 +5,8 @@
  */
 package jaredbgreat.dungeos.mapping.dld;
 
-import jaredbgreat.dungeos.componenet.GeomorphManager;
-import jaredbgreat.dungeos.componenet.geomorph.Geomorphs;
-import jaredbgreat.dungeos.mapping.osric.Room;
+import jaredbgreat.dungeos.componenent.GeomorphManager;
+import jaredbgreat.dungeos.componenent.geomorph.Geomorphs;
 import jaredbgreat.dungeos.mapping.tables.Tables;
 import java.util.Random;
 
@@ -47,8 +46,8 @@ public class DLDungeon {
                 room.setGeomorph(a);
                 break;
         }
-        room.addDoors();
-        room.build(geoman);        
+        //room.addDoors();
+        room.fastBuild(geoman);        
     }
     
     

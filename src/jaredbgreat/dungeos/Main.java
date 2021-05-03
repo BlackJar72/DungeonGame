@@ -12,9 +12,9 @@ import com.jme3.renderer.RenderManager;
 import com.jme3.scene.Node;
 import com.jme3.system.AppSettings;
 import jaredbgreat.dungeos.appstates.AppStateSinglePlayer;
-import jaredbgreat.dungeos.componenet.GeomorphManager;
-import jaredbgreat.dungeos.componenet.geomorph.GeomorphModel;
-import jaredbgreat.dungeos.componenet.geomorph.Geomorphs;
+import jaredbgreat.dungeos.componenent.GeomorphManager;
+import jaredbgreat.dungeos.componenent.geomorph.GeomorphModel;
+import jaredbgreat.dungeos.componenent.geomorph.Geomorphs;
 import java.util.Random;
 
 /**

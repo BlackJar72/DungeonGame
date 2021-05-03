@@ -1,4 +1,4 @@
-package jaredbgreat.dungeos.componenet;
+package jaredbgreat.dungeos.componenent;
 
 import com.jme3.asset.AssetManager;
 import com.jme3.bullet.BulletAppState;
@@ -78,7 +78,6 @@ public class GeomorphManager {
     public BulletAppState getPhysics() {
         return physics;
     }
-        
     
     
 }

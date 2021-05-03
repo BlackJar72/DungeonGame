@@ -1,4 +1,4 @@
-package jaredbgreat.dungeos.componenet.geomorph;
+package jaredbgreat.dungeos.componenent.geomorph;
 
 import com.jme3.asset.AssetManager;
 import com.jme3.material.Material;

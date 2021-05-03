@@ -1,9 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package jaredbgreat.dungeos.mapping.dld;
+
+import com.jme3.scene.Node;
+import com.jme3.scene.Spatial;
+import jaredbgreat.dungeos.componenent.GeomorphManager;
+import jaredbgreat.dungeos.componenent.geomorph.Geomorphs;
+import static jaredbgreat.dungeos.mapping.tables.ECardinal.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -12,36 +15,104 @@ package jaredbgreat.dungeos.mapping.dld;
 public class Room {
     public static final Room NULL_ROOM = new Room();
     
-    final int ix, iz, width, length, height, maxx, maxz, minx, minz;
+    Node roomSpace = new Node();
+    
+    final int ix, iz, width, length, height, x1, x2, z1, z2, y1, y2;
     final float centerx, centerz;
-    int id, geomorph;
+    private int baseGeomorph;
+    int id;
     
     
     /**
      * Create the null room; this should never be called elsewhere.
      */
     private Room() {
-        id = ix = iz = width = length = height = maxx = maxz = minx = minz = 0;
+        id = ix = iz = width = length = height = x1 = x2 = z1 = z2 = y1 = y2 = 0;
         centerx = centerz = 0.0f;
     }
+
     
-    
-    /**
-     * Sets the room id for this room.  Usually this will be gained from the RoomList.
-     * 
-     * @param id
-     * @return id (for chaining)
-     */
-    public int setID(int id) {
-        return this.id = id;
+    Room(int startx, int endx, int startz, int endz) {
+        x1 = startx; x2 = endx;
+        z1 = startz; z2 = endz;
+        width = x2 - x1; 
+        length = z2 - z1;
+        centerx = ((float)width / 2.0f) + (float)x2;
+        centerz = ((float)length / 2.0f) + (float)z2;
+        ix = (int)centerx;
+        iz = (int)centerz;
+        height = 1;
+        y1 = 0;
+        y2 = y1 + height;        
     }
     
     
     public void buildIn(MapMatrix map) {
-        for(int i = minx; i <= maxx; i++) 
-            for(int j = minz; j <= maxz; j++) {
-                
-            }
+        map.addRoom(id, baseGeomorph, x1, x2, z1, z2);
+    }
+
+    
+    public int getArea() {
+        return width * height;
+    }
+
+    
+    public int getPerimeter() {
+        return (width + height) * 2;
+    }
+
+    
+    void setGeomorph(int geo) {
+        baseGeomorph = geo;
+    }
+    
+    
+    
+    
+    
+    
+    
+    /**
+     * Builds the room into the world; this should not be 
+     * called until after all other processing for the room 
+     * has been done.
+     * 
+     * This is for testing in early development; a better, more 
+     * general system using the whole map will come later.
+     * 
+     * @param geoman 
+     */
+    @Deprecated
+    public void fastBuild(GeomorphManager geoman) {        
+        List<Spatial> tiles = new ArrayList<>();
+        tiles = new ArrayList<>((((x2 - x1) * (z2 - z1)) * 4) / 3);
+        int sx   = x2 - x1, sz = z2 - z1;
+        int[] tids = new int[sx * sz];
+        for(int i = 0; i < tids.length; i++ ) {
+            tids[i] = baseGeomorph |= 96 << 16;
+        }
+        for(int i = 0; i < sz; i++) {
+            tids[i * sx] 
+                    = W.addWall(tids[i * sx]);
+            tids[(i * sx) + sx - 1] 
+                    = E.addWall(tids[(i * sx) + sx - 1]);
+        }
+        for(int j = 0; j < sx; j++) {
+            tids[j] 
+                    = N.addWall(tids[j]);
+            tids[j + ((sz - 1) * sx)] 
+                    = S.addWall(tids[j + ((sz - 1) * sx)]);
+        }
+        //if(doors != null) for(Doorway door : doors) {
+        //    int location = door.z * sx + door.x;
+        //    tids[location] 
+        //}
+        for(int i = 0; i < tids.length; i++) {
+            Spatial tile = Geomorphs.REGISTRY.makeSpatialAt(tids[i], 
+                   (x1 + (i % sx)) * 3, 0, (z1 + (i / sx)) * 3);
+            tiles.add(tile);
+            geoman.attachSpatial(tile);
+        }
     }
     
     

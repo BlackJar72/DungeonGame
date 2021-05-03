@@ -1,4 +1,4 @@
-package jaredbgreat.dungeos.componenet.geomorph;
+package jaredbgreat.dungeos.componenent.geomorph;
 
 import jaredbgreat.dungeos.util.Registry;
 

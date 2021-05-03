@@ -7,7 +7,8 @@ package jaredbgreat.dungeos.mapping.dld;
 /*
  I really need to decide, is this actually going to build the dungeon?  Or is a record keeping system 
  for use during generation, afterwhich the rooms will generate themselves?  The later would be work well 
- with a portal systems as well as ways to organize some other data during play.
+ with a portal systems as well as ways to organize some other data during play.  *OR* I could use this 
+ to build but attach what is built to the relevant rooms by id.S
 */
 public class MapMatrix {
     private static final int BOUNDARY = -1; // Marks area around rooms where doorways appear

@@ -1,4 +1,4 @@
-package jaredbgreat.dungeos.mapping.osric;
+package jaredbgreat.dungeos.mapping.tables;
 
 /**
  *

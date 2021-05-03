@@ -1,7 +1,7 @@
 package jaredbgreat.dungeos.mapping.tables;
 
-import jaredbgreat.dungeos.mapping.osric.RTDungeon;
-import jaredbgreat.dungeos.mapping.osric.Room;
+
+import jaredbgreat.dungeos.mapping.dld.Room;
 import java.util.Random;
 
 /**
@@ -119,9 +119,9 @@ public final class Tables {
      * @param room
      * @return 
      */
-    public static int getNumberOfDoors(RTDungeon dungeon, Room room) {
+    public static int getNumberOfDoors(Random random, Room room) {
         int out = 1;        
-        switch(dungeon.getRandom().nextInt(20)) {
+        switch(random.nextInt(20)) {
             case 0:
             case 1:
             case 2:
@@ -171,7 +171,7 @@ public final class Tables {
             case 16:
             case 17:
             case 18:
-                out = dungeon.getRandom().nextInt(4) + 1;
+                out = random.nextInt(4) + 1;
                 break;
             default:
                 out = 1;
