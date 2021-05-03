@@ -56,6 +56,19 @@ public class GeomorphManager {
     }
     
     
+    public void attachSpatial(Spatial spatial, Node node) {
+        node.attachChild(spatial);
+        RigidBodyControl spphy = new RigidBodyControl(0f);
+        spatial.addControl(spphy);
+        physics.getPhysicsSpace().add(spphy);        
+    }
+    
+    
+    public void attachNode(Node spatial) {
+        rootnode.attachChild(spatial);        
+    }
+    
+    
     /**
      * This will remove the spatial from the scene and from 
      * physcis space (effectively removing it from the world).

@@ -111,8 +111,9 @@ public class Room {
             Spatial tile = Geomorphs.REGISTRY.makeSpatialAt(tids[i], 
                    (x1 + (i % sx)) * 3, 0, (z1 + (i / sx)) * 3);
             tiles.add(tile);
-            geoman.attachSpatial(tile);
+            geoman.attachSpatial(tile, roomSpace);
         }
+        geoman.attachNode(roomSpace);
     }
     
     
