@@ -45,6 +45,21 @@ public class Room {
         y1 = 0;
         y2 = y1 + height;        
     }
+
+    
+    Room(int centerx, int centerz, int lowy, int width, int length, int height) {
+        this.width = width; 
+        this.length = length;
+        this.centerx = ix = centerx;
+        this.centerz = iz = centerz;        
+        x1 = centerx - (width / 2); 
+        x2 = centerx + (width / 2) + (width % 2);
+        z1 = centerz - (length / 2); 
+        z2 = centerz + (length / 2) + (length % 2);
+        this.height = height;
+        y1 = lowy;
+        y2 = y1 + height;        
+    }
     
     
     public void buildIn(MapMatrix map) {

@@ -56,8 +56,9 @@ public class AppStateSinglePlayer extends BaseAppState {
         //testmap.build(); 
         DLDungeon dungeon = new DLDungeon(geomanager);
                 
-        player = new Player(this, phynode, physics);
-        app.getStateManager().attach(new AppStateFirstPerson(player));
+        //player = new Player(this, phynode, physics);
+        //app.getStateManager().attach(new AppStateFirstPerson(player));
+        app.getFlyByCamera().setMoveSpeed(10);
                 
         // Lastly lights
         addbasicTestLights();       

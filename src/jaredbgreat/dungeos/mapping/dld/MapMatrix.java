@@ -38,12 +38,12 @@ public class MapMatrix {
         int xboundh = Math.min(maxx + 1, room.length);
         int zboundh = Math.min(maxz + 1, room.length);
         for(int i = xboundl; i <= xboundh; i++) {
-            if(room[i][zboundl] > 0) room[i][zboundl] = BOUNDARY;
-            if(room[i][zboundh] > 0) room[i][zboundh] = BOUNDARY;
+            if(room[i][zboundl] == 0) room[i][zboundl] = BOUNDARY;
+            if(room[i][zboundh] == 0) room[i][zboundh] = BOUNDARY;
         }
         for(int i = zboundl; i <= zboundh; i++) {
-            if(room[xboundl][i] > 0) room[xboundl][i] = BOUNDARY;
-            if(room[xboundh][i] > 0) room[zboundh][i] = BOUNDARY;
+            if(room[xboundl][i] == 0) room[xboundl][i] = BOUNDARY;
+            if(room[xboundh][i] == 0) room[zboundh][i] = BOUNDARY;
         }
     }
     
