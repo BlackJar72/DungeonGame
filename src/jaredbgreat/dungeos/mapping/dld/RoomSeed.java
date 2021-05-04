@@ -132,12 +132,12 @@ public class RoomSeed {
 					beginZ -= 1;
 				}
 			}
-		if((grownX < 5) || (grownZ < 5)) {
+		if((grownX < 2) || (grownZ < 2)) {
 			return null; // Not big enough for a room!
 		}
 		else {
-                    return null;
-                    //TODO: Make room!
+                    Room room = new Room(beginX, endX, beginZ, endZ, y, y + height);
+                    return room;
 		}
 	}
 	
@@ -218,12 +218,12 @@ public class RoomSeed {
 					beginX -= 1;
 				}
 			}
-		if((grownX < 5) || (grownZ < 5)) {
+		if((grownX < 2) || (grownZ < 2)) {
 			return null; // Not big enough for a room!
 		}
 		else {
-                    return null;
-                    //TODO: Make room!
+                    Room room = new Room(beginX, endX, beginZ, endZ, y, y + height);
+                    return room;
 		}
 	}
 }

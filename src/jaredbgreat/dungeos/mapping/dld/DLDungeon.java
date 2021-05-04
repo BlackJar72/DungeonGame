@@ -74,9 +74,10 @@ public class DLDungeon {
             // FIXME: This can be done better!
             int x = random.nextInt(48) + 8;
             int z = random.nextInt(48) + 8;
-            nodeRooms[i] = new Room(x, z, 0, dims[0], dims[1], 1);
+            RoomSeed seed = new RoomSeed(x, 0, z);
+            nodeRooms[i] = seed.growRoom(dims[0], dims[1], 1, this, null, room);
             //For tesing only
-            {
+            if(nodeRooms[i] != null) {
                 switch(random.nextInt(2)) {
                     case 0:
                         nodeRooms[i].setGeomorph(b);
@@ -85,7 +86,8 @@ public class DLDungeon {
                     default:
                         nodeRooms[i].setGeomorph(a);
                         break;
-                }            
+                }
+                nodeRooms[i].buildIn(map);
                 nodeRooms[i].fastBuild(geoman);
             }
         }

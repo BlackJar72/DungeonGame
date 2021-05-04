@@ -47,7 +47,22 @@ public class Room {
     }
 
     
-    Room(int centerx, int centerz, int lowy, int width, int length, int height) {
+    Room(int startx, int endx, int startz, int endz, int starty, int endy) {
+        x1 = startx; x2 = endx;
+        z1 = startz; z2 = endz;
+        width = x2 - x1; 
+        length = z2 - z1;
+        centerx = ((float)width / 2.0f) + (float)x2;
+        centerz = ((float)length / 2.0f) + (float)z2;
+        ix = (int)centerx;
+        iz = (int)centerz;
+        height = 1;
+        y1 = 0;
+        y2 = y1 + height;        
+    }
+
+    
+    Room(int centerx, int centerz, int lowy, int width, int length, int height, boolean nothing) {
         this.width = width; 
         this.length = length;
         this.centerx = ix = centerx;
