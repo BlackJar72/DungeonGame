@@ -73,8 +73,8 @@ public class DLDungeon {
         int num = 4 + random.nextInt(2) + random.nextInt(2);
         hubRooms = new Room[num];
         //int[] dims;
-        List<Sector> sectors = Sector.getSectorList();
-        Collections.shuffle(sectors, random);
+        List<Sector> sectors = Sector.getShuffledList(random);//Sector.getSectorList();
+        //Collections.shuffle(sectors, random);
         for(int i = 0; i < hubRooms.length; i++) {
             //dims = Tables.getRoomSize(random);
             // FIXME: This can be done better!
