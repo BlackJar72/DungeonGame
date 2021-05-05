@@ -1,5 +1,7 @@
 package jaredbgreat.dungeos.mapping.tables;
 
+import java.util.Random;
+
 /**
  *
  * @author Jared Blackburn
@@ -12,6 +14,11 @@ public enum ECardinal {
     S (8,  0, -1);
     
     public final int bits, cbits, incx, incz;
+    
+    // I don't know if this is good; i.e., I don't know if 
+    // values() generates a new (and mutable) array each time 
+    // or just returns a version of this already stored.
+    private static final ECardinal[] ALL_DIRS = ECardinal.values();
     
     
     ECardinal(int bits, int incx, int incz) {
@@ -29,6 +36,11 @@ public enum ECardinal {
     
     public int removeWall(int in) {
         return in & (cbits);
+    }
+    
+    
+    public static ECardinal getRandom(Random random) {
+        return ALL_DIRS[random.nextInt(ALL_DIRS.length)];
     }
     
 }

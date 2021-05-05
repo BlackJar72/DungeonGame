@@ -8,6 +8,8 @@ package jaredbgreat.dungeos.mapping.dld;
 import jaredbgreat.dungeos.componenent.GeomorphManager;
 import jaredbgreat.dungeos.componenent.geomorph.Geomorphs;
 import jaredbgreat.dungeos.mapping.tables.Tables;
+import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -21,7 +23,7 @@ public class DLDungeon {
     MapMatrix map;
     Sizes size;
     
-    Room[] nodeRooms;
+    Room[] hubRooms;
     
     
     int b;
@@ -61,35 +63,47 @@ public class DLDungeon {
         //room.addDoors();
         room.fastBuild(geoman);   
         
-        makeNodeRooms();
+        makeHubRooms();
+        
+        map.buildMap(this);
     }
     
     
-    private void makeNodeRooms() {
+    private void makeHubRooms() {
         int num = 4 + random.nextInt(2) + random.nextInt(2);
-        nodeRooms = new Room[num];
-        int[] dims;
-        for(int i = 0; i < nodeRooms.length; i++) {
-            dims = Tables.getRoomSize(random);
+        hubRooms = new Room[num];
+        //int[] dims;
+        List<Sector> sectors = Sector.getSectorList();
+        Collections.shuffle(sectors, random);
+        for(int i = 0; i < hubRooms.length; i++) {
+            //dims = Tables.getRoomSize(random);
             // FIXME: This can be done better!
-            int x = random.nextInt(48) + 8;
-            int z = random.nextInt(48) + 8;
+            Sector sector = sectors.get(i);
+            int x = random.nextInt(16) + (sector.x * 16);
+            int z = random.nextInt(16) + (sector.z * 16);
             RoomSeed seed = new RoomSeed(x, 0, z);
-            nodeRooms[i] = seed.growRoom(dims[0], dims[1], 1, this, null, room);
-            //For tesing only
-            if(nodeRooms[i] != null) {
+            // Hubrooms are bigger than average
+            hubRooms[i] = seed.growRoom(random.nextInt(5) + 4, random.nextInt(5) + 4, 
+                    1, this, null, room);
+            if(hubRooms[i] != null) {
+                rooms.add(hubRooms[i]);
+                hubRooms[i].setID(rooms.realSize());
                 switch(random.nextInt(2)) {
                     case 0:
-                        nodeRooms[i].setGeomorph(b);
+                        hubRooms[i].setGeomorph(b);
                         break;
                     case 1:
                     default:
-                        nodeRooms[i].setGeomorph(a);
+                        hubRooms[i].setGeomorph(a);
                         break;
                 }
-                nodeRooms[i].buildIn(map);
-                nodeRooms[i].fastBuild(geoman);
+                hubRooms[i].buildIn(map);
+                hubRooms[i].addDoors(this, true);
             }
+            //For tesing only
+            if(hubRooms[i] != null) { /*
+                nodeRooms[i].fastBuild(geoman);
+            */}
         }
     }
     

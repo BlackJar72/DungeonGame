@@ -87,7 +87,7 @@ public class RoomSeed {
 		// Parent should always be null unless growing an island sub-room.
 		if(parent == null) {
 			container = 0;
-			w = 0;
+			w = 1;
 		}
 		else {
 			container = parent.id;
@@ -173,7 +173,7 @@ public class RoomSeed {
 		// Parent should always be null unless growing an island sub-room.
 		if(parent == null) {
 			container = 0;
-			w = 0;
+			w = 1;
 		}
 		else {
 			container = parent.id;

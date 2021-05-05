@@ -4,9 +4,12 @@ import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import jaredbgreat.dungeos.componenent.GeomorphManager;
 import jaredbgreat.dungeos.componenent.geomorph.Geomorphs;
+import jaredbgreat.dungeos.mapping.tables.ECardinal;
 import static jaredbgreat.dungeos.mapping.tables.ECardinal.*;
+import jaredbgreat.dungeos.mapping.tables.Tables;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  *
@@ -58,7 +61,7 @@ public class Room {
         iz = (int)centerz;
         height = 1;
         y1 = 0;
-        y2 = y1 + height;        
+        y2 = endy;     
     }
 
     
@@ -74,6 +77,11 @@ public class Room {
         this.height = height;
         y1 = lowy;
         y2 = y1 + height;        
+    }
+    
+    
+    public int setID(int id) {
+        return this.id = id;
     }
     
     
@@ -94,6 +102,51 @@ public class Room {
     
     void setGeomorph(int geo) {
         baseGeomorph = geo;
+    }
+    
+    
+    public void addDoors(DLDungeon dungeon) {
+        int num = Tables.getNumberOfDoors(dungeon.random, this);
+        for(int i = 0; i < num; i++) {
+            ECardinal dir = ECardinal.getRandom(dungeon.random);
+            addDoor(dungeon, dir);
+        }
+    }
+    
+    
+    public void addDoors(DLDungeon dungeon, boolean hubroom) {
+        int num = Tables.getNumberOfDoors(dungeon.random, this);
+        if(hubroom) num = Math.max(num, dungeon.random.nextInt(4) + 2);
+        for(int i = 0; i < num; i++) {
+            ECardinal dir = ECardinal.getRandom(dungeon.random);
+            addDoor(dungeon, dir);
+        }
+    }
+    
+    
+    private void addDoor(DLDungeon dungeon, ECardinal dir) {
+        int x, z;
+        switch(dir) {
+            case W:
+                x = x1 + dir.incx;
+                z = z1 + dungeon.random.nextInt(length + 1);
+                break;
+            case N:
+                x = x1 + dungeon.random.nextInt(width + 1);
+                z = z2 + dir.incz;
+                break;
+            case E:
+                x = x2 + dir.incx;
+                z = z1 + dungeon.random.nextInt(length + 1);
+                break;
+            case S:
+                x = x1 + dungeon.random.nextInt(width + 1);
+                z = z1 + dir.incz;
+                break;
+            default:
+                throw new AssertionError(dir.name());        
+        }
+        dungeon.map.addDoor(x, z);
     }
     
     
