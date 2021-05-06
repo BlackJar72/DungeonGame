@@ -85,8 +85,18 @@ public class Room {
     }
     
     
+    public int getType() {
+        return 0;
+    }
+    
+    
+    public int getBaseGeomorph() {
+        return baseGeomorph;
+    }
+    
+    
     public void buildIn(MapMatrix map) {
-        map.addRoom(id, baseGeomorph, x1, x2, z1, z2);
+        map.addRoom(id, baseGeomorph, 0, x1, x2, z1, z2);
     }
 
     
@@ -146,7 +156,7 @@ public class Room {
             default:
                 throw new AssertionError(dir.name());        
         }
-        dungeon.map.addDoor(x, z);
+        dungeon.map.addDoor(x, z, y1, dir, this, dungeon);
     }
     
     

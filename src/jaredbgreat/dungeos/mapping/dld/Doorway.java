@@ -12,14 +12,17 @@ public class Doorway extends Room {
     final Room[] connects;
     
     
-    public Doorway(int startx, int endx, int startz, int endz, int starty, int endy, 
-                ECardinal heading, Room from) {
-        super(startx, endx, startz, endz, starty, endy);
-        this.heading = heading;
+    public Doorway(int x, int z, int y, ECardinal dir, Room from) {
+        super(x, x, z, z, y, y + 1);
+        heading = dir;
         connects = new Room[2];
         connects[0] = from;
     }
     
     
+    @Override
+    public int getType() {
+        return 1;
+    }
     
 }

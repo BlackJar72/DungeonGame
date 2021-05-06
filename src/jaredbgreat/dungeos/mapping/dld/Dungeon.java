@@ -19,7 +19,7 @@ import java.util.Random;
 public class Dungeon {
     protected GeomorphManager geoman;
     Random random;
-    RoomList rooms;
+    Areas areas;
     MapMatrix map;
     Sizes size;
     
@@ -35,7 +35,7 @@ public class Dungeon {
         random = new Random();
         this.geoman = geoman;
         map = new MapMatrix();
-        rooms = new RoomList(256);
+        areas = new Areas();
         size = Sizes.LARGE;
         dummyRoom();
     }
@@ -86,8 +86,9 @@ public class Dungeon {
             hubRooms[i] = seed.growRoom(random.nextInt(5) + 4, random.nextInt(5) + 4, 
                     1, this, null, room);
             if(hubRooms[i] != null) {
-                rooms.add(hubRooms[i]);
-                hubRooms[i].setID(rooms.realSize());
+                RoomList rl = areas.getList(0);
+                rl.add(hubRooms[i]);
+                hubRooms[i].setID(rl.realSize());
                 switch(random.nextInt(2)) {
                     case 0:
                         hubRooms[i].setGeomorph(b);

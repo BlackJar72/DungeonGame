@@ -2,6 +2,7 @@ package jaredbgreat.dungeos.mapping.dld;
 
 import com.jme3.scene.Spatial;
 import jaredbgreat.dungeos.componenent.geomorph.Geomorphs;
+import jaredbgreat.dungeos.mapping.tables.ECardinal;
 
 /**
  *
@@ -28,14 +29,17 @@ public class MapMatrix {
     public MapMatrix(int size) {
         room     = new int[size][size];
         geomorph = new int[size][size];
+        type     = new int[size][size];
+        
     }
     
     
-    public void addRoom(int id, int geo, int minx, int maxx, int minz, int maxz) {
+    public void addRoom(int id, int geo, int type, int minx, int maxx, int minz, int maxz) {
         for(int i = minx; i <= maxx; i++) 
             for(int j = minz; j <= maxz; j++) {
                 room[i][j] = id;
                 geomorph[i][j] = geo;
+                this.type[i][j] = type;
             }
         int xboundl = Math.max(minx - 1, 0);
         int zboundl = Math.max(minz - 1, 0);
@@ -52,24 +56,40 @@ public class MapMatrix {
     }
     
     
-    public void addDoor(int x, int z) {
+    public void addDoor(int x, int z, int y, ECardinal dir, Room from, Dungeon dungeon) {
         if((x > -1) && (x < (room.length - 1)) 
                     && (z > -1) && (z < (room[x].length - 1)) && (room[x][z] < 1)) {
-            //FXIME: Specific room IDs for specific doors!
-            room[x][z] = 1;
+            RoomList dl = dungeon.areas.getList(1);
+            Doorway dw = new Doorway(x, z, y, dir, from);
+            dl.add(dw);            
+            room[x][z] = dl.realSize();
+            dw.setID(room[x][z]);
+            { // FIXME/TODO: Temporary code for testing
+                int geo;
+                switch(dungeon.random.nextInt(3)) {
+                    case 0: geo = dungeon.a; break;
+                    case 1: geo = dungeon.b; break;
+                    case 2:
+                    default: geo = from.getBaseGeomorph(); break;
+                }
+                dw.setGeomorph(geo);
+                geomorph[x][z] = geo;
+            }
+            type[x][z] = 1;
         }
     }
     
     
     public void buildMap(Dungeon dungeon) {
         simpleRefineMap();
+        RoomList rooms = dungeon.areas.getList(0);
         for(int i = 0; i < geomorph.length; i++) {
             for(int j = 0; j < geomorph[i].length; j++) {
                 //if(room[i][j] > -1) System.out.print(' ');
                 //if(room[i][j] < 10) System.out.print(' ');
                 //System.out.print(room[i][j]);
                 if(room[i][j] > 0) {
-                    Room theRoom = dungeon.rooms.get(room[i][j]);
+                    Room theRoom = dungeon.areas.getArea(type[i][j], room[i][j]);
                     Spatial tile = Geomorphs.REGISTRY.makeSpatialAt(geomorph[i][j], 
                             i * 3, theRoom.y1 * 3, j * 3);                
                     dungeon.geoman.attachSpatial(tile, theRoom.roomSpace);                
@@ -77,8 +97,12 @@ public class MapMatrix {
             }
             //System.out.println();
         }
-        for(int i = 1; i < dungeon.rooms.size(); i++) {
-            dungeon.geoman.attachNode(dungeon.rooms.get(i).roomSpace);
+        for(int i = 1; i < rooms.size(); i++) {
+            dungeon.geoman.attachNode(rooms.get(i).roomSpace);
+        }
+        RoomList doorways = dungeon.areas.getList(1);
+        for(int i = 1; i < doorways.size(); i++) {
+            dungeon.geoman.attachNode(doorways.get(i).roomSpace);
         }
     }    
     
