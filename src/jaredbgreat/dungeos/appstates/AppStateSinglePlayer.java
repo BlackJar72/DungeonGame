@@ -16,7 +16,7 @@ import com.jme3.scene.shape.Sphere;
 import jaredbgreat.dungeos.Main;
 import jaredbgreat.dungeos.componenent.GeomorphManager;
 import jaredbgreat.dungeos.entities.Player;
-import jaredbgreat.dungeos.mapping.dld.DLDungeon;
+import jaredbgreat.dungeos.mapping.dld.Dungeon;
 import java.util.Random;
 
 /**
@@ -54,7 +54,7 @@ public class AppStateSinglePlayer extends BaseAppState {
         //testmap.build(); 
         //TestMap testmap = new TestMap();
         //testmap.build(); 
-        DLDungeon dungeon = new DLDungeon(geomanager);
+        Dungeon dungeon = new Dungeon(geomanager);
                 
         //player = new Player(this, phynode, physics);
         //app.getStateManager().attach(new AppStateFirstPerson(player));

@@ -17,6 +17,7 @@ public class MapMatrix {
     private static final int BOUNDARY = -1; // Marks area around rooms where doorways appear
     int[][] room;
     int[][] geomorph; // Do I need this, or should a let rooms build themselves, as nodes?
+    int[][] type; // What kind of "room"; is it a room, doorway, etc. (What table to reference.)
     
     
     public MapMatrix() {
@@ -60,7 +61,7 @@ public class MapMatrix {
     }
     
     
-    public void buildMap(DLDungeon dungeon) {
+    public void buildMap(Dungeon dungeon) {
         simpleRefineMap();
         for(int i = 0; i < geomorph.length; i++) {
             for(int j = 0; j < geomorph[i].length; j++) {

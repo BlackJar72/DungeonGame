@@ -16,7 +16,7 @@ import java.util.Random;
  *
  * @author jared
  */
-public class DLDungeon {
+public class Dungeon {
     protected GeomorphManager geoman;
     Random random;
     RoomList rooms;
@@ -31,7 +31,7 @@ public class DLDungeon {
     Room room;
     
     
-    public DLDungeon(GeomorphManager geoman) {
+    public Dungeon(GeomorphManager geoman) {
         random = new Random();
         this.geoman = geoman;
         map = new MapMatrix();
@@ -100,10 +100,6 @@ public class DLDungeon {
                 hubRooms[i].buildIn(map);
                 hubRooms[i].addDoors(this, true);
             }
-            //For tesing only
-            if(hubRooms[i] != null) { /*
-                nodeRooms[i].fastBuild(geoman);
-            */}
         }
     }
     

@@ -48,7 +48,7 @@ public class RoomSeed {
 	 * @return A new room, or null if a room is not created
 	 */
 	public Room growRoom(int xdim, int zdim, int height, 
-						 DLDungeon dungeon, Room parent, Room previous) {
+						 Dungeon dungeon, Room parent, Room previous) {
 		if(dungeon.rooms.size() >= dungeon.size.maxRooms) return null;
 		if(dungeon.random.nextBoolean()) 
 			return growRoomX(xdim, zdim, height, dungeon, parent, previous);
@@ -82,7 +82,7 @@ public class RoomSeed {
 	 * @return A new room if successfully create, or null if not
 	 */
 	public Room growRoomX(int xdim, int zdim, int height, 
-						 DLDungeon dungeon, Room parent, Room previous) {
+						 Dungeon dungeon, Room parent, Room previous) {
 		int container;
 		// Parent should always be null unless growing an island sub-room.
 		if(parent == null) {
@@ -168,7 +168,7 @@ public class RoomSeed {
 	 * @return A new room if successfully create, or null if not
 	 */
 	public Room growRoomZ(int xdim, int zdim, int height, 
-						 DLDungeon dungeon, Room parent, Room previous) {
+						 Dungeon dungeon, Room parent, Room previous) {
 		int container;
 		// Parent should always be null unless growing an island sub-room.
 		if(parent == null) {
