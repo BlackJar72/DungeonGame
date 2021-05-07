@@ -139,7 +139,7 @@ public class Room {
     }
     
     
-    private void addDoor(Dungeon dungeon, ECardinal dir) {
+    private Doorway addDoor(Dungeon dungeon, ECardinal dir) {
         int x, z;
         switch(dir) {
             case W:
@@ -165,6 +165,7 @@ public class Room {
         if(d != null) {
             exits.add(d);
         }
+        return d;
     }
     
     
@@ -215,6 +216,13 @@ public class Room {
             geoman.attachSpatial(tile, roomSpace);
         }
         geoman.attachNode(roomSpace);
+    }
+    
+
+    public Room connector(Dungeon dungeon, ECardinal dir, Route aThis) {
+        Doorway ndoor = addDoor(dungeon, dir);
+        if(ndoor == null) return null;
+        return ndoor.makeOtherRoom(dungeon);
     }
     
     

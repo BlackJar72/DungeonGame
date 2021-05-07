@@ -38,7 +38,19 @@ public class Dungeon {
         map = new MapMatrix();
         areas = new Areas();
         size = Sizes.LARGE;
+        build();
+    }
+    
+    
+    private void build() {        
         dummyRoom();
+        
+        makeHubRooms();
+        
+        connectHubs();
+        growthCycle();
+        
+        map.buildMap(this);
     }
     
     
@@ -62,12 +74,7 @@ public class Dungeon {
                 break;
         }
         //room.addDoors();
-        room.fastBuild(geoman);   
-        
-        makeHubRooms();
-        growthCycle();
-        
-        map.buildMap(this);
+        room.fastBuild(geoman);
     }
     
     
@@ -134,6 +141,77 @@ public class Dungeon {
             }
         }
     }
+	
+	/**
+	 * This will connect all the nodes with series of intermediate rooms by 
+	 * callaing either connectNodesDensely or connectNodesSparcely, with a 
+	 * 50% chance of each.
+	 * 
+	 * @throws Throwable
+	 */
+	private void connectHubs() {
+		if(random.nextBoolean()) {
+			connectHubsDensely();
+		} else {
+			connectHubsSparcely();
+		}
+	}
+	
+	
+	/**
+	 * This will attempt to connect all nodes based on the logic that 
+	 * if B can be reached from A, and C can be reached from B, then 
+	 * C can be reached from A (by going through B if no other route 
+	 * exists).
+	 * 
+	 * Specifically, it will connect the first node to one random other 
+	 * node, and then connect a random node already connected to the 
+	 * first with one that has not been connected, until all nodes have 
+	 * attempted a connects.  Note that this does not guarantee connections 
+	 * as the attempt to place a route between any two nodes may fail.
+	 * 
+	 * @throws Throwable
+	 */
+	private void connectHubsSparcely() {
+		Room first, other;
+		ArrayList<Room> connected = new ArrayList<>(hubRooms.length), 
+				disconnected = new ArrayList<>(hubRooms.length);		
+		connected.add(hubRooms[0]);
+		for(int i = 1; i < hubRooms.length; i++) {
+			disconnected.add(hubRooms[i]);
+		}		
+		while(!disconnected.isEmpty()) {
+			first = connected.get(random.nextInt(connected.size()));
+			other = disconnected.get(random.nextInt(disconnected.size()));
+			new Route(first, other).drawConnections(this);
+			connected.add(other);
+			disconnected.remove(other);
+                }
+	}
+	
+	
+	/**
+	 * This will attempt to make one connects between every two pairs of 
+	 * nodes by first connecting the first node to all others directly, 
+	 * then each successive node to every node with a higher index.  As 
+	 * nodes with a lower index will already have attempted a connects 
+	 * this is not repeated.  Note that this does not guarantee connections 
+	 * as the attempt to place a route between any two nodes may fail.
+	 * 
+	 * @throws Throwable
+	 */
+	private void connectHubsDensely() {
+		Room first, other;
+		for(int i = 0; i < hubRooms.length; i++) {
+			first = hubRooms[i];
+			for(int j = i + 1; j < hubRooms.length; j++) {
+				other = hubRooms[j];		
+				if(other != first) {
+					new Route(first, other).drawConnections(this);
+				}
+			}			
+		}
+	}
     
     
 }

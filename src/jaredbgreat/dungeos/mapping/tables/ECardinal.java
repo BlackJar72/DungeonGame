@@ -43,4 +43,24 @@ public enum ECardinal {
         return ALL_DIRS[random.nextInt(ALL_DIRS.length)];
     }
     
+    
+    public ECardinal clockwise() {
+        return ALL_DIRS[(ordinal() + 1) % 4];
+    }
+    
+    
+    public ECardinal clockwise(int turns) {
+        return ALL_DIRS[(ordinal() + turns) % 4];
+    }
+    
+    
+    public ECardinal opposite() {
+        return ALL_DIRS[(ordinal() + 2) % 4];
+    }
+    
+    
+    public static ECardinal fromOrdinal(int value) {
+        return ALL_DIRS[value];
+    }
+    
 }

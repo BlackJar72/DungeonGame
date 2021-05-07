@@ -7,7 +7,8 @@ package jaredbgreat.dungeos.mapping.dld;
 public enum AreaType {
     
     ROOM (0),
-    DOORWAY (1);
+    DOORWAY (1),
+    TUNNEL (2);
     // TODO? Other area types?
     
     public final int tid;
@@ -23,6 +24,7 @@ public enum AreaType {
         switch(tid) {
             case 0: return ROOM;
             case 1: return DOORWAY;
+            case 2: return TUNNEL;
             default: return ROOM;
         }
     }

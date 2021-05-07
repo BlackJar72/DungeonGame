@@ -50,9 +50,7 @@ public class Doorway extends Room {
             }
             connects[1].buildIn(dungeon.map);
             connects[1].addDoors(dungeon, false);
-        } //else {
-            System.out.println(connects[1]);
-        //}
+        }
         return connects[1];
     }
     
