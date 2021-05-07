@@ -8,6 +8,7 @@ package jaredbgreat.dungeos.mapping.dld;
 import jaredbgreat.dungeos.componenent.GeomorphManager;
 import jaredbgreat.dungeos.componenent.geomorph.Geomorphs;
 import jaredbgreat.dungeos.mapping.tables.Tables;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
@@ -64,6 +65,7 @@ public class Dungeon {
         room.fastBuild(geoman);   
         
         makeHubRooms();
+        growthCycle();
         
         map.buildMap(this);
     }
@@ -105,6 +107,33 @@ public class Dungeon {
     }
     
     
+    public void growthCycle() {
+        ArrayList<Doorway> toUse;
+        ArrayList<Room> newRooms = new ArrayList<>();
+        toUse = (ArrayList<Doorway>)areas.getDoorways().clone();
+        Collections.copy(areas.getDoorways(), toUse);
+        for(Doorway d : toUse) {
+            Room r = d.makeOtherRoom(this);
+            if(r != null) {
+                newRooms.add(r);
+            }
+        }
+        while(!newRooms.isEmpty()) {
+            toUse.clear();
+            for(Room r : newRooms) {
+                toUse.addAll(r.exits);
+            }
+            newRooms.clear();
+            if(!toUse.isEmpty()) {
+                for(Doorway d : toUse) {
+                    Room r = d.makeOtherRoom(this);
+                    if(r != null) {
+                        newRooms.add(r);
+                    }
+                }
+            }
+        }
+    }
     
     
 }

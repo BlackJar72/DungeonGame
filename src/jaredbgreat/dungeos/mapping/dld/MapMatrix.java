@@ -56,7 +56,7 @@ public class MapMatrix {
     }
     
     
-    public void addDoor(int x, int z, int y, ECardinal dir, Room from, Dungeon dungeon) {
+    public Doorway addDoor(int x, int z, int y, ECardinal dir, Room from, Dungeon dungeon) {
         if((x > -1) && (x < (room.length - 1)) 
                     && (z > -1) && (z < (room[x].length - 1)) && (room[x][z] < 1)) {
             RoomList dl = dungeon.areas.getList(1);
@@ -76,7 +76,9 @@ public class MapMatrix {
                 geomorph[x][z] = geo;
             }
             type[x][z] = 1;
+            return dw;
         }
+        return null;
     }
     
     

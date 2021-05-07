@@ -25,6 +25,8 @@ public class Room {
     private int baseGeomorph;
     int id;
     
+    ArrayList<Doorway> exits;
+    
     
     /**
      * Create the null room; this should never be called elsewhere.
@@ -36,6 +38,7 @@ public class Room {
 
     
     Room(int startx, int endx, int startz, int endz) {
+        exits = new ArrayList<>();
         x1 = startx; x2 = endx;
         z1 = startz; z2 = endz;
         width = x2 - x1; 
@@ -51,6 +54,7 @@ public class Room {
 
     
     Room(int startx, int endx, int startz, int endz, int starty, int endy) {
+        exits = new ArrayList<>();
         x1 = startx; x2 = endx;
         z1 = startz; z2 = endz;
         width = x2 - x1; 
@@ -66,6 +70,7 @@ public class Room {
 
     
     Room(int centerx, int centerz, int lowy, int width, int length, int height, boolean nothing) {
+        exits = new ArrayList<>();
         this.width = width; 
         this.length = length;
         this.centerx = ix = centerx;
@@ -156,7 +161,10 @@ public class Room {
             default:
                 throw new AssertionError(dir.name());        
         }
-        dungeon.map.addDoor(x, z, y1, dir, this, dungeon);
+        Doorway d = dungeon.map.addDoor(x, z, y1, dir, this, dungeon);
+        if(d != null) {
+            exits.add(d);
+        }
     }
     
     
