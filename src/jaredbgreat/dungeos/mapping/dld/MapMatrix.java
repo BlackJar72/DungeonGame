@@ -82,6 +82,11 @@ public class MapMatrix {
     }
     
     
+    public void removeDoor(Doorway dw, Dungeon dungeon) {
+        type[dw.doorx][dw.doorz] = room[dw.doorx][dw.doorz] = 0; // Should that be -1?  Probably 0 is better at this stage.
+    }
+    
+    
     public void buildMap(Dungeon dungeon) {
         simpleRefineMap();
         RoomList rooms = dungeon.areas.getList(0);
@@ -89,6 +94,7 @@ public class MapMatrix {
             for(int j = 0; j < geomorph[i].length; j++) {
                 //if(room[i][j] > -1) System.out.print(' ');
                 //if(room[i][j] < 10) System.out.print(' ');
+                //if(room[i][j] < 100) System.out.print(' ');
                 //System.out.print(room[i][j]);
                 if(room[i][j] > 0) {
                     Room theRoom = dungeon.areas.getArea(type[i][j], room[i][j]);

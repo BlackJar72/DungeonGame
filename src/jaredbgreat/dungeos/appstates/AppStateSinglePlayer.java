@@ -56,12 +56,13 @@ public class AppStateSinglePlayer extends BaseAppState {
         //testmap.build(); 
         Dungeon dungeon = new Dungeon(geomanager);
                 
-        //player = new Player(this, phynode, physics);
-        //app.getStateManager().attach(new AppStateFirstPerson(player));
-        app.getFlyByCamera().setMoveSpeed(10);
+        player = new Player(this, phynode, physics, dungeon.getPlayerStart());
+        app.getStateManager().attach(new AppStateFirstPerson(player));
+        //app.getFlyByCamera().setMoveSpeed(10);
                 
         // Lastly lights
-        addbasicTestLights();       
+        addFourPointLight(0.15f);
+        addbasicTestLights(dungeon);       
         
     }
 
@@ -93,9 +94,10 @@ public class AppStateSinglePlayer extends BaseAppState {
         rootnode.addLight(p4);        
     }
     
-    private void addbasicTestLights() {
-        addFourPointLight(0.15f);
-        PointLight pLight = new PointLight(new Vector3f(0, 2.5f, 0), (ColorRGBA.White
+    private void addbasicTestLights(Dungeon dungeon) {
+        //addFourPointLight(0.15f);
+        Vector3f plloc = dungeon.getLevelEndSpot().add(new Vector3f(0, 2.5f, 0));
+        PointLight pLight = new PointLight(plloc, (ColorRGBA.White
                     .add(ColorRGBA.Orange).add(ColorRGBA.Yellow))
                 .multLocal(0.20f));
         Mesh lb = new Sphere(8, 8, 0.1f);
@@ -105,11 +107,14 @@ public class AppStateSinglePlayer extends BaseAppState {
                     .add(ColorRGBA.Orange).add(ColorRGBA.Yellow).mult(0.3f));
         Geometry lg = new Geometry("Light", lb);
         lg.setMaterial(lm);
-        lg.setLocalTranslation(0, 2.5f, 0);
+        lg.setLocalTranslation(plloc);
         pLight.setRadius(10);
         rootnode.attachChild(lg);
         rootnode.addLight(pLight);
     }
+    
+    
+   
     
     
     public Main getApplications() {

@@ -102,6 +102,8 @@ public class Route {
 	 * 
 	 * @param dungeon
 	 */
+        // FIXME: The give-up condition should draw a tunnel or mark a room to draw one from
+        //        not just give up.
 	public void drawConnection(Dungeon dungeon) {
 		//System.out.println("Running drawConnections(Dungeon dungeon)");
 		getGrowthDir(dungeon.random);

@@ -5,6 +5,7 @@
  */
 package jaredbgreat.dungeos.mapping.dld;
 
+import com.jme3.math.Vector3f;
 import jaredbgreat.dungeos.componenent.GeomorphManager;
 import jaredbgreat.dungeos.componenent.geomorph.Geomorphs;
 import jaredbgreat.dungeos.mapping.tables.Tables;
@@ -25,6 +26,8 @@ public class Dungeon {
     Sizes size;
     
     Room[] hubRooms;
+    Room endRoom;
+    Vector3f playerStart;
     
     
     int b;
@@ -38,17 +41,39 @@ public class Dungeon {
         map = new MapMatrix();
         areas = new Areas();
         size = Sizes.LARGE;
+        playerStart = new Vector3f();
         build();
     }
     
     
-    private void build() {        
-        dummyRoom();
-        
+    private void build() {         
         makeHubRooms();
         
         connectHubs();
         growthCycle();
+        
+        {//* // TODO: This needs to be moved, refined, and expanded.  Also, the process should clean-up the list (re-create).
+            ArrayList<Doorway> toRemove = new ArrayList<>();
+            for(Room r : areas.getDoorways()) {
+                Doorway dw = (Doorway)r;
+                if(dw.connects[1] == null) {
+                    int fu = map.room[Math.min(63, Math.max(0, dw.doorx + dw.heading.incx))]
+                            [Math.min(63, Math.max(0, dw.doorz + dw.heading.incz))];
+                    if(fu < 1) {
+                        toRemove.add(dw);
+                    } else {
+                        dw.connects[1] = areas.getDoorway(fu);
+                    }
+                }                
+            }
+            for(Doorway dw : toRemove) {
+                map.removeDoor(dw, this);
+            }
+        //*/
+        }
+        
+        
+        findPlayerStart();
         
         map.buildMap(this);
     }
@@ -150,7 +175,7 @@ public class Dungeon {
 	 * @throws Throwable
 	 */
 	private void connectHubs() {
-		if(random.nextBoolean()) {
+		if(true/*random.nextBoolean()*/) {
 			connectHubsDensely();
 		} else {
 			connectHubsSparcely();
@@ -212,6 +237,31 @@ public class Dungeon {
 			}			
 		}
 	}
+        
+        
+        public void findPlayerStart() {
+            playerStart.set(hubRooms[0].centerx * 3, (float)hubRooms[0].y1 * 3, 
+                        hubRooms[0].centerz * 3);
+            float dist = 0;
+            for(int i = 1; i < hubRooms.length; i++) {
+               float d = playerStart.distanceSquared(new 
+                         Vector3f(hubRooms[i].centerx * 3, hubRooms[i].y1 * 3, hubRooms[i].centerz * 3));
+               if(d > dist) {
+                   dist = d;
+                   endRoom = hubRooms[i];
+               }
+            }
+        }
+        
+        
+        public Vector3f getPlayerStart() {
+            return playerStart;
+        }
+        
+        
+        public Vector3f getLevelEndSpot() {
+            return new Vector3f(endRoom.centerx * 3, endRoom.y1 * 3, endRoom.centerz * 3);
+        }
     
     
 }

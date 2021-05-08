@@ -21,9 +21,9 @@ public class Player extends AbstractEntity {
     private static int score;
     boolean alive;
     
-    public Player(AppStateSinglePlayer playgame, Node parent, BulletAppState physics) {     
+    public Player(AppStateSinglePlayer playgame, Node parent, BulletAppState physics, Vector3f playerStart) {     
         spatial = new Node();
-        spatial.setLocalTranslation(0f, 0f, 0f);
+        spatial.setLocalTranslation(playerStart);
         control = new BetterCharacterControl(0.3f, 1.8f, 150f);
         spatial.addControl(control);
         physics.getPhysicsSpace().add(control);
