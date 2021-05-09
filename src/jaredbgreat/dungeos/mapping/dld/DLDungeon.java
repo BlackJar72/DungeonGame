@@ -52,7 +52,7 @@ public class DLDungeon {
         connectHubs();
         growthCycle();
         
-        {/* // TODO: This needs to be moved, refined, and expanded.  Also, the process should clean-up the list (re-create).
+        {//* // TODO: This needs to be moved, refined, and expanded.  Also, the process should clean-up the list (re-create).
             ArrayList<Doorway> toRemove = new ArrayList<>();
             for(Room r : areas.getDoorways()) {
                 Doorway dw = (Doorway)r;
@@ -75,7 +75,7 @@ public class DLDungeon {
                 Doorway dw = (Doorway)r;
                 System.out.println(dw.connects[1]);
             }
-        /*/
+        //*/
         }
         
         

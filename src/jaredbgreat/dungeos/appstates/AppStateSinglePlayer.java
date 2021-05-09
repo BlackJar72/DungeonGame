@@ -53,18 +53,18 @@ public class AppStateSinglePlayer extends BaseAppState {
         // Create world from map
         //TestMap testmap = new TestMap();
         //testmap.build(); 
-        TestMap testmap = new TestMap();
-        testmap.build(); 
-        //DLDungeon dungeon = new DLDungeon(geomanager);
+        //TestMap testmap = new TestMap();
+        //testmap.build(); 
+        DLDungeon dungeon = new DLDungeon(geomanager);
                 
-        player = new Player(this, phynode, physics);
-        //player = new Player(this, phynode, physics, dungeon.getPlayerStart());
+        //player = new Player(this, phynode, physics);
+        player = new Player(this, phynode, physics, dungeon.getPlayerStart());
         app.getStateManager().attach(new AppStateFirstPerson(player));
         //app.getFlyByCamera().setMoveSpeed(10);
                 
         // Lastly lights
         addFourPointLight(0.15f);
-        addbasicTestLights();       
+        addbasicTestLights(dungeon);       
         
     }
 
