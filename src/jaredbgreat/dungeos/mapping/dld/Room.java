@@ -9,7 +9,6 @@ import static jaredbgreat.dungeos.mapping.tables.ECardinal.*;
 import jaredbgreat.dungeos.mapping.tables.Tables;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 /**
  *
@@ -37,6 +36,7 @@ public class Room {
     }
 
     
+    @Deprecated
     Room(int startx, int endx, int startz, int endz) {
         exits = new ArrayList<>();
         x1 = startx; x2 = endx;
@@ -53,13 +53,13 @@ public class Room {
     }
 
     
+    @Deprecated
     Room(int startx, int endx, int startz, int endz, int starty, int endy) {
         exits = new ArrayList<>();
         x1 = startx; x2 = endx;
         z1 = startz; z2 = endz;
         width = x2 - x1; 
         length = z2 - z1;
-        System.out.println(width + " x " + length);
         centerx = ((float)(width + 1) / 2.0f) + (float)x1;
         centerz = ((float)(length + 1) / 2.0f) + (float)z1;
         ix = (int)centerx;
@@ -223,6 +223,23 @@ public class Room {
     public Room connector(DLDungeon dungeon, ECardinal dir, Route aThis) {
         Doorway ndoor = addDoor(dungeon, dir);
         if(ndoor == null) return null;
+        int x = ndoor.doorx + ndoor.heading.incx;
+        int z = ndoor.doorz + ndoor.heading.incz;
+        if((x < 0) || (x > 63) || (z < 0) || (z > 63)) {
+            return null;
+        }
+        int nextid = dungeon.map.room[x][z];
+        if(nextid > 0) {
+            if(dungeon.map.type[x][z] == AreaType.ROOM.tid) {
+                ndoor.connects[1] = dungeon.areas.getRoom(dungeon.map.room[x][z]);
+                return ndoor.connects[1];
+            } else if(dungeon.map.type[x][z] == AreaType.DOORWAY.tid) {
+                ndoor.connects[1] = dungeon.areas.getDoorway(dungeon.map.room[x][z]);
+                Doorway odoor =  (Doorway)ndoor.connects[1];
+                odoor.connects[1] = ndoor;
+                return odoor.connects[0];                
+            }
+        }
         return ndoor.makeOtherRoom(dungeon);
     }
     

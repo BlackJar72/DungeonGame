@@ -58,9 +58,9 @@ public class AppStateSinglePlayer extends BaseAppState {
         DLDungeon dungeon = new DLDungeon(geomanager);
                 
         //player = new Player(this, phynode, physics);
-        player = new Player(this, phynode, physics, dungeon.getPlayerStart());
-        app.getStateManager().attach(new AppStateFirstPerson(player));
-        //app.getFlyByCamera().setMoveSpeed(10);
+        //player = new Player(this, phynode, physics, dungeon.getPlayerStart());
+        //app.getStateManager().attach(new AppStateFirstPerson(player));
+        app.getFlyByCamera().setMoveSpeed(10);
                 
         // Lastly lights
         addFourPointLight(0.15f);

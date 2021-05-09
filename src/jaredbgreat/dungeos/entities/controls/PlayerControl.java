@@ -31,14 +31,14 @@ public class PlayerControl extends AbstractEntityControl {
     private float spatialAngle;
     private float camAngle;
     private float camHeight;
-    private float sprint;
+    private float walk;
     private final Quaternion camq;
 
     
     public PlayerControl(AppStateSinglePlayer appState, BetterCharacterControl bcc) {
         super(appState);
-        speed = 4.5f;
-        sprint = 1.0f;
+        speed = 8.0f;
+        walk = 1.0f;
         hRotSpeed = 100f;
         vRotSpeed = 100f;
         movement = new Vector3f();
@@ -65,7 +65,7 @@ public class PlayerControl extends AbstractEntityControl {
             if(physics.isDucked()) {
                 movement.set(q.mult(movement.normalizeLocal().multLocal(speed * 0.5f)));
             } else {
-                movement.set(q.mult(movement.normalizeLocal().multLocal(speed * sprint)));
+                movement.set(q.mult(movement.normalizeLocal().multLocal(speed * walk)));
             }
         }
         //System.out.println(movement);
@@ -148,11 +148,11 @@ public class PlayerControl extends AbstractEntityControl {
     }
     
     
-    public void setSprint(boolean on) {
+    public void setWalk(boolean on) {
         if(on) {
-            sprint = 3.0f;
+            walk = 0.5f;
         } else {
-            sprint = 1.0f;
+            walk = 1.0f;
         }
     }
     

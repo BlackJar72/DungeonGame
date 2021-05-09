@@ -130,7 +130,7 @@ public class AppStateFirstPerson extends BaseAppState implements ActionListener,
         } else if(name == ControlConstants.DUCK) {
             control.setCrouch(isPressed);
         } else if(name == ControlConstants.RUN) {
-            control.setSprint(isPressed);
+            control.setWalk(isPressed);
         } else if(name == ControlConstants.TO_MENUS) {
             //app.endGame();
         }
