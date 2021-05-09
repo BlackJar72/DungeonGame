@@ -71,10 +71,6 @@ public class DLDungeon {
             for(Doorway dw : toRemove) {
                 map.removeDoor(dw, this);
             }
-            for(Room r : areas.getDoorways()) {
-                Doorway dw = (Doorway)r;
-                System.out.println(dw.connects[1]);
-            }
         //*/
         }
         

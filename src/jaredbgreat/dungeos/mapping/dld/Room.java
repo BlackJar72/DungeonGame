@@ -1,5 +1,6 @@
 package jaredbgreat.dungeos.mapping.dld;
 
+import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import jaredbgreat.dungeos.componenent.GeomorphManager;
@@ -232,16 +233,33 @@ public class Room {
         if(nextid > 0) {
             if(dungeon.map.type[x][z] == AreaType.ROOM.tid) {
                 ndoor.connects[1] = dungeon.areas.getRoom(dungeon.map.room[x][z]);
+                exits.add(ndoor);
+                ndoor.connects[1].exits.add(ndoor);
                 return ndoor.connects[1];
             } else if(dungeon.map.type[x][z] == AreaType.DOORWAY.tid) {
                 ndoor.connects[1] = dungeon.areas.getDoorway(dungeon.map.room[x][z]);
                 Doorway odoor =  (Doorway)ndoor.connects[1];
                 odoor.connects[1] = ndoor;
+                exits.add(ndoor);
                 return odoor.connects[0];                
             }
         }
-        return ndoor.makeOtherRoom(dungeon);
+        Room other = ndoor.makeOtherRoom(dungeon);
+        if(other != null) {
+            ndoor.connects[1] = other;
+            exits.add(ndoor);
+        }
+        return other;
     }
     
+    
+    public Vector3f getCenterAsVec() {
+        return new Vector3f(centerx * 3, (y1 + height / 2) * 3, centerz * 3);
+    }
+    
+    
+    public Vector3f getCenterAsVec(float h) {
+        return new Vector3f(centerx * 3, (y1 + height / 2) * 3 + h, centerz * 3);
+    }
     
 }

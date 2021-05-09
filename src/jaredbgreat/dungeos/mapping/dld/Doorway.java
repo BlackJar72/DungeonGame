@@ -54,4 +54,12 @@ public class Doorway extends Room {
         return connects[1];
     }
     
+    
+    public Room getNeigbor(Room r) {
+        if(connects[0] == r) {
+            return connects[1];
+        }
+        return connects[0];
+    }
+    
 }

@@ -6,6 +6,8 @@ package jaredbgreat.dungeos.mapping.dld;
  * Copyright (c) 2014-2018 Jared Blackburn
  */
 
+import com.jme3.math.ColorRGBA;
+import com.jme3.math.Vector3f;
 import jaredbgreat.dungeos.mapping.tables.ECardinal;
 import java.util.ArrayList;
 import java.util.Random;
@@ -136,6 +138,41 @@ public class Route {
 				current1 = temp;
 			}
 		}
+                if(temp == null) {
+                    
+                    if(finishTurn) {
+			temp = current1.connector(dungeon, ECardinal.fromOrdinal(dir1), this);
+			if(temp == null|| side1.contains(temp)) 
+                            temp = current1.connector(dungeon, ECardinal.fromOrdinal(dir2), this);
+			if(temp == null|| side1.contains(temp)) {
+				comp1 = true; // for now, give up
+			} else if(side2.contains(temp)) {
+				complete = true; // Success!
+			} else {
+				side1.add(temp);
+				current1 = temp;
+			}
+                    } else {
+			dir1 = (dir1 + 2) % 4;
+			dir2 = (dir2 + 2) % 4;
+			temp = current2.connector(dungeon, ECardinal.fromOrdinal(dir1), this);
+			if((temp == null) || side2.contains(temp)) 
+                            temp = current2.connector(dungeon, ECardinal.fromOrdinal(dir2), this);
+			if((temp == null) || side2.contains(temp)) {
+				comp2 = true; // for now, give up
+			} else if(side1.contains(temp)) {
+				complete = true; // Success!
+			} else {
+				side2.add(temp);
+				current2 = temp;
+			}                    
+                    }
+                }
+                /*if(temp == null) {
+                    //dungeon.geoman.line(side1.get(0).getCenterAsVec(4f), side2.get(0).getCenterAsVec(4f));
+                    dungeon.geoman.line(side1.get(side1.size() - 1).getCenterAsVec(4f), side2.get(side2.size() - 1).getCenterAsVec(4f), ColorRGBA.Red);
+                    System.out.println("Connection Failse!");
+                } else System.out.println("Success");*/
 		if(!complete) complete = comp1 && comp2;
 		if(comp1) finishTurn = true;
 		else if(comp2) finishTurn = false;

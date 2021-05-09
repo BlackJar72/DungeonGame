@@ -3,8 +3,14 @@ package jaredbgreat.dungeos.componenent;
 import com.jme3.asset.AssetManager;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.control.RigidBodyControl;
+import com.jme3.material.Material;
+import com.jme3.math.ColorRGBA;
+import com.jme3.math.Vector3f;
+import com.jme3.scene.Geometry;
+import com.jme3.scene.Mesh;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
+import com.jme3.scene.shape.Line;
 import jaredbgreat.dungeos.mapping.AbstractMap;
 
 /**
@@ -90,6 +96,28 @@ public class GeomorphManager {
     
     public BulletAppState getPhysics() {
         return physics;
+    }
+    
+    
+    public void line(Vector3f p1, Vector3f p2) {
+        Mesh ml = new Line(p1, p2);
+        Geometry gl = new Geometry("Line");
+        gl.setMesh(ml);
+        Material mat = new Material(assetman, "Common/MatDefs/Misc/Unshaded.j3md");
+        mat.setColor("Color", ColorRGBA.Blue);
+        gl.setMaterial(mat);
+        rootnode.attachChild(gl);
+    }
+    
+    
+    public void line(Vector3f p1, Vector3f p2, ColorRGBA c) {
+        Mesh ml = new Line(p1, p2);
+        Geometry gl = new Geometry("Line");
+        gl.setMesh(ml);
+        Material mat = new Material(assetman, "Common/MatDefs/Misc/Unshaded.j3md");
+        mat.setColor("Color", c);
+        gl.setMaterial(mat);
+        rootnode.attachChild(gl);
     }
     
     
