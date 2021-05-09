@@ -98,8 +98,11 @@ public class MapMatrix {
                 //System.out.print(room[i][j]);
                 if(room[i][j] > 0) {
                     Room theRoom = dungeon.areas.getArea(type[i][j], room[i][j]);
-                    Spatial tile = Geomorphs.REGISTRY.makeSpatialAt(geomorph[i][j], 
-                            i * 3, theRoom.y1 * 3, j * 3);                
+                    //Spatial tile = Geomorphs.REGISTRY.makeSpatialAt(geomorph[i][j], 
+                    //        i * 3, theRoom.y1 * 3, j * 3);
+                    //System.out.println(geomorph[i][j] + " = " + theRoom.getBaseGeomorph() + "?");
+                    Spatial tile = Geomorphs.REGISTRY.makeSpatialAt(geomorph[i][j] + theRoom.getBaseGeomorph(), 
+                            i * 3, theRoom.y1 * 3, j * 3);                            
                     dungeon.geoman.attachSpatial(tile, theRoom.roomSpace);                
                 }
             }

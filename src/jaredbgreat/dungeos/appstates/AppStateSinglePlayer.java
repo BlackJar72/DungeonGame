@@ -58,14 +58,15 @@ public class AppStateSinglePlayer extends BaseAppState {
         DLDungeon dungeon = new DLDungeon(geomanager);
                 
         //player = new Player(this, phynode, physics);
-        //player = new Player(this, phynode, physics, dungeon.getPlayerStart());
-        //app.getStateManager().attach(new AppStateFirstPerson(player));
-        app.getFlyByCamera().setMoveSpeed(10);
+        player = new Player(this, phynode, physics, dungeon.getPlayerStart());
+        app.getStateManager().attach(new AppStateFirstPerson(player));
+        //app.getFlyByCamera().setMoveSpeed(10);
                 
         // Lastly lights
         addFourPointLight(0.15f);
-        addbasicTestLights(dungeon);       
         
+        addbasicTestLights(dungeon);       
+        addStartEndMarks(dungeon);
     }
 
     
@@ -127,6 +128,34 @@ public class AppStateSinglePlayer extends BaseAppState {
         lm.setColor("Color", ColorRGBA.White
                     .add(ColorRGBA.Orange).add(ColorRGBA.Yellow).mult(0.3f));
         Geometry lg = new Geometry("Light", lb);
+        lg.setMaterial(lm);
+        lg.setLocalTranslation(plloc);
+        pLight.setRadius(10);
+        rootnode.attachChild(lg);
+        rootnode.addLight(pLight);
+    }
+    
+    private void addStartEndMarks(DLDungeon dungeon) {
+        Vector3f plloc = dungeon.getLevelEndSpot().add(new Vector3f(0, 4.5f, 0));
+        PointLight pLight = new PointLight(plloc, ColorRGBA.Red);
+        Mesh lb = new Sphere(8, 8, 0.1f);
+        Material lm = new Material(assetman, 
+                "Common/MatDefs/Misc/Unshaded.j3md");
+        lm.setColor("Color", ColorRGBA.Red);
+        Geometry lg = new Geometry("Light", lb);
+        lg.setMaterial(lm);
+        lg.setLocalTranslation(plloc);
+        pLight.setRadius(10);
+        rootnode.attachChild(lg);
+        rootnode.addLight(pLight);
+        
+        plloc = dungeon.getPlayerStart().add(new Vector3f(0, 4.5f, 0));
+        pLight = new PointLight(plloc, ColorRGBA.Blue);
+        lb = new Sphere(8, 8, 0.1f);
+        lm = new Material(assetman, 
+                "Common/MatDefs/Misc/Unshaded.j3md");
+        lm.setColor("Color", ColorRGBA.Blue);
+        lg = new Geometry("Light", lb);
         lg.setMaterial(lm);
         lg.setLocalTranslation(plloc);
         pLight.setRadius(10);

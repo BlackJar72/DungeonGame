@@ -38,8 +38,6 @@ public class DLDungeon {
     public DLDungeon(GeomorphManager geoman) {
         random = new Random();
         this.geoman = geoman;
-        map = new MapMatrix();
-        areas = new Areas();
         size = Sizes.LARGE;
         playerStart = new Vector3f();
         build();
@@ -47,37 +45,70 @@ public class DLDungeon {
     
     
     private void build() {         
-        makeHubRooms();
+        boolean bad = true;
         
-        connectHubs();
-        growthCycle();
-        
-        {//* // TODO: This needs to be moved, refined, and expanded.  Also, the process should clean-up the list (re-create).
-            ArrayList<Doorway> toRemove = new ArrayList<>();
-            for(Room r : areas.getDoorways()) {
-                Doorway dw = (Doorway)r;
-                if(dw.connects[1] == null) {
-                    int fu = map.room[Math.min(63, Math.max(0, dw.doorx + dw.heading.incx))]
-                            [Math.min(63, Math.max(0, dw.doorz + dw.heading.incz))];
-                    int es = map.type[Math.min(63, Math.max(0, dw.doorx + dw.heading.incx))]
-                            [Math.min(63, Math.max(0, dw.doorz + dw.heading.incz))];
-                    if((fu < 1) || (es != 0) || (areas.getRoom(fu) == null)) {
-                        toRemove.add(dw);
-                    } else {
-                        dw.connects[1] = areas.getRoom(fu);
-                    }
-                }                
-            }
-            for(Doorway dw : toRemove) {
-                map.removeDoor(dw, this);
-            }
-        //*/
+        while(bad) {
+            map = new MapMatrix();
+            areas = new Areas();
+            plan();
+            doorFixer();
+            RoomBFS seeker = new RoomBFS(this);
+            bad = !seeker.map();
         }
         
         
         findPlayerStart();
         
         map.buildMap(this);
+    }
+    
+    
+    private void plan() {        
+        makeHubRooms();        
+        connectHubs();
+        growthCycle();
+    }
+    
+    
+    //TODO: This is a prototype, not sure if its the best way!
+    private void doorFixer() {
+        ArrayList<Doorway> toRemove = new ArrayList<>();
+        for(Room r : areas.getDoorways()) {
+            Doorway dw = (Doorway)r;
+            if(dw.connects[1] == null) {
+                int fu = map.room[Math.min(63, Math.max(0, dw.doorx + dw.heading.incx))]
+                        [Math.min(63, Math.max(0, dw.doorz + dw.heading.incz))];
+                int es = map.type[Math.min(63, Math.max(0, dw.doorx + dw.heading.incx))]
+                        [Math.min(63, Math.max(0, dw.doorz + dw.heading.incz))];
+                if((fu < 1) || (es != 0) || (areas.getRoom(fu) == null)) {
+                    toRemove.add(dw);
+                } else {
+                    Room du = areas.getRoom(fu);
+                    dw.connects[1] = du;
+                    if(!du.exits.contains(dw)) {
+                        du.exits.add(dw);
+                    }
+                }
+            }  
+            if(dw.connects[0] == null) {
+                int fu = map.room[Math.min(63, Math.max(0, dw.doorx - dw.heading.incx))]
+                        [Math.min(63, Math.max(0, dw.doorz - dw.heading.incz))];
+                int es = map.type[Math.min(63, Math.max(0, dw.doorx - dw.heading.incx))]
+                        [Math.min(63, Math.max(0, dw.doorz - dw.heading.incz))];
+                if((fu < 1) || (es != 0) || (areas.getRoom(fu) == null)) {
+                    toRemove.add(dw);
+                } else {
+                    Room du = areas.getRoom(fu);
+                    dw.connects[0] = du;
+                    if(!du.exits.contains(dw)) {
+                        du.exits.add(dw);
+                    }                        
+                }
+            }              
+        }
+        for(Doorway dw : toRemove) {
+            map.removeDoor(dw, this);
+        }
     }
     
     
@@ -228,16 +259,16 @@ public class DLDungeon {
 	 * @throws Throwable
 	 */
 	private void connectHubsDensely() {
-		Room first, other;
-		for(int i = 0; i < hubRooms.length; i++) {
-			first = hubRooms[i];
-			for(int j = i + 1; j < hubRooms.length; j++) {
-				other = hubRooms[j];		
-				if(other != first) {
-					new Route(first, other).drawConnections(this);
-				}
-			}			
-		}
+            Room first, other;
+            for(int i = 0; i < hubRooms.length; i++) {
+                first = hubRooms[i];
+                for(int j = i + 1; j < hubRooms.length; j++) {
+                    other = hubRooms[j];		
+                    if(other != first) {
+                        new Route(first, other).drawConnections(this);
+                    }
+                }			
+            }
 	}
         
         
