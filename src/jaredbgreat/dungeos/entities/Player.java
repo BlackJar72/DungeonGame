@@ -35,6 +35,21 @@ public class Player extends AbstractEntity {
         alive = true;
         score = 0;
     }
+
+    public Player(AppStateSinglePlayer playgame, Node phynode, BulletAppState physics) {    
+        spatial = new Node();
+        spatial.setLocalTranslation(0, 0, 0);
+        control = new BetterCharacterControl(0.3f, 1.8f, 150f);
+        spatial.addControl(control);
+        physics.getPhysicsSpace().add(control);
+        control.setJumpForce(new Vector3f(0f, 750f, 0f));
+        control.setGravity(new Vector3f(0f, -9.8f, 0f));  
+        player = new PlayerControl(playgame, control); 
+        spatial.addControl(player);
+        ((SimpleApplication)playgame.getApplication()).getRootNode().attachChild(spatial);
+        alive = true;
+        score = 0;
+    }
     
 
     public static int getScore() {

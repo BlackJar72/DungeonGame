@@ -30,7 +30,7 @@ public class Doorway extends Room {
     }
     
     
-    public Room makeOtherRoom(Dungeon dungeon) {
+    public Room makeOtherRoom(DLDungeon dungeon) {
         RoomSeed rseed = new RoomSeed(doorx + heading.incx, y1, doorz + heading.incz);
         int[] dims = Tables.getRoomSize(dungeon.random);
         connects[1] = rseed.growRoom(dims[0], dims[1], 0, dungeon, null, connects[0]);

@@ -18,7 +18,7 @@ import java.util.Random;
  *
  * @author jared
  */
-public class Dungeon {
+public class DLDungeon {
     protected GeomorphManager geoman;
     Random random;
     Areas areas;
@@ -35,7 +35,7 @@ public class Dungeon {
     Room room;
     
     
-    public Dungeon(GeomorphManager geoman) {
+    public DLDungeon(GeomorphManager geoman) {
         random = new Random();
         this.geoman = geoman;
         map = new MapMatrix();
@@ -52,24 +52,30 @@ public class Dungeon {
         connectHubs();
         growthCycle();
         
-        {//* // TODO: This needs to be moved, refined, and expanded.  Also, the process should clean-up the list (re-create).
+        {/* // TODO: This needs to be moved, refined, and expanded.  Also, the process should clean-up the list (re-create).
             ArrayList<Doorway> toRemove = new ArrayList<>();
             for(Room r : areas.getDoorways()) {
                 Doorway dw = (Doorway)r;
                 if(dw.connects[1] == null) {
                     int fu = map.room[Math.min(63, Math.max(0, dw.doorx + dw.heading.incx))]
                             [Math.min(63, Math.max(0, dw.doorz + dw.heading.incz))];
-                    if(fu < 1) {
+                    int es = map.type[Math.min(63, Math.max(0, dw.doorx + dw.heading.incx))]
+                            [Math.min(63, Math.max(0, dw.doorz + dw.heading.incz))];
+                    if((fu < 1) || (es != 0) || (areas.getRoom(fu) == null)) {
                         toRemove.add(dw);
                     } else {
-                        dw.connects[1] = areas.getDoorway(fu);
+                        dw.connects[1] = areas.getRoom(fu);
                     }
                 }                
             }
             for(Doorway dw : toRemove) {
                 map.removeDoor(dw, this);
             }
-        //*/
+            for(Room r : areas.getDoorways()) {
+                Doorway dw = (Doorway)r;
+                System.out.println(dw.connects[1]);
+            }
+        /*/
         }
         
         

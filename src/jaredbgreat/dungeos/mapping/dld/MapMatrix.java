@@ -56,7 +56,7 @@ public class MapMatrix {
     }
     
     
-    public Doorway addDoor(int x, int z, int y, ECardinal dir, Room from, Dungeon dungeon) {
+    public Doorway addDoor(int x, int z, int y, ECardinal dir, Room from, DLDungeon dungeon) {
         if((x > -1) && (x < (room.length - 1)) 
                     && (z > -1) && (z < (room[x].length - 1)) && (room[x][z] < 1)) {
             RoomList dl = dungeon.areas.getList(1);
@@ -82,12 +82,12 @@ public class MapMatrix {
     }
     
     
-    public void removeDoor(Doorway dw, Dungeon dungeon) {
+    public void removeDoor(Doorway dw, DLDungeon dungeon) {
         type[dw.doorx][dw.doorz] = room[dw.doorx][dw.doorz] = 0; // Should that be -1?  Probably 0 is better at this stage.
     }
     
     
-    public void buildMap(Dungeon dungeon) {
+    public void buildMap(DLDungeon dungeon) {
         simpleRefineMap();
         RoomList rooms = dungeon.areas.getList(0);
         for(int i = 0; i < geomorph.length; i++) {

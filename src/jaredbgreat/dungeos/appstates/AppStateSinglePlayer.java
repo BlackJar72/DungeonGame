@@ -16,7 +16,8 @@ import com.jme3.scene.shape.Sphere;
 import jaredbgreat.dungeos.Main;
 import jaredbgreat.dungeos.componenent.GeomorphManager;
 import jaredbgreat.dungeos.entities.Player;
-import jaredbgreat.dungeos.mapping.dld.Dungeon;
+import jaredbgreat.dungeos.mapping.TestMap;
+import jaredbgreat.dungeos.mapping.dld.DLDungeon;
 import java.util.Random;
 
 /**
@@ -52,17 +53,18 @@ public class AppStateSinglePlayer extends BaseAppState {
         // Create world from map
         //TestMap testmap = new TestMap();
         //testmap.build(); 
-        //TestMap testmap = new TestMap();
-        //testmap.build(); 
-        Dungeon dungeon = new Dungeon(geomanager);
+        TestMap testmap = new TestMap();
+        testmap.build(); 
+        //DLDungeon dungeon = new DLDungeon(geomanager);
                 
-        player = new Player(this, phynode, physics, dungeon.getPlayerStart());
+        player = new Player(this, phynode, physics);
+        //player = new Player(this, phynode, physics, dungeon.getPlayerStart());
         app.getStateManager().attach(new AppStateFirstPerson(player));
         //app.getFlyByCamera().setMoveSpeed(10);
                 
         // Lastly lights
         addFourPointLight(0.15f);
-        addbasicTestLights(dungeon);       
+        addbasicTestLights();       
         
     }
 
@@ -94,9 +96,28 @@ public class AppStateSinglePlayer extends BaseAppState {
         rootnode.addLight(p4);        
     }
     
-    private void addbasicTestLights(Dungeon dungeon) {
+    private void addbasicTestLights(DLDungeon dungeon) {
         //addFourPointLight(0.15f);
         Vector3f plloc = dungeon.getLevelEndSpot().add(new Vector3f(0, 2.5f, 0));
+        PointLight pLight = new PointLight(plloc, (ColorRGBA.White
+                    .add(ColorRGBA.Orange).add(ColorRGBA.Yellow))
+                .multLocal(0.20f));
+        Mesh lb = new Sphere(8, 8, 0.1f);
+        Material lm = new Material(assetman, 
+                "Common/MatDefs/Misc/Unshaded.j3md");
+        lm.setColor("Color", ColorRGBA.White
+                    .add(ColorRGBA.Orange).add(ColorRGBA.Yellow).mult(0.3f));
+        Geometry lg = new Geometry("Light", lb);
+        lg.setMaterial(lm);
+        lg.setLocalTranslation(plloc);
+        pLight.setRadius(10);
+        rootnode.attachChild(lg);
+        rootnode.addLight(pLight);
+    }
+    
+    private void addbasicTestLights() {
+        //addFourPointLight(0.15f);
+        Vector3f plloc = new Vector3f(0, 2.5f, 0);
         PointLight pLight = new PointLight(plloc, (ColorRGBA.White
                     .add(ColorRGBA.Orange).add(ColorRGBA.Yellow))
                 .multLocal(0.20f));
