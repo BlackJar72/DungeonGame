@@ -10,6 +10,7 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.Mesh;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
+import com.jme3.scene.shape.Box;
 import com.jme3.scene.shape.Line;
 import jaredbgreat.dungeos.mapping.AbstractMap;
 
@@ -99,6 +100,13 @@ public class GeomorphManager {
     }
     
     
+    
+    /*----------------------------------------------------------------------------------*/
+    /*                   PRIMATIVES (mostly for testing) BELOW                          */
+    /*----------------------------------------------------------------------------------*/
+    
+    
+    
     public void line(Vector3f p1, Vector3f p2) {
         Mesh ml = new Line(p1, p2);
         Geometry gl = new Geometry("Line");
@@ -118,6 +126,20 @@ public class GeomorphManager {
         mat.setColor("Color", c);
         gl.setMaterial(mat);
         rootnode.attachChild(gl);
+    }
+    
+    
+    public Node dummyCube(float size, ColorRGBA c) {
+        if(c == null) c = ColorRGBA.White;
+        Geometry cube = new Geometry("Cube");
+        cube.setMesh(new Box(Vector3f.ZERO, size, size, size));
+        Material mat = new Material(assetman, "Common/MatDefs/Misc/Unshaded.j3md");
+        mat.setColor("Color", c);
+        cube.setMaterial(mat);
+        cube.setLocalTranslation(0f, size, 0f);
+        Node model = new Node();
+        model.attachChild(cube);
+        return model;
     }
     
     

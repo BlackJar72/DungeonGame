@@ -90,36 +90,43 @@ public class Main extends SimpleApplication {
     
     
     private void makeTestScene() {
-        addBedroom();
-        addAnime();
-        addTableScene();
+        addBedroom(Vector3f.ZERO);
+        addAnime(Vector3f.ZERO);
+        addTableScene(Vector3f.ZERO);
     }
     
     
-    private void addTableScene() {                
+    public void makeTestScene(Vector3f center) {
+        addBedroom(center);
+        //addAnime(center);
+        addTableScene(center);
+    }
+    
+    
+    private void addTableScene(Vector3f center) {                
         GeomorphModel tabletest = new GeomorphModel("setTable", 
                 "Models/test/TableScene001s/TableScene001s.j3o");        
-        rootNode.attachChild(tabletest.makeSpatialAt(3, 0, 2));            
-        tabletest = new GeomorphModel("setTable", 
+        rootNode.attachChild(tabletest.makeSpatialAt(3 + center.x, 0 + center.y, 2 + center.z));            
+        tabletest = new GeomorphModel("setTable",  
                 "Models/test/TableScene001s/TableScene001s-pbr.j3o");         
-        rootNode.attachChild(tabletest.makeSpatialAt(3, 0, 0.5f));        
+        rootNode.attachChild(tabletest.makeSpatialAt(3 + center.x, center.y, 0.5f + center.z));        
     }
     
     
-    private void addBedroom() {        
+    private void addBedroom(Vector3f center) {        
         GeomorphModel bedroom = new GeomorphModel("test", 
                 "Models/test/MyIRLBedroom-furnished/MyIRLBedroom-furnished.j3o");
         bedroom.rotateTableScene();
         GeomorphManager.manager
-                .attachSpatial(bedroom.makeSpatialAt(-4, 0.25f, -0.5f).rotate(0, FastMath.PI, 0));
+                .attachSpatial(bedroom.makeSpatialAt(-4 + center.x, center.y + 0.01f, -0.5f + center.z).rotate(0, FastMath.PI, 0));
     }
     
     
-    private void addAnime() {
+    private void addAnime(Vector3f center) {
         GeomorphModel anime = new GeomorphModel("AnimeGirl", 
                 "Models/test/Rin_2_(Native)/Rin_2_(Native).j3o");        
-        rootNode.attachChild(anime.makeSpatialAt(1, 0, 0));
-        rootNode.attachChild(anime.makeSpatialAt(-3.5f, 0.25f, -0.8f));
+        rootNode.attachChild(anime.makeSpatialAt(center.x + 1, center.y, center.z));
+        rootNode.attachChild(anime.makeSpatialAt(-3.5f + center.x, center.y + 0.01f, -0.8f + center.z));
     }
     
     

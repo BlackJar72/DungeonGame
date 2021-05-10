@@ -12,11 +12,11 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Mesh;
 import com.jme3.scene.Node;
+import com.jme3.scene.Spatial;
 import com.jme3.scene.shape.Sphere;
 import jaredbgreat.dungeos.Main;
 import jaredbgreat.dungeos.componenent.GeomorphManager;
 import jaredbgreat.dungeos.entities.Player;
-import jaredbgreat.dungeos.mapping.TestMap;
 import jaredbgreat.dungeos.mapping.dld.DLDungeon;
 import java.util.Random;
 

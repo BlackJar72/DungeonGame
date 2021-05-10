@@ -71,6 +71,11 @@ public class RoomBFS {
     }
     
 
+    @Deprecated
+    /**
+     * Findings the closest of room from two lists by a comparing all room combinations. This 
+     * is slow and best not used.
+     */
     private void link(List<Room> rooms1, List<Room> rooms2) {
         if(rooms1.isEmpty() || rooms2.isEmpty()) {
             System.out.println("Flaming FUCK!!! " + rooms1.isEmpty() + "   " + rooms2.isEmpty());

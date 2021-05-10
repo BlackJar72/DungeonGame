@@ -24,7 +24,7 @@ public class Player extends AbstractEntity {
     public Player(AppStateSinglePlayer playgame, Node parent, BulletAppState physics, Vector3f playerStart) {     
         spatial = new Node();
         spatial.setLocalTranslation(playerStart);
-        control = new BetterCharacterControl(0.3f, 1.8f, 150f);
+        control = new BetterCharacterControl(0.5f, 1.8f, 150f);
         spatial.addControl(control);
         physics.getPhysicsSpace().add(control);
         control.setJumpForce(new Vector3f(0f, 750f, 0f));
@@ -39,7 +39,7 @@ public class Player extends AbstractEntity {
     public Player(AppStateSinglePlayer playgame, Node phynode, BulletAppState physics) {    
         spatial = new Node();
         spatial.setLocalTranslation(0, 0, 0);
-        control = new BetterCharacterControl(0.3f, 1.8f, 150f);
+        control = new BetterCharacterControl(0.5f, 1.8f, 150f);
         spatial.addControl(control);
         physics.getPhysicsSpace().add(control);
         control.setJumpForce(new Vector3f(0f, 750f, 0f));
