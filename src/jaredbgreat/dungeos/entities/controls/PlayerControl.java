@@ -17,6 +17,7 @@ import jaredbgreat.dungeos.appstates.AppStateSinglePlayer;
  */
 public class PlayerControl extends AbstractEntityControl {
     private final BetterCharacterControl physics;
+    private final Vector3f position;
     private final Vector3f movement;
     private final Vector3f heading;
     private float speed;
@@ -41,6 +42,7 @@ public class PlayerControl extends AbstractEntityControl {
         walk = 1.0f;
         hRotSpeed = 100f;
         vRotSpeed = 100f;
+        position = new Vector3f();
         movement = new Vector3f();
         heading  = new Vector3f();
         relativeForward = -1f;
@@ -56,7 +58,9 @@ public class PlayerControl extends AbstractEntityControl {
 
     @Override
     protected void controlUpdate(float tpf) {
-        //System.out.println(spatial.getWorldTranslation());
+        game.setPlayerPos(position);
+        //System.out.println(spatial.getWorldTranslation() + " = " + game.getPlayerPos() + "?");
+        position.set(spatial.getWorldTranslation());
         Main app = (Main) game.getApplication();
         movement.set(0, 0, 0);
         movement.addLocal(dAxis, 0, wAxis);
@@ -80,6 +84,11 @@ public class PlayerControl extends AbstractEntityControl {
             cam.setRotation((spatial.getWorldRotation().mult(camq)));
         }
         wAxis = dAxis = 0f;
+    }
+    
+    
+    public Vector3f getLocation() {
+        return position;
     }
 
     

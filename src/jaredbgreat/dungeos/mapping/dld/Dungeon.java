@@ -52,7 +52,7 @@ public class Dungeon {
             plan(); 
             doorFixer(); 
             RoomBFS seeker = new RoomBFS(this);
-            bad = seeker.map();
+            bad = !seeker.map();
         }
         
         findPlayerStart();

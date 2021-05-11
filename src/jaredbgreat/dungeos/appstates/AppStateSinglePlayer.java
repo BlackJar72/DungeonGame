@@ -32,8 +32,24 @@ public class AppStateSinglePlayer extends BaseAppState {
     Node phynode;
     Random random;
     Main app;
-    Node rootnode;   
-    Player player; 
+    Node rootnode; 
+    
+    Player player; // wtf is this?!? Its not the object I assign to it!!!
+    volatile volatileVec playerPos; // "volatile," it does nothing!
+    
+    
+    public static final class volatileVec {
+        volatile float x, y, z;
+        public void set(float nx, float ny, float nz) {
+            x = nx; y = ny; z = nz;
+        }
+        public void set(Vector3f v) {
+            x = v.x; y = v.y; z = v.z;
+        }
+        public void get(Vector3f v) {
+            v.x = x; v.y = y; v.z = z;
+        }
+    }
 
     
     @Override
@@ -44,6 +60,7 @@ public class AppStateSinglePlayer extends BaseAppState {
         assetman = app.getAssetManager();
         rootnode = app.getRootNode();
         phynode = geomanager.getPhysicsNode();
+        playerPos = new volatileVec();
     }
 
     
@@ -175,7 +192,12 @@ public class AppStateSinglePlayer extends BaseAppState {
     
     
     /**
-     * Returns the player object.
+     * Returns the player object. 
+     * 
+     * THIS SEEMS TO BE BROKEN!!! WHATEVER  OBJECT IT 
+     * RETURNS IS ***NOT*** THE PLAYER!!!
+     * 
+     * Damn you broken-a** JME3!
      * 
      * @return player
      */
@@ -183,4 +205,13 @@ public class AppStateSinglePlayer extends BaseAppState {
         return player;
     }
     
+    
+    public void setPlayerPos(Vector3f pos) {
+        playerPos.set(pos);
+    }
+    
+    
+    public volatileVec getPlayerPos() {
+        return playerPos;
+    }
 }

@@ -34,6 +34,7 @@ public class CubeMobControl extends AbstractEntityControl {
     private float spatialAngle;
     private float walk;
     private boolean moving;
+    private boolean attacking;
 
     
     public CubeMobControl(AppStateSinglePlayer appState, BetterCharacterControl bcc) {
@@ -57,13 +58,16 @@ public class CubeMobControl extends AbstractEntityControl {
 
     @Override
     protected void controlUpdate(float f) {
-        move(f);
         if(canSeePlayer()) {
+            attacking = canSeePlayer();
+        }
+        move(f);
+        /*if(attacking) { // Broken 'cause JME sucks!!!
             System.out.println("I see you!");
             Material mat = new Material(game.getApplication().getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
             mat.setColor("Color", ColorRGBA.Blue);
-            ((Node)spatial).getChild("Cube").setMaterial(mat);            
-        }
+            ((Node)spatial).getChild("Cube").setMaterial(mat);             
+        }*/
     }  
     
     
@@ -76,32 +80,57 @@ public class CubeMobControl extends AbstractEntityControl {
         Quaternion q = spatial.getLocalRotation();
         movement.set(q.mult(movement));
         physics.setWalkDirection(movement);
-        if(random.nextInt(256) == 0) spatialAngle = random.nextFloat() * FastMath.TWO_PI;
+        if(attacking) {
+            spatialAngle = toPlayer();
+            if(random.nextInt(256) == 0) attacking = false;
+        } else {
+            if(random.nextInt(256) == 0) spatialAngle = random.nextFloat() * FastMath.TWO_PI;
+        }
         heading.set(Vector3f.UNIT_Z).negate();
         physics.setViewDirection(new Quaternion()
-                .fromAngleNormalAxis(spatialAngle, Vector3f.UNIT_Y).mult(heading, heading));
-        if(previous.distance(spatial.getLocalTranslation()) < (0.1 * f)) spatialAngle = random.nextFloat() * FastMath.TWO_PI;
+                .fromAngleNormalAxis(spatialAngle, Vector3f.UNIT_Y).mult(heading, heading));        
+        if(previous.distance(spatial.getLocalTranslation()) < (3 * f)) {
+            spatialAngle = random.nextFloat() * FastMath.TWO_PI;
+            attacking = false;
+        }
         previous.set(spatial.getLocalTranslation());        
     }
     
     
     private boolean canSeePlayer() {
-        Vector3f ploc = game.getApplication().getCamera().getLocation();
+        Vector3f ploc = new Vector3f();
+        game.getPlayerPos().get(ploc);
         Vector3f mloc = physics.getSpatial().getLocalTranslation();
-        Vector3f tdir  = ploc.subtractLocal(mloc);
+        Vector3f tdir  = ploc.subtract(mloc);
         //System.out.println(tdir.lengthSquared());
         //System.out.println(ploc);
         if(tdir.lengthSquared() > 5184) return false; // Too far (over 24^2 units)
         Vector3f vdir = physics.getViewDirection();
-        tdir.normalize(); vdir.normalize();
-        System.out.println(tdir.dot(vdir));
+        //System.out.println(tdir.dot(vdir));
         if(tdir.dot(vdir) < 0) return false; // Behind mob
         CollisionResults results = new CollisionResults();
         Ray ray = new Ray(mloc, vdir);
         game.getApplications().getRootNode().collideWith(ray, results);
+        
         // If it collides with something other than it has hit a wall in the way
         // TODO: When/if the player has a model this must change!
-        return (results.size() > 1);        
+        if(results.size() < 1) return true;
+        String name = results.getCollision(0).getGeometry().getName();
+        if(name.equals("Cube") && results.size() > 1) {
+            return (results.getCollision(1).getDistance() > tdir.length());
+        }
+        return (results.getCollision(0).getDistance() > tdir.length());
+        //return (results.size() < 2);        
+    }
+    
+    
+    private float toPlayer() {
+        Vector3f ploc = new Vector3f();
+        game.getPlayerPos().get(ploc);
+        Vector3f mloc = physics.getSpatial().getLocalTranslation();
+        Vector3f tdir  = ploc.subtract(mloc);
+        float sin = tdir.x / tdir.z;
+        return FastMath.asin(sin);
     }
     
     

@@ -90,4 +90,10 @@ public class Player extends AbstractEntity {
         return alive;
     }
     
+    
+    @Override
+    public Vector3f getLocation() {
+        return player.getLocation();
+    }
+    
 }
