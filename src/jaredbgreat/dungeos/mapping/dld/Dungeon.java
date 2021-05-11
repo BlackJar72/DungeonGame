@@ -49,8 +49,8 @@ public class Dungeon {
         while(bad) {
             map = new MapMatrix();
             areas = new Areas();
-            plan();
-            doorFixer();
+            plan(); 
+            doorFixer(); 
             RoomBFS seeker = new RoomBFS(this);
             bad = seeker.map();
         }
