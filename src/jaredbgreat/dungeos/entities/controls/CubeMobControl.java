@@ -35,6 +35,7 @@ public class CubeMobControl extends AbstractEntityControl {
     private float walk;
     private boolean moving;
     private boolean attacking;
+    private int turnfails;
 
     
     public CubeMobControl(AppStateSinglePlayer appState, BetterCharacterControl bcc) {
@@ -53,6 +54,7 @@ public class CubeMobControl extends AbstractEntityControl {
         physics = bcc;
         physics.setDuckedFactor(0.65f);
         moving = true;//false;
+        turnfails = 0;
     }
     
 
@@ -80,18 +82,30 @@ public class CubeMobControl extends AbstractEntityControl {
         Quaternion q = spatial.getLocalRotation();
         movement.set(q.mult(movement));
         physics.setWalkDirection(movement);
+        float d = distToPlayer();
         if(attacking) {
             spatialAngle = toPlayer();
-            if(random.nextInt(256) == 0) attacking = false;
+            if((d > 8) && (random.nextInt(256) == 0)) attacking = false;
         } else {
             if(random.nextInt(256) == 0) spatialAngle = random.nextFloat() * FastMath.TWO_PI;
         }
         heading.set(Vector3f.UNIT_Z).negate();
         physics.setViewDirection(new Quaternion()
                 .fromAngleNormalAxis(spatialAngle, Vector3f.UNIT_Y).mult(heading, heading));        
-        if(previous.distance(spatial.getLocalTranslation()) < (3 * f)) {
-            spatialAngle = random.nextFloat() * FastMath.TWO_PI;
-            attacking = false;
+        if((d > 1) && (previous.distance(spatial.getLocalTranslation()) < (3 * f))) {
+            if((distToPlayer() > 4)) attacking = false;
+            if(random.nextInt(3) < turnfails) {
+                spatialAngle += FastMath.PI;
+                if(spatialAngle > FastMath.TWO_PI) {
+                    spatialAngle -= FastMath.TWO_PI;
+                }
+                turnfails = 0;
+            } else {                
+                spatialAngle = random.nextFloat() * FastMath.TWO_PI;
+                turnfails++;
+            }
+        } else {
+            turnfails = Math.max(0, --turnfails);
         }
         previous.set(spatial.getLocalTranslation());        
     }
@@ -131,6 +145,14 @@ public class CubeMobControl extends AbstractEntityControl {
         Vector3f tdir  = ploc.subtract(mloc);
         float sin = tdir.x / tdir.z;
         return FastMath.asin(sin);
+    }
+    
+    
+    private float distToPlayer() {
+        Vector3f ploc = new Vector3f();
+        game.getPlayerPos().get(ploc);
+        Vector3f mloc = physics.getSpatial().getLocalTranslation();
+        return ploc.subtract(mloc).length();
     }
     
     

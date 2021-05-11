@@ -9,9 +9,12 @@ import java.util.Deque;
 import java.util.List;
 
 /**
- *
+ * 
+ * 
  * @author jared
  */
+// FIXME!!! This needs to be able to actually fix levels, not just 
+//          generate them over-and over until finding a good one!!!
 public class RoomBFS {
     List<Room> hubs, found;
     Deque<Room> q;
@@ -36,6 +39,8 @@ public class RoomBFS {
     }
     
     
+    // FIXME!!! This needs to be able to actually fix levels, not just 
+    //          generate them over-and over until finding a good one!!!
     public boolean map() {
         q.add(hubs.get(0));
         hubs.remove(0);
