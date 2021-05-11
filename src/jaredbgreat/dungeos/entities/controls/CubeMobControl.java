@@ -84,14 +84,17 @@ public class CubeMobControl extends AbstractEntityControl {
         physics.setWalkDirection(movement);
         float d = distToPlayer();
         if(attacking) {
-            spatialAngle = toPlayer();
             if((d > 8) && (random.nextInt(256) == 0)) attacking = false;
         } else {
             if(random.nextInt(256) == 0) spatialAngle = random.nextFloat() * FastMath.TWO_PI;
         }
         heading.set(Vector3f.UNIT_Z).negate();
-        physics.setViewDirection(new Quaternion()
-                .fromAngleNormalAxis(spatialAngle, Vector3f.UNIT_Y).mult(heading, heading));        
+        if(attacking) {            
+            physics.setViewDirection(toPlayer());
+        } else {
+            physics.setViewDirection(new Quaternion()
+                    .fromAngleNormalAxis(spatialAngle, Vector3f.UNIT_Y).mult(heading, heading));        
+        }
         if((d > 1) && (previous.distance(spatial.getLocalTranslation()) < (3 * f))) {
             if((distToPlayer() > 4)) attacking = false;
             if(random.nextInt(3) < turnfails) {
@@ -138,13 +141,24 @@ public class CubeMobControl extends AbstractEntityControl {
     }
     
     
-    private float toPlayer() {
+    private float angToPlayer() {
         Vector3f ploc = new Vector3f();
         game.getPlayerPos().get(ploc);
         Vector3f mloc = physics.getSpatial().getLocalTranslation();
         Vector3f tdir  = ploc.subtract(mloc);
-        float sin = tdir.x / tdir.z;
-        return FastMath.asin(sin);
+        float tan = tdir.x / tdir.z;
+        return FastMath.atan(tan);
+    }
+    
+    
+    private Vector3f toPlayer() {
+        Vector3f ploc = new Vector3f();
+        game.getPlayerPos().get(ploc);
+        Vector3f mloc = physics.getSpatial().getLocalTranslation();
+        ploc.subtractLocal(mloc);
+        ploc.setY(0f);
+        ploc.normalizeLocal().multLocal(speed);
+        return ploc;
     }
     
     
