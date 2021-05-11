@@ -122,7 +122,7 @@ public class Room {
     }
     
     
-    public void addDoors(DLDungeon dungeon) {
+    public void addDoors(Dungeon dungeon) {
         int num = Tables.getNumberOfDoors(dungeon.random, this);
         for(int i = 0; i < num; i++) {
             ECardinal dir = ECardinal.getRandom(dungeon.random);
@@ -131,7 +131,7 @@ public class Room {
     }
     
     
-    public void addDoors(DLDungeon dungeon, boolean hubroom) {
+    public void addDoors(Dungeon dungeon, boolean hubroom) {
         int num = Tables.getNumberOfDoors(dungeon.random, this);
         if(hubroom) num = Math.max(num, dungeon.random.nextInt(4) + 2);
         for(int i = 0; i < num; i++) {
@@ -141,7 +141,7 @@ public class Room {
     }
     
     
-    private Doorway addDoor(DLDungeon dungeon, ECardinal dir) {
+    private Doorway addDoor(Dungeon dungeon, ECardinal dir) {
         int x, z;
         switch(dir) {
             case W:
@@ -221,7 +221,7 @@ public class Room {
     }
     
 
-    public Room connector(DLDungeon dungeon, ECardinal dir, Route aThis) {
+    public Room connector(Dungeon dungeon, ECardinal dir, Route aThis) {
         Doorway ndoor = addDoor(dungeon, dir);
         if(ndoor == null) return null;
         int x = ndoor.doorx + ndoor.heading.incx;

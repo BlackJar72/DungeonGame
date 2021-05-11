@@ -17,7 +17,7 @@ import com.jme3.scene.shape.Sphere;
 import jaredbgreat.dungeos.Main;
 import jaredbgreat.dungeos.componenent.GeomorphManager;
 import jaredbgreat.dungeos.entities.Player;
-import jaredbgreat.dungeos.mapping.dld.DLDungeon;
+import jaredbgreat.dungeos.mapping.dld.Dungeon;
 import java.util.Random;
 
 /**
@@ -55,7 +55,7 @@ public class AppStateSinglePlayer extends BaseAppState {
         //testmap.build(); 
         //TestMap testmap = new TestMap();
         //testmap.build(); 
-        DLDungeon dungeon = new DLDungeon(geomanager);
+        Dungeon dungeon = new Dungeon(this, geomanager);
                 
         //player = new Player(this, phynode, physics);
         player = new Player(this, phynode, physics, dungeon.getPlayerStart());
@@ -97,7 +97,7 @@ public class AppStateSinglePlayer extends BaseAppState {
         rootnode.addLight(p4);        
     }
     
-    private void addbasicTestLights(DLDungeon dungeon) {
+    private void addbasicTestLights(Dungeon dungeon) {
         //addFourPointLight(0.15f);
         Vector3f plloc = dungeon.getLevelEndSpot().add(new Vector3f(0, 2.5f, 0));
         PointLight pLight = new PointLight(plloc, (ColorRGBA.White
@@ -135,7 +135,7 @@ public class AppStateSinglePlayer extends BaseAppState {
         rootnode.addLight(pLight);
     }
     
-    private void addStartEndMarks(DLDungeon dungeon) {
+    private void addStartEndMarks(Dungeon dungeon) {
         Vector3f plloc = dungeon.getLevelEndSpot().add(new Vector3f(0, 4.5f, 0));
         PointLight pLight = new PointLight(plloc, ColorRGBA.Red);
         Mesh lb = new Sphere(8, 8, 0.1f);
@@ -164,7 +164,9 @@ public class AppStateSinglePlayer extends BaseAppState {
     }
     
     
-   
+   public BulletAppState getPhysics() {
+       return physics;
+   }
     
     
     public Main getApplications() {

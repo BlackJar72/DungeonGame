@@ -14,7 +14,7 @@ public class AbstractEntity implements IEntity {
     
     @Override
     public Vector3f getLocation() {
-        return spatial.getWorldTranslation();
+        return spatial.getLocalTranslation();
     }
     
     

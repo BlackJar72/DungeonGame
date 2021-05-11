@@ -49,6 +49,7 @@ public class GeomorphModel {
             template = NULL;
         } else {
             Geometry geom = new Geometry(mname, mesh);
+            geom.setName(name);
             geom.setLocalTranslation(position);
             template = new Node(name);
             template.attachChild(geom);
@@ -150,6 +151,7 @@ public class GeomorphModel {
     // FIXME: Is this really the best way, or should I have it attach them, too?
     public Node makeSpatialAt(float x, float y, float z) {
         Node out = template.clone(true);
+        System.out.println(out.getName());
         out.setLocalTranslation(x, y, z);
         return out;
     }
@@ -157,6 +159,7 @@ public class GeomorphModel {
     
     public Node makeSpatialAt(Vector3f location) {
         Node out = template.clone(true);
+        System.out.println(out.getName());
         out.setLocalTranslation(location);
         return out;
     }

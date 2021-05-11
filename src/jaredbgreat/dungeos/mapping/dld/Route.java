@@ -80,7 +80,7 @@ public class Route {
 	 * 
 	 * @param dungeon
 	 */
-	protected void drawConnections(DLDungeon dungeon) {
+	protected void drawConnections(Dungeon dungeon) {
             int limit = dungeon.size.maxRooms;
             while(!complete && (limit > 0)) {
                     limit--;
@@ -106,7 +106,7 @@ public class Route {
 	 */
         // FIXME: The give-up condition should draw a tunnel or mark a room to draw one from
         //        not just give up.
-	public void drawConnection(DLDungeon dungeon) {
+	public void drawConnection(Dungeon dungeon) {
             if(!getGrowthDir(dungeon.random)) {
                 complete = true;
                 return;

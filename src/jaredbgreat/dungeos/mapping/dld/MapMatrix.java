@@ -1,5 +1,6 @@
 package jaredbgreat.dungeos.mapping.dld;
 
+import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import jaredbgreat.dungeos.componenent.geomorph.Geomorphs;
 import jaredbgreat.dungeos.mapping.tables.ECardinal;
@@ -56,7 +57,7 @@ public class MapMatrix {
     }
     
     
-    public Doorway addDoor(int x, int z, int y, ECardinal dir, Room from, DLDungeon dungeon) {
+    public Doorway addDoor(int x, int z, int y, ECardinal dir, Room from, Dungeon dungeon) {
         if((x > -1) && (x < (room.length - 1)) 
                     && (z > -1) && (z < (room[x].length - 1)) && (room[x][z] < 1)) {
             RoomList dl = dungeon.areas.getList(1);
@@ -82,12 +83,12 @@ public class MapMatrix {
     }
     
     
-    public void removeDoor(Doorway dw, DLDungeon dungeon) {
+    public void removeDoor(Doorway dw, Dungeon dungeon) {
         type[dw.doorx][dw.doorz] = room[dw.doorx][dw.doorz] = 0; // Should that be -1?  Probably 0 is better at this stage.
     }
     
     
-    public void buildMap(DLDungeon dungeon) {
+    public void buildMap(Dungeon dungeon) {
         simpleRefineMap();
         RoomList rooms = dungeon.areas.getList(0);
         for(int i = 0; i < geomorph.length; i++) {
@@ -101,6 +102,11 @@ public class MapMatrix {
                     Spatial tile = Geomorphs.REGISTRY.makeSpatialAt(geomorph[i][j], 
                             i * 3, theRoom.y1 * 3, j * 3);
                     //System.out.println(geomorph[i][j] + " = " + theRoom.getBaseGeomorph() + "?");
+                    //for(Spatial s : ((Node)tile).getChildren()) {
+                    //    System.out.println(s.getName());
+                    //}
+                    //System.out.println(tile.getName());
+                    tile.setName("Dungeon!");
                     dungeon.geoman.attachSpatial(tile, theRoom.roomSpace);                
                 }
             }

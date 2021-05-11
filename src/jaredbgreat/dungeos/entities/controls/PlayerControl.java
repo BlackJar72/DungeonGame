@@ -63,7 +63,7 @@ public class PlayerControl extends AbstractEntityControl {
         if(movement.lengthSquared() > 0) {
             Quaternion q = spatial.getLocalRotation();
             if(physics.isDucked()) {
-                movement.set(q.mult(movement.normalizeLocal().multLocal(speed * 0.5f)));
+                movement.set(q.mult(movement.normalizeLocal().multLocal(speed * 0.5f * walk)));
             } else {
                 movement.set(q.mult(movement.normalizeLocal().multLocal(speed * walk)));
             }

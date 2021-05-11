@@ -13,7 +13,7 @@ public class GeomorphRegistry extends Registry<IGeomorph> {
     
     @Deprecated
     /**
-     * This exists only to add deprication; do not use this, use 
+     * This exists only to add deprecation; do not use this, use 
      * getGeomorph() instead (or getModel() for GeomorphModels).
      */  
     public IGeomorph get(int index) {

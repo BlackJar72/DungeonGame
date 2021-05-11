@@ -141,6 +141,19 @@ public class GeomorphManager {
         model.attachChild(cube);
         return model;
     }
+
+    public Spatial dummyCube(float size, ColorRGBA c, String name) {
+        if(c == null) c = ColorRGBA.White;
+        Geometry cube = new Geometry(name);
+        cube.setMesh(new Box(Vector3f.ZERO, size, size, size));
+        Material mat = new Material(assetman, "Common/MatDefs/Misc/Unshaded.j3md");
+        mat.setColor("Color", c);
+        cube.setMaterial(mat);
+        cube.setLocalTranslation(0f, size, 0f);
+        Node model = new Node();
+        model.attachChild(cube);
+        return model;
+    }
     
     
 }

@@ -125,35 +125,53 @@ public class AppStateFirstPerson extends BaseAppState implements ActionListener,
     
     @Override
     public void onAction(String name, boolean isPressed, float tpf) {
-        if(name == ControlConstants.JUMP) {
-            control.jump();
-        } else if(name == ControlConstants.DUCK) {
-            control.setCrouch(isPressed);
-        } else if(name == ControlConstants.RUN) {
-            control.setWalk(isPressed);
-        } else if(name == ControlConstants.TO_MENUS) {
-            //app.endGame();
+        if(null != name) switch (name) {
+            case ControlConstants.JUMP:
+                control.jump();
+                break;
+            case ControlConstants.DUCK:
+                control.setCrouch(isPressed);
+                break;
+            case ControlConstants.RUN:
+                control.setWalk(isPressed);
+                break;
+        //app.endGame();
+            case ControlConstants.TO_MENUS:
+                break;
+            default:
+                break;
         }
     }
 
     @Override
     public void onAnalog(String name, float value, float tpf) {  
-        if(name == ControlConstants.GO_FORWARD) {
-            control.setMoveForward(tpf * value);
-        } else if(name == ControlConstants.GO_BACKWARD) {
-            control.setMoveBackward(tpf * value);
-        } else if(name == ControlConstants.GO_RIGHT) {
-            control.setMoveRight(tpf * value);
-        } else if(name == ControlConstants.GO_LEFT) {
-            control.setMoveLeft(tpf * value);
-        } else if(name == ControlConstants.TURN_RIGHT) {
-            control.setTurnRght(tpf * value);
-        } else if(name == ControlConstants.TURN_LEFT) {
-            control.setTurnLeft(tpf * value);
-        } else if(name == ControlConstants.LOOK_UP) {
-            control.setLookUp(tpf * value);
-        } else if(name == ControlConstants.LOOK_DOWN) {
-            control.setLookDown(tpf * value);            
+        if(null != name) switch (name) {
+            case ControlConstants.GO_FORWARD:
+                control.setMoveForward(tpf * value);
+                break;
+            case ControlConstants.GO_BACKWARD:
+                control.setMoveBackward(tpf * value);
+                break;
+            case ControlConstants.GO_RIGHT:
+                control.setMoveRight(tpf * value);
+                break;
+            case ControlConstants.GO_LEFT:
+                control.setMoveLeft(tpf * value);
+                break;
+            case ControlConstants.TURN_RIGHT:
+                control.setTurnRght(tpf * value);
+                break;            
+            case ControlConstants.TURN_LEFT:
+                control.setTurnLeft(tpf * value);
+                break;
+            case ControlConstants.LOOK_UP:
+                control.setLookUp(tpf * value);
+                break;
+            case ControlConstants.LOOK_DOWN:
+                control.setLookDown(tpf * value);
+                break;
+            default:
+                break;
         }
     }
     

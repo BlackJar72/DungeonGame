@@ -1,8 +1,10 @@
 package jaredbgreat.dungeos.mapping.dld;
 
 import com.jme3.math.Vector3f;
+import jaredbgreat.dungeos.appstates.AppStateSinglePlayer;
 import jaredbgreat.dungeos.componenent.GeomorphManager;
 import jaredbgreat.dungeos.componenent.geomorph.Geomorphs;
+import jaredbgreat.dungeos.entities.CubeMob;
 import jaredbgreat.dungeos.mapping.tables.Tables;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -13,8 +15,9 @@ import java.util.Random;
  *
  * @author jared
  */
-public class DLDungeon {
-    protected GeomorphManager geoman;
+public class Dungeon {
+    GeomorphManager geoman;
+    AppStateSinglePlayer game;
     Random random;
     Areas areas;
     MapMatrix map;
@@ -30,7 +33,8 @@ public class DLDungeon {
     Room room;
     
     
-    public DLDungeon(GeomorphManager geoman) {
+    public Dungeon(AppStateSinglePlayer playing, GeomorphManager geoman) {
+        game = playing;
         random = new Random();
         this.geoman = geoman;
         size = Sizes.LARGE;
@@ -48,13 +52,14 @@ public class DLDungeon {
             plan();
             doorFixer();
             RoomBFS seeker = new RoomBFS(this);
-            bad = !seeker.map();
+            bad = false; //!seeker.map();
         }
-        
         
         findPlayerStart();
         
         map.buildMap(this);
+        
+        addMobs();
     }
     
     
@@ -289,6 +294,23 @@ public class DLDungeon {
         
         public Vector3f getLevelEndSpot() {
             return new Vector3f(endRoom.centerx * 3, endRoom.y1 * 3, endRoom.centerz * 3);
+        }
+        
+        
+        public GeomorphManager getGeomorphManager() {
+            return geoman;
+        }
+        
+        
+        public void addMobs() {
+            int i = 0;
+            for(Room r : areas.getRoomList()) {
+                if((r.id > 1) && random.nextInt(3) == 0) {
+                    CubeMob cb = new CubeMob(game, this, game.getApplications().getRootNode(), 
+                            game.getPhysics(), r.getCenterAsVec(), "Cube" + i);
+                    i++;
+                }
+            }
         }
     
     

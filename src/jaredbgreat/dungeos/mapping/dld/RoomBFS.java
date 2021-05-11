@@ -17,12 +17,12 @@ public class RoomBFS {
     Deque<Room> q;
     List<Room>[] reachable;
     boolean[] checked;
-    DLDungeon dungeon;
+    Dungeon dungeon;
     
     int c;
     
     
-    public RoomBFS(DLDungeon dungeon) {
+    public RoomBFS(Dungeon dungeon) {
         this.dungeon = dungeon;
         hubs = new ArrayList<>(dungeon.hubRooms.length);
         hubs.addAll(Arrays.asList(dungeon.hubRooms));

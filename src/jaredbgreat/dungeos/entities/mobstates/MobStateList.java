@@ -23,6 +23,12 @@ import java.util.ListIterator;
  * this is run it will automatically and safely do so after all mobs in the 
  * list have run their code.
  * 
+ * I MAY END UP NOT USING THIS BECAUSE JME3 HAS ITS OWN SYSTEM FOR HANDLING 
+ * ENTITIES AND THIS CLASHES WITH IT!  It would be nice of engines supported 
+ * this kind of data oriented approach, but most don't and some devs (and 
+ * many designers) would not want to fool with such a system baked into the 
+ * engine.
+ * 
  * @author Jared Blackburn
  */
 public final class MobStateList implements List<IMob> {
