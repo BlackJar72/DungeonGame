@@ -60,7 +60,7 @@ public class CubeMobControl extends AbstractEntityControl {
 
     @Override
     protected void controlUpdate(float f) {
-        if(canSeePlayer()) {
+        if(!attacking) {
             attacking = canSeePlayer();
         }
         move(f);
@@ -84,7 +84,7 @@ public class CubeMobControl extends AbstractEntityControl {
         physics.setWalkDirection(movement);
         float d = distToPlayer();
         if(attacking) {
-            if((d > 8) && (random.nextInt(256) == 0)) attacking = false;
+            if((d > 4) && (random.nextInt(256) == 0)) attacking = false;
         } else {
             if(random.nextInt(256) == 0) spatialAngle = random.nextFloat() * FastMath.TWO_PI;
         }
@@ -102,6 +102,7 @@ public class CubeMobControl extends AbstractEntityControl {
                 if(spatialAngle > FastMath.TWO_PI) {
                     spatialAngle -= FastMath.TWO_PI;
                 }
+                attacking = false;
                 turnfails = 0;
             } else {                
                 spatialAngle = random.nextFloat() * FastMath.TWO_PI;
