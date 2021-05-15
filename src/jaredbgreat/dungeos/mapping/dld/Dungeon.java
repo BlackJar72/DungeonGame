@@ -40,7 +40,6 @@ public class Dungeon {
         size = Sizes.LARGE;
         playerStart = new Vector3f();
         build();
-        map.printPassmap();
     }
     
     

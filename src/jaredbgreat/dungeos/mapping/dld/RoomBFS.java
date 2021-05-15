@@ -1,6 +1,7 @@
 package jaredbgreat.dungeos.mapping.dld;
 
 import com.jme3.math.Vector3f;
+import jaredbgreat.dungeos.Main;
 import jaredbgreat.dungeos.componenent.geomorph.Geomorphs;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -42,37 +43,44 @@ public class RoomBFS {
     // FIXME!!! This needs to be able to actually fix levels, not just 
     //          generate them over-and over until finding a good one!!!
     public boolean map() {
+       // Main.proflogger.startTask("RoomBFS.map()");
         q.add(hubs.get(0));
         hubs.remove(0);
         search(reachable[0]);
+        // TODO:  Have the link method actually link areas, then bring this back.
         /*while(!hubs.isEmpty()) {
             q.add(hubs.get(0));
             hubs.remove(0);
             search(reachable[1]);
             link(reachable[0], reachable[1]);
-        }*/
+        }*/ 
+        //Main.proflogger.endTask("RoomBFS.map()");
         return hubs.isEmpty();
     }
     
     
     private void search(List<Room> reached) {
+        //Main.proflogger.startTask("RoomBFS.search()");
         Room next;
         while(!hubs.isEmpty() && !q.isEmpty()) {
             next = q.poll();
-            checked[next.id] = true;
-            reached.add(next);
-            next.setGeomorph(c);
-            if(hubs.contains(next)) {
-                found.add(next);
-                hubs.remove(next);
-            }
-            for(Doorway door : next.exits) {
-                Room r = door.getNeigbor(next);
-                if((r != null) && (!checked[r.id])) {
-                    q.add(r);
-                } 
+            if(!checked[next.id]) {
+                reached.add(next);
+                checked[next.id] = true;
+                next.setGeomorph(c);
+                if(hubs.contains(next)) {
+                    found.add(next);
+                    hubs.remove(next);
+                }
+                for(Doorway door : next.exits) {
+                    Room r = door.getNeigbor(next);
+                    if((r != null) && (!checked[r.id])) {
+                        q.add(r);
+                    } 
+                }
             }
         }
+        //Main.proflogger.endTask("RoomBFS.search()");
     }
     
 
@@ -82,6 +90,8 @@ public class RoomBFS {
      * is slow and best not used.
      */
     private void link(List<Room> rooms1, List<Room> rooms2) {
+        //Main.proflogger.startTask("RoomBFS.link()");
+        System.out.println(rooms1.size() + " * " + rooms2.size() + " = " + (rooms1.size() * rooms2.size()));
         if(rooms1.isEmpty() || rooms2.isEmpty()) {
             System.out.println("Flaming FUCK!!! " + rooms1.isEmpty() + "   " + rooms2.isEmpty());
             return;
@@ -102,6 +112,7 @@ public class RoomBFS {
         dungeon.geoman.line(r1.getCenterAsVec(4f), r2.getCenterAsVec(4f));
         rooms1.addAll(rooms2);
         rooms2.clear();
+        //Main.proflogger.endTask("RoomBFS.link()");
     }
     
 }

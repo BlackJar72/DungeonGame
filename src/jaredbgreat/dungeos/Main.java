@@ -15,6 +15,8 @@ import jaredbgreat.dungeos.appstates.AppStateSinglePlayer;
 import jaredbgreat.dungeos.componenent.GeomorphManager;
 import jaredbgreat.dungeos.componenent.geomorph.GeomorphModel;
 import jaredbgreat.dungeos.componenent.geomorph.Geomorphs;
+import jaredbgreat.dungeos.util.debug.DLDProfile;
+import jaredbgreat.dungeos.util.debug.IProfiler;
 import java.util.Random;
 
 /**
@@ -22,7 +24,8 @@ import java.util.Random;
  * Move your Logic into AppStates or Controls
  * @author normenhansen
  */
-public class Main extends SimpleApplication {
+public class Main extends SimpleApplication {    
+    public static final IProfiler  proflogger = new DLDProfile();
     GeomorphManager geomanager;
     BulletAppState physics;
     Node worldNode;

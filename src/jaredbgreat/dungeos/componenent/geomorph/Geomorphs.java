@@ -121,6 +121,6 @@ public class Geomorphs {
         
         // Then, make the actual geomorphs!
         register(new Geomorph("SimpleStone", "SimpleStone", "SimpleStone", "SimpleStone"));
-        register(new Geomorph("BrickNStone", "Concrete", "RedBrick", "Concrete"));
+        register(new Geomorph("BrickNStone", "SimpleStone"/*"Concrete"*/, "RedBrick", "SimpleStone"/*"Concrete"*/));
     }
 }
