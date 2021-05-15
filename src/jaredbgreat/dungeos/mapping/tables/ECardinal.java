@@ -8,12 +8,13 @@ import java.util.Random;
  */
 public enum ECardinal {
     
-    W (1, -1,  0),
-    N (2,  0,  1),
-    E (4,  1,  0),
-    S (8,  0, -1);
+    W (1, -1,  0, EDir.W),
+    N (2,  0,  1, EDir.N),
+    E (4,  1,  0, EDir.E),
+    S (8,  0, -1, EDir.S);
     
     public final int bits, cbits, incx, incz;
+    public final EDir dir;
     
     // I don't know if this is good; i.e., I don't know if 
     // values() generates a new (and mutable) array each time 
@@ -21,11 +22,12 @@ public enum ECardinal {
     private static final ECardinal[] ALL_DIRS = ECardinal.values();
     
     
-    ECardinal(int bits, int incx, int incz) {
+    ECardinal(int bits, int incx, int incz, EDir dir) {
         this.bits  = bits;
         this.cbits = ~(bits << 16);
         this.incx  = incx;
         this.incz  = incz;
+        this.dir   = dir;
     }
     
     
