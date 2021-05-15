@@ -19,7 +19,9 @@ public class MapMatrix {
     private static final int BOUNDARY = -1; // Marks area around rooms where doorways appear
     int[][] room;
     int[][] geomorph; // Do I need this, or should a let rooms build themselves, as nodes?
-    int[][] type; // What kind of "room"; is it a room, doorway, etc. (What table to reference.)
+    int[][] type;  // What kind of "room"; is it a room, doorway, etc. (What table to reference.)
+    int[][] passable; // Is this an area that can be normally entered? (Treated as numeric for special reasons.)
+    int[][] dirs; // Is this an area that can be normally entered? (Treated as numeric for special reasons.)
     
     
     public MapMatrix() {
@@ -31,6 +33,8 @@ public class MapMatrix {
         room     = new int[size][size];
         geomorph = new int[size][size];
         type     = new int[size][size];
+        passable = new int[size][size];
+        dirs     = new int[size][size];
         
     }
     
@@ -41,6 +45,7 @@ public class MapMatrix {
                 room[i][j] = id;
                 geomorph[i][j] = geo;
                 this.type[i][j] = type;
+                passable[i][j] = 1;
             }
         int xboundl = Math.max(minx - 1, 0);
         int zboundl = Math.max(minz - 1, 0);
@@ -77,6 +82,7 @@ public class MapMatrix {
                 geomorph[x][z] = geo;
             }
             type[x][z] = 1;
+            passable[x][z] = 1;
             return dw;
         }
         return null;
@@ -140,4 +146,45 @@ public class MapMatrix {
         return out;
     }
     
+    
+    public void populateDirs() {
+        for(int i = 0; i < passable.length; i++) 
+            for(int j = 0; j < passable[i].length; j++) {
+                
+            }
+    }
+    
+    
+    private void addDirsToCell(int x, int z) {
+        int result = getCanEnterCell(x - 1, z);
+        result    |= getCanEnterCell(x,     z + 1) << 2;
+        result    |= getCanEnterCell(x + 1, z)     << 4;
+        result    |= getCanEnterCell(x,     z - 1) << 6;
+        
+        result |= getCanEnterCell(x - 1, z + 1) << 1;
+        result |= getCanEnterCell(x + 1, z + 1) << 3;
+        result |= getCanEnterCell(x + 1, z - 1) << 5;
+        result |= getCanEnterCell(x - 1, z + 1) << 7;
+        
+        result &= (result >> 1) & (result << 1);
+        result &= ((result & 1) << 1);
+        
+        dirs[x][z] = result;
+    }
+    
+    
+    private int getCanEnterCell(int x, int z) {
+        if((x < 0) || (x > passable.length) || (z < 0) || (z > passable[x].length)) return 0;
+        return passable[x][z];
+    }
+    
+    
+    public void printPassmap() {
+        for(int i = 0; i < passable.length; i++) {
+            System.out.println();
+            for(int j = 0; j < passable[i].length; j++) 
+                System.out.print(passable[i][j]);
+        }
+        System.out.println();
+    }
 }

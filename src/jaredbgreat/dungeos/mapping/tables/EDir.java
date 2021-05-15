@@ -31,7 +31,7 @@ public enum EDir {
         
     EDir(int bits, int incx, int incz){//, float a) {
         this.bits  = bits;
-        this.cbits = ~(bits << 16);
+        this.cbits = ~bits;
         this.incx  = incx;        
         this.incz  = incz;
         cost = (float)Math.sqrt((incx * incx) + (incz * incz));
@@ -110,4 +110,27 @@ public enum EDir {
     public static EDir fromOrdinal(int value) {
         return ALL_DIRS[value];
     }
+    
+    
+    public boolean canGo(int dirs) {
+        return (dirs & bits) > 0;
+    }
+    
+    
+    public static boolean canGo(EDir dir, int dirs) {
+        return (dirs & dir.bits) > 0;
+    }
+    
+    
+    public float canGoCost(int dirs) {
+        if((dirs & bits) > 0) return cost;
+        return -1f; // Less than 0 means can not go!
+    }
+    
+    
+    public static float canGoCost(EDir dir, int dirs) {
+        if((dirs & dir.bits) > 0) return dir.cost;
+        return -1f; // Less than 0 means can not go!
+    }
+    
 }

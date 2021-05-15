@@ -40,6 +40,7 @@ public class Dungeon {
         size = Sizes.LARGE;
         playerStart = new Vector3f();
         build();
+        map.printPassmap();
     }
     
     
@@ -51,6 +52,7 @@ public class Dungeon {
             areas = new Areas();
             plan(); 
             doorFixer(); 
+            map.populateDirs();
             RoomBFS seeker = new RoomBFS(this);
             bad = !seeker.map();
         }
