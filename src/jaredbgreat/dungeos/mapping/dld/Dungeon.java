@@ -117,30 +117,6 @@ public class Dungeon {
     }
     
     
-    private void dummyRoom() {
-        /*int*/ b = Geomorphs.MORPHS.getGeomorphID("SimpleStone");
-        /*int*/ a = Geomorphs.MORPHS.getGeomorphID("BrickNStone");
-        // A stand-in, but basically how I plan on doing main rooms.
-        //room = new Room(-2 - random.nextInt(2), 2 + random.nextInt(2), 
-        //                -2 - random.nextInt(2), 2 + random.nextInt(2));
-        int[] s = Tables.getRoomSize(random);
-        System.out.println(s[0] +  " x " + s[1]);
-        room = new Room(-(s[0] / 2), (s[0] / 2)  + (s[0] % 2), 
-                        -(s[1] / 2) ,(s[1] / 2)  + (s[1] % 2));
-        switch(random.nextInt(2)) {
-            case 0:
-                room.setGeomorph(b);
-                break;
-            case 1:
-            default:
-                room.setGeomorph(a);
-                break;
-        }
-        //room.addDoors();
-        room.fastBuild(geoman);
-    }
-    
-    
     private void makeHubRooms() {
         int num = 4 + random.nextInt(2) + random.nextInt(2);
         hubRooms = new Room[num];
@@ -171,7 +147,7 @@ public class Dungeon {
                         break;
                 }
                 hubRooms[i].buildIn(map);
-                hubRooms[i].addDoors(this, true);
+                hubRooms[i].addDoors(this, false);
             }
         }
     }
@@ -251,9 +227,9 @@ public class Dungeon {
 		Room first, other;
 		ArrayList<Room> connected = new ArrayList<>(hubRooms.length), 
 				disconnected = new ArrayList<>(hubRooms.length);
-                Room start = hubRooms[random.nextInt(hubRooms.length)];
+                Room start = hubRooms[random.nextInt(hubRooms.length - 1) + 1];
 		connected.add(start);
-		for(int i = 0; i < hubRooms.length; i++) {
+		for(int i = 1; i < hubRooms.length; i++) {
 			disconnected.add(hubRooms[i]);
 		}
                 disconnected.remove(start);
