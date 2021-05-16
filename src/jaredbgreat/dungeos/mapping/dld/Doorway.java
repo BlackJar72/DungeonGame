@@ -26,7 +26,7 @@ public class Doorway extends Room {
     
     @Override
     public int getType() {
-        return 1;
+        return AreaType.DOORWAY.tid;
     }
     
     

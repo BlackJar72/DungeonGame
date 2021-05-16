@@ -112,7 +112,7 @@ public class GeomorphManager {
         Geometry gl = new Geometry("Line");
         gl.setMesh(ml);
         Material mat = new Material(assetman, "Common/MatDefs/Misc/Unshaded.j3md");
-        mat.setColor("Color", ColorRGBA.Blue);
+        mat.setColor("Color", ColorRGBA.Green);
         gl.setMaterial(mat);
         rootnode.attachChild(gl);
     }

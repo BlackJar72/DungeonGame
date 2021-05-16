@@ -35,6 +35,11 @@ public class Areas {
     }
     
     
+    public Room getTunnel(int i) {
+        return halls.get(i);
+    }
+    
+    
     public Room getDoorway(int i) {
         return doors.get(i);
     }
@@ -47,6 +52,11 @@ public class Areas {
     
     public RoomList getDoorways() {
         return doors;
+    }
+    
+    
+    public RoomList getTunnels() {
+        return halls;
     }
     
 }

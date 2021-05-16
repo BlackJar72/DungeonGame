@@ -1,8 +1,8 @@
 package jaredbgreat.dungeos.mapping.dld;
 
-import com.jme3.math.Vector3f;
-import jaredbgreat.dungeos.Main;
 import jaredbgreat.dungeos.componenent.geomorph.Geomorphs;
+import jaredbgreat.dungeos.mapping.tables.ECardinal;
+import jaredbgreat.dungeos.mapping.tables.EDir;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -47,13 +47,12 @@ public class RoomBFS {
         q.add(hubs.get(0));
         hubs.remove(0);
         search(reachable[0]);
-        // TODO:  Have the link method actually link areas, then bring this back.
-        /*while(!hubs.isEmpty()) {
+        while(!hubs.isEmpty()) {
             q.add(hubs.get(0));
             hubs.remove(0);
             search(reachable[1]);
             link(reachable[0], reachable[1]);
-        }*/ 
+        } 
         //Main.proflogger.endTask("RoomBFS.map()");
         return hubs.isEmpty();
     }
@@ -84,16 +83,13 @@ public class RoomBFS {
     }
     
 
-    @Deprecated
     /**
      * Findings the closest of room from two lists by a comparing all room combinations. This 
      * is slow and best not used.
      */
     private void link(List<Room> rooms1, List<Room> rooms2) {
         //Main.proflogger.startTask("RoomBFS.link()");
-        System.out.println(rooms1.size() + " * " + rooms2.size() + " = " + (rooms1.size() * rooms2.size()));
         if(rooms1.isEmpty() || rooms2.isEmpty()) {
-            System.out.println("Flaming FUCK!!! " + rooms1.isEmpty() + "   " + rooms2.isEmpty());
             return;
         }
         Room r1 = null, r2 = null;
@@ -105,14 +101,76 @@ public class RoomBFS {
                     dist = d;
                     r1 = rooms1.get(i);
                     r2 = rooms2.get(j);
-                    System.out.println(d);
                 }
             }
         }
-        dungeon.geoman.line(r1.getCenterAsVec(4f), r2.getCenterAsVec(4f));
+        connect(r1, r2);
         rooms1.addAll(rooms2);
         rooms2.clear();
         //Main.proflogger.endTask("RoomBFS.link()");
+    }
+    
+    
+    private void connect(Room r1, Room r2) {
+        int x1 = r1.ix, x2 = r2.ix, z1 = r1.iz, z2 = r2.iz;
+        int xstep = 0, zstep = 0;
+        if(x1 != x2) xstep = (x2 - x1) / Math.abs(x2 - x1);
+        if(z1 != z2) zstep = (z2 - z1) / Math.abs(z2 - z1);
+        System.out.println(x1 + ", " + xstep + ", " + x2);
+        System.out.println(z1 + ", " + zstep + ", " + z2);
+        //Room last = r1;
+        ECardinal heading;
+        Tunnel tunnel = new Tunnel((x1 + x2) / 2, (z1 + z2) / 2, r1.y1);
+        dungeon.areas.getTunnels().add(tunnel);
+        tunnel.setID(dungeon.areas.getTunnels().realSize());
+        if(dungeon.random.nextBoolean()) {
+            if(xstep > 0) heading = ECardinal.E;
+            else heading = ECardinal.W;
+            for(int i = x1; i != x2; i += xstep) {
+                int cr = dungeon.map.room[i][z1];
+                if(cr > 0) {
+                    //last = dungeon.areas.getArea(dungeon.map.type[i][z1], cr);
+                } else {
+                    //last = tunnel;
+                    dungeon.map.addTunnelStep(i, z1, tunnel, heading);
+                }
+            }
+            if(xstep > 0) heading = ECardinal.N;
+            else heading = ECardinal.S;
+            for(int j = z1; j != z2; j += zstep) { 
+                int cr = dungeon.map.room[x2][j];
+                if(cr > 0) {
+                    //last = dungeon.areas.getArea(dungeon.map.type[x2][j], cr);
+                } else {
+                    //last = tunnel;
+                    dungeon.map.addTunnelStep(x2, j, tunnel, heading);
+                }                    
+            }
+        } else {
+            if(xstep > 0) heading = ECardinal.N;
+            else heading = ECardinal.S;
+            for(int j = z1; j != z2; j += zstep) {   
+                int cr = dungeon.map.room[x1][j];
+                if(cr > 0) {
+                    //last = dungeon.areas.getArea(dungeon.map.type[x1][j], cr);
+                } else {
+                    //last = tunnel;
+                    dungeon.map.addTunnelStep(x1, j, tunnel, heading);                    
+                }
+            }            
+            if(xstep > 0) heading = ECardinal.E;
+            else heading = ECardinal.W;
+            for(int i = x1; i != x2; i += xstep) {
+                int cr = dungeon.map.room[i][z2];
+                if(cr > 0) {
+                    //last = dungeon.areas.getArea(dungeon.map.type[i][z2], cr);
+                } else {                    
+                    //last = tunnel;
+                    dungeon.map.addTunnelStep(1, z2, tunnel, heading);
+                }
+            }                  
+        }
+        
     }
     
 }

@@ -16,7 +16,8 @@ import jaredbgreat.dungeos.mapping.tables.ECardinal;
  to build but attach what is built to the relevant rooms by id.S
 */
 public class MapMatrix {
-    private static final int BOUNDARY = -1; // Marks area around rooms where doorways appear
+    public static final int EMPTY    =  0; // Marks area around rooms where doorways appear
+    public static final int BOUNDARY = -1; // Marks area around rooms where doorways appear
     int[][] room;
     int[][] geomorph; // Do I need this, or should a let rooms build themselves, as nodes?
     int[][] type;  // What kind of "room"; is it a room, doorway, etc. (What table to reference.)
@@ -90,7 +91,8 @@ public class MapMatrix {
     
     
     public void removeDoor(Doorway dw, Dungeon dungeon) {
-        type[dw.doorx][dw.doorz] = room[dw.doorx][dw.doorz] = 0; // Should that be -1?  Probably 0 is better at this stage.
+        room[dw.doorx][dw.doorz] = -1;
+        passable[dw.doorx][dw.doorz] = type[dw.doorx][dw.doorz] = 0;
     }
     
     
@@ -121,9 +123,13 @@ public class MapMatrix {
         for(int i = 1; i < rooms.size(); i++) {
             dungeon.geoman.attachNode(rooms.get(i).roomSpace);
         }
-        RoomList doorways = dungeon.areas.getList(1);
+        RoomList doorways = dungeon.areas.getList(AreaType.DOORWAY.tid);
         for(int i = 1; i < doorways.size(); i++) {
             dungeon.geoman.attachNode(doorways.get(i).roomSpace);
+        }
+        RoomList tunnels = dungeon.areas.getList(AreaType.TUNNEL.tid);
+        for(int i = 1; i < tunnels.size(); i++) {
+            dungeon.geoman.attachNode(tunnels.get(i).roomSpace);
         }
     }    
     
@@ -139,10 +145,10 @@ public class MapMatrix {
     
     private int findRotationFromBorders(int x, int z) {
         int out = 96;
-        if(((x - 1) <= 0) || (room[x - 1][z] < 1)) out+= 1;
+        if(((x - 1) < 1) || (room[x - 1][z] < 1)) out+= 1;
         if(((z + 1) == room[x].length) || (room[x][z + 1] < 1)) out+= 8;
         if(((x + 1) == room.length) || (room[x + 1][z] < 1)) out+= 4;
-        if(((z - 1) <= 0) || (room[x][z - 1] < 1)) out+= 2;
+        if(((z - 1) < 1) || (room[x][z - 1] < 1)) out+= 2;
         return out;
     }
     
@@ -150,7 +156,7 @@ public class MapMatrix {
     public void populateDirs() {
         for(int i = 0; i < passable.length; i++) 
             for(int j = 0; j < passable[i].length; j++) {
-                
+                addDirsToCell(i, j);
             }
     }
     
@@ -174,7 +180,7 @@ public class MapMatrix {
     
     
     private int getCanEnterCell(int x, int z) {
-        if((x < 0) || (x > passable.length) || (z < 0) || (z > passable[x].length)) return 0;
+        if((x < 0) || (x >= passable.length) || (z < 0) || (z >= passable[x].length)) return 0;
         return passable[x][z];
     }
     
@@ -186,5 +192,12 @@ public class MapMatrix {
                 System.out.print(passable[i][j]);
         }
         System.out.println();
+    }
+
+    void addTunnelStep(int x, int z, Tunnel tunnel, ECardinal heading) {
+        room[x][z] = tunnel.id;
+        type[x][z] = tunnel.getType();
+        geomorph[x][z] = tunnel.getBaseGeomorph();
+        passable[x][z] = 1;
     }
 }

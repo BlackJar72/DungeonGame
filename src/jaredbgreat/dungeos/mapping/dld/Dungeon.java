@@ -1,6 +1,7 @@
 package jaredbgreat.dungeos.mapping.dld;
 
 import com.jme3.math.Vector3f;
+import jaredbgreat.dungeos.Main;
 import jaredbgreat.dungeos.appstates.AppStateSinglePlayer;
 import jaredbgreat.dungeos.componenent.GeomorphManager;
 import jaredbgreat.dungeos.componenent.geomorph.Geomorphs;
@@ -43,7 +44,8 @@ public class Dungeon {
     }
     
     
-    private void build() {         
+    private void build() { 
+        Main.proflogger.startTask("Build");        
         boolean bad = true;
         
         while(bad) {
@@ -51,16 +53,17 @@ public class Dungeon {
             areas = new Areas();
             plan(); 
             doorFixer(); 
-            map.populateDirs();
             RoomBFS seeker = new RoomBFS(this);
             bad = !seeker.map();
+            map.populateDirs();
         }
         
-        findPlayerStart();
+        findPlayerStart();     
         
         map.buildMap(this);
         
-        addMobs();
+        addMobs();  
+        Main.proflogger.endTask("Build"); 
     }
     
     

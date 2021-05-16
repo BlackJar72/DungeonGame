@@ -93,7 +93,7 @@ public class Room {
     
     
     public int getType() {
-        return 0;
+        return AreaType.ROOM.tid;
     }
     
     
@@ -141,7 +141,7 @@ public class Room {
     }
     
     
-    private Doorway addDoor(Dungeon dungeon, ECardinal dir) {
+    public Doorway addDoor(Dungeon dungeon, ECardinal dir) {
         int x, z;
         switch(dir) {
             case W:
@@ -274,4 +274,8 @@ public class Room {
         return (float)Math.sqrt((dx * dx) + (dz * dz));
     }
     
+    
+    public String coordsAsString() {
+        return "(" + ix + ", " + y1 + ", " + iz + ")";
+     }
 }
