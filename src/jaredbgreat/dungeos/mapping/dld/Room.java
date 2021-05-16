@@ -136,6 +136,18 @@ public class Room {
         if(hubroom) num = Math.max(num, dungeon.random.nextInt(4) + 2);
         for(int i = 0; i < num; i++) {
             ECardinal dir = ECardinal.getRandom(dungeon.random);
+            if(dungeon.random.nextBoolean()) {
+                int pos = dungeon.random.nextInt(getPerimeter());
+                if(pos < width) {
+                    dir = ECardinal.N;
+                } else if(pos < (width + length)) {                
+                    dir = ECardinal.E;
+                } else if(pos < (width + width + length)) {                
+                    dir = ECardinal.S;
+                } else {
+                    dir = ECardinal.W;
+                }
+            }
             addDoor(dungeon, dir);
         }
     }

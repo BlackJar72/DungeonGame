@@ -42,7 +42,19 @@ public class RoomBFS {
     
     // FIXME!!! This needs to be able to actually fix levels, not just 
     //          generate them over-and over until finding a good one!!!
-    public boolean map() {
+    public boolean test() {
+       // Main.proflogger.startTask("RoomBFS.map()");
+        q.add(hubs.get(0));
+        hubs.remove(0);
+        search(reachable[0]);
+        //Main.proflogger.endTask("RoomBFS.map()");
+        return hubs.isEmpty();
+    }
+    
+    
+    // FIXME!!! This needs to be able to actually fix levels, not just 
+    //          generate them over-and over until finding a good one!!!
+    public void map() {
        // Main.proflogger.startTask("RoomBFS.map()");
         q.add(hubs.get(0));
         hubs.remove(0);
@@ -54,7 +66,6 @@ public class RoomBFS {
             link(reachable[0], reachable[1]);
         } 
         //Main.proflogger.endTask("RoomBFS.map()");
-        return hubs.isEmpty();
     }
     
     
@@ -104,6 +115,7 @@ public class RoomBFS {
                 }
             }
         }
+        dungeon.geoman.line(r1.getCenterAsVec(4f), r2.getCenterAsVec(4f));
         connect(r1, r2);
         rooms1.addAll(rooms2);
         rooms2.clear();
@@ -111,13 +123,11 @@ public class RoomBFS {
     }
     
     
-    private void connect(Room r1, Room r2) {
+    public void connect(Room r1, Room r2) {
         int x1 = r1.ix, x2 = r2.ix, z1 = r1.iz, z2 = r2.iz;
         int xstep = 0, zstep = 0;
         if(x1 != x2) xstep = (x2 - x1) / Math.abs(x2 - x1);
         if(z1 != z2) zstep = (z2 - z1) / Math.abs(z2 - z1);
-        System.out.println(x1 + ", " + xstep + ", " + x2);
-        System.out.println(z1 + ", " + zstep + ", " + z2);
         //Room last = r1;
         ECardinal heading;
         Tunnel tunnel = new Tunnel((x1 + x2) / 2, (z1 + z2) / 2, r1.y1);
@@ -166,7 +176,7 @@ public class RoomBFS {
                     //last = dungeon.areas.getArea(dungeon.map.type[i][z2], cr);
                 } else {                    
                     //last = tunnel;
-                    dungeon.map.addTunnelStep(1, z2, tunnel, heading);
+                    dungeon.map.addTunnelStep(i, z2, tunnel, heading);
                 }
             }                  
         }

@@ -54,7 +54,8 @@ public class Dungeon {
             plan(); 
             doorFixer(); 
             RoomBFS seeker = new RoomBFS(this);
-            bad = !seeker.map();
+            bad = !seeker.test();
+            connectHubsSparcely(seeker);
             map.populateDirs();
         }
         
@@ -212,11 +213,7 @@ public class Dungeon {
 	 * @throws Throwable
 	 */
 	private void connectHubs() {
-		if(true/*random.nextBoolean()*/) {
-			connectHubsDensely();
-		} else {
-			connectHubsSparcely();
-		}
+            connectHubsDensely();
 	}
 	
 	
@@ -246,6 +243,24 @@ public class Dungeon {
 			first = connected.get(random.nextInt(connected.size()));
 			other = disconnected.get(random.nextInt(disconnected.size()));
 			new Route(first, other).drawConnections(this);
+			connected.add(other);
+			disconnected.remove(other);
+                }
+	}
+	private void connectHubsSparcely(RoomBFS connector) {
+		Room first, other;
+		ArrayList<Room> connected = new ArrayList<>(hubRooms.length), 
+				disconnected = new ArrayList<>(hubRooms.length);
+                Room start = hubRooms[random.nextInt(hubRooms.length)];
+		connected.add(start);
+		for(int i = 0; i < hubRooms.length; i++) {
+			disconnected.add(hubRooms[i]);
+		}
+                disconnected.remove(start);
+		while(!disconnected.isEmpty()) {
+			first = connected.get(random.nextInt(connected.size()));
+			other = disconnected.get(random.nextInt(disconnected.size()));
+			connector.connect(first, other);
 			connected.add(other);
 			disconnected.remove(other);
                 }
