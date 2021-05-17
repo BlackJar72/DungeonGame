@@ -35,6 +35,19 @@ public class Geomorphs {
     }
     
     
+    private SimpleGeomorph makeSimpleGeomorph(String name, String rlbase, String ext, int starti, int endi) {
+        GeomorphModel[] models = new GeomorphModel[endi];
+        for(int i = 0; i < starti; i++) {
+            models[i] = GeomorphModel.EMPTY;
+        }
+        for(int i = starti; i < models.length; i++) {
+            models[i] = new GeomorphModel(name, 
+                rlbase + makePaddedInt(i, 2) + ext);
+        }
+        return new SimpleGeomorph(name, models);
+    }
+    
+    
     private IGeomorph register(IGeomorph geo) {
         String name = geo.getName();
         REGISTRY.add(name, geo);
@@ -92,6 +105,9 @@ public class Geomorphs {
        WALLS.add("SimpleStone", makeSimpleGeomorph("SimpleFloor", 
             "Models/geomorphs/walls/simple/Geomorph-blank-wall", 1, 20)
             .setMaterials("Wall:Textures/stone-hr.png"));
+       WALLS.add("RealBricks", makeSimpleGeomorph("SimpleFloor-high", 
+            "Models/geomorphs/walls/simpleb/Geomorph-blank-wall", ".gltf", 1, 20)
+            .setMaterials("Wall:Textures/bricks-real-red.png"));
        WALLS.add("SimpleStoneDark", makeSimpleGeomorph("SimpleFloorDark", 
             "Models/geomorphs/walls/simple/Geomorph-blank-wall", 1, 20)
             .setMaterials("Wall:Textures/stone-hr.png"));
@@ -121,6 +137,7 @@ public class Geomorphs {
         
         // Then, make the actual geomorphs!
         register(new Geomorph("SimpleStone", "SimpleStone", "SimpleStone", "SimpleStone"));
+        register(new Geomorph("RealBricks", "SimpleStone", "RealBricks", "SimpleStone"));
         register(new Geomorph("BrickNStone", "SimpleStone"/*"Concrete"*/, "RedBrick", "SimpleStone"/*"Concrete"*/));
     }
 }
