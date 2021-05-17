@@ -66,7 +66,7 @@ public class Room {
         iz = (int)centerz;
         height = 1;
         y1 = 0;
-        y2 = endy;     
+        y2 = endy;   
     }
 
     

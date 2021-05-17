@@ -55,6 +55,9 @@ public class Dungeon {
             doorFixer(); 
             RoomBFS seeker = new RoomBFS(this);
             bad = !seeker.test();
+            for(Room r : areas.getRoomList()) {
+                r.setGeomorph(random.nextInt(3));
+            }
             connectHubsSparcely(seeker);
             map.populateDirs();
         }
@@ -212,7 +215,7 @@ public class Dungeon {
 		ArrayList<Room> connected = new ArrayList<>(hubRooms.length), 
 				disconnected = new ArrayList<>(hubRooms.length);		
 		connected.add(hubRooms[0]);
-		for(int i = 1; i < hubRooms.length; i++) {
+		for(int i = 0; i < hubRooms.length; i++) {
 			disconnected.add(hubRooms[i]);
 		}		
 		while(!disconnected.isEmpty()) {
