@@ -96,6 +96,14 @@ public class Geomorphs {
         FLOORS.add("SimpleStoneDark", new GeomorphModel("SimpleStoneDark", 
             "Models/geomorphs/floors/Geomorph-blank-floor.j3o")
                 .setMaterials("Floor:Textures/stone-dark-hr.png"));
+        
+        FLOORS.add("SimpleMarble", new GeomorphModel("SimpleMarble", 
+            "Models/geomorphs/walls/simpleb/Geomorph-blank-floor.gltf")
+                .setMaterials("Floor:Textures/marble.png"));
+        FLOORS.add("SimpleMarbleBlack", new GeomorphModel("SimpleMarbleBlack", 
+            "Models/geomorphs/walls/simpleb/Geomorph-blank-floor.gltf")
+                .setMaterials("Floor:Textures/marble-black.png"));
+        
         FLOORS.add("Concrete", GeomorphModel.makeSimpleFloor("Concrete")
                 .setMaterials("Floor:Textures/stone-hr.png"));
     }
@@ -105,12 +113,18 @@ public class Geomorphs {
        WALLS.add("SimpleStone", makeSimpleGeomorph("SimpleFloor", 
             "Models/geomorphs/walls/simple/Geomorph-blank-wall", 1, 20)
             .setMaterials("Wall:Textures/stone-hr.png"));
-       WALLS.add("RealBricks", makeSimpleGeomorph("SimpleFloor-high", 
-            "Models/geomorphs/walls/simpleb/Geomorph-blank-wall", ".gltf", 1, 20)
-            .setMaterials("Wall:Textures/bricks-real-red.png"));
        WALLS.add("SimpleStoneDark", makeSimpleGeomorph("SimpleFloorDark", 
             "Models/geomorphs/walls/simple/Geomorph-blank-wall", 1, 20)
             .setMaterials("Wall:Textures/stone-hr.png"));
+              
+       WALLS.add("SimpleMarble", makeSimpleGeomorph("SimpleFloorMarble", 
+            "Models/geomorphs/walls/simpleb/Geomorph-blank-wall", ".gltf", 1, 20)
+            .setMaterials("Wall:Textures/marble.png"));
+       WALLS.add("SimpleMarbleBlack", makeSimpleGeomorph("SimpleFloorMarbleBlack", 
+            "Models/geomorphs/walls/simpleb/Geomorph-blank-wall", ".gltf", 1, 20)
+            .setMaterials("Wall:Textures/marble-black.png"));
+       
+       
        WALLS.add("RedBrick", makeSimpleGeomorph("RedBrick", 
             "Models/geomorphs/walls/brick/Geomorph-brick-floor", 1, 20));
     }
@@ -123,6 +137,14 @@ public class Geomorphs {
         CIELINGS.add("SimpleStoneDark", new GeomorphModel("SimpleStoneDark", 
             "Models/geomorphs/cielings/Geomorph-blank-ciel.j3o")
                 .setMaterials("Floor:Textures/stone-dark-hr.png"));
+                
+        CIELINGS.add("SimpleMarble", new GeomorphModel("SimpleMarble", 
+            "Models/geomorphs/walls/simpleb/Geomorph-blank-ciel.gltf")
+                .setMaterials("Floor:Textures/marble.png"));
+        CIELINGS.add("SimpleMarbleBlack", new GeomorphModel("SimpleMarbleBlack", 
+            "Models/geomorphs/walls/simpleb/Geomorph-blank-ciel.gltf")
+                .setMaterials("Floor:Textures/marble-black.png"));
+        
         CIELINGS.add("Concrete", GeomorphModel.makeSimpleCieling("Concrete")
                 .setMaterials("Cieling:Textures/stone-hr.png"));
         
@@ -137,7 +159,7 @@ public class Geomorphs {
         
         // Then, make the actual geomorphs!
         register(new Geomorph("SimpleStone", "SimpleStone", "SimpleStone", "SimpleStone"));
-        register(new Geomorph("RealBricks", "SimpleStone", "RealBricks", "SimpleStone"));
+        register(new Geomorph("Marble", "SimpleMarble", "SimpleMarble", "SimpleMarble"));
         register(new Geomorph("BrickNStone", "SimpleStone"/*"Concrete"*/, "RedBrick", "SimpleStone"/*"Concrete"*/));
     }
 }

@@ -66,7 +66,7 @@ public class Dungeon {
         
         map.buildMap(this);
         
-        addMobs();  
+        //addMobs();  
         Main.proflogger.endTask("Build"); 
     }
     
