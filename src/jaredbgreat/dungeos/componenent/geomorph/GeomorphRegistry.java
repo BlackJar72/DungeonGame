@@ -3,6 +3,7 @@ package jaredbgreat.dungeos.componenent.geomorph;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import jaredbgreat.dungeos.util.Registry;
+import java.util.Random;
 
 /**
  *
@@ -46,6 +47,7 @@ public class GeomorphRegistry extends Registry<IGeomorph> {
     public IGeomorph getGeomorph(short id) {
         return super.get(id);
     }
+    
     
     /**
      * This can be used to get a model (node) using an array; 

@@ -56,7 +56,7 @@ public class Dungeon {
             RoomBFS seeker = new RoomBFS(this);
             bad = !seeker.test();
             for(Room r : areas.getRoomList()) {
-                r.setGeomorph(random.nextInt(3));
+                r.setGeomorph(random.nextInt(18));
             }
             connectHubsSparcely(seeker);
             map.populateDirs();

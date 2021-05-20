@@ -1,6 +1,7 @@
 package jaredbgreat.dungeos.componenent.geomorph;
 
 import jaredbgreat.dungeos.util.Registry;
+import java.util.Random;
 
 /**
  *
@@ -260,7 +261,7 @@ public class Geomorphs {
             .setMaterials("Wall:Textures/dirt-01.png"));
        WALLS.add("SimpleOldWood", makeSimpleGeomorph("SimpleOldWood", 
             "Models/geomorphs/walls/simpleb/Geomorph-blank-wall", ".gltf", 1, 20)
-            .setMaterialsNm("Floor:Textures/oldwood-01b-sm.png:Textures/oldwood-01b-sm-nml.png"));
+            .setMaterialsNm("Wall:Textures/oldwood-01b-sm.png:Textures/oldwood-01b-sm-nml.png"));
               
         // Bricks
        WALLS.add("RedBrick", makeSimpleGeomorph("RedBrick", 
@@ -286,7 +287,7 @@ public class Geomorphs {
             "Models/geomorphs/walls/simpleb/Geomorph-blank-ciel.gltf")
                 .setMaterials("Floor:Textures/gneiss-hr.jpg"));
         CIELINGS.add("SimpleMudstone", new GeomorphModel("SimpleMudstone", 
-            "Models/geomorphs/walls/simpleb/Geomorph-blank-floor.gltf")
+            "Models/geomorphs/walls/simpleb/Geomorph-blank-ciel.gltf")
                 .setMaterials("Floor:Textures/mudstone.png"));
                 
         // Marble
@@ -362,8 +363,29 @@ public class Geomorphs {
         addWalls();
         
         // Then, make the actual geomorphs!
+        // First, pure stone...
         register(new Geomorph("SimpleStone", "SimpleStone", "SimpleStone", "SimpleStone"));
         register(new Geomorph("Marble", "SimpleMarble", "SimpleMarble", "SimpleMarble"));
-        register(new Geomorph("BrickNStone", "Concrete01", "RedBrick", "Concrete01"));
+        register(new Geomorph("BlackMarble", "SimpleMarbleBlack", "SimpleMarbleBlack", "SimpleMarbleBlack"));
+        register(new Geomorph("DarkStone", "SimpleDarkStone", "SimpleDarkStone", "SimpleDarkStone"));
+        register(new Geomorph("RoughGneiss", "SimpleGneiss", "SimpleGneiss", "SimpleGneiss"));
+        register(new Geomorph("Mudstone", "SimpleMudstone", "SimpleMudstone", "SimpleMudstone"));
+        register(new Geomorph("BlackGranite", "SimpleGraniteBlack", "SimpleGraniteBlack", "SimpleGraniteBlack"));
+        register(new Geomorph("GreenGranite", "SimpleGraniteGreen", "SimpleGraniteGreen", "SimpleGraniteGreen"));
+        register(new Geomorph("FancyBlackStone", "SimpleFancyStone", "SimpleFancyStone", "SimpleFancyStone"));
+        register(new Geomorph("FancyPaleStone", "SimpleFancyStoneLt", "SimpleFancyStoneLt", "SimpleFancyStoneLt"));
+        register(new Geomorph("LightSandstone", "SimpleSandstoneLt", "SimpleSandstoneLt", "SimpleSandstoneLt"));
+        register(new Geomorph("DarkSandstone", "SimpleSandstone", "SimpleSandstone", "SimpleSandstone"));
+        register(new Geomorph("RedSandstone", "SimpleSandstoneRed", "SimpleSandstoneRed", "SimpleSandstoneRed"));
+        
+        // Mixed/Fancy themes featuring stone textures
+        register(new Geomorph("WhiteMarbleCarpet", "SimpleCarpet01", "SimpleMarble", "SimpleMarble"));
+        register(new Geomorph("FancyBlue", "SimpleCarpet01", "SimpleBlueStone", "SimpleBlueStone"));
+        register(new Geomorph("DirtNStone", "SimpleDirt", "SimpleStoneDark", "SimpleStoneDark"));
+        register(new Geomorph("DarkStone", "SimpleDirt", "SimpleOldWood", "SimpleOldWood"));
+        
+        //Bricks
+        register(new Geomorph("BrickNStone", "Concrete01", "RedBrick", "Concrete03"));
+        register(new Geomorph("BrickNStone", "SimpleCarpet02", "RedBrick", "SimpleOldWood"));
     }
 }
