@@ -6,7 +6,7 @@ import jaredbgreat.dungeos.appstates.AppStateSinglePlayer;
 import jaredbgreat.dungeos.componenent.GeomorphManager;
 import jaredbgreat.dungeos.componenent.geomorph.Geomorphs;
 import jaredbgreat.dungeos.entities.CubeMob;
-import jaredbgreat.dungeos.mapping.tables.Tables;
+import jaredbgreat.dungeos.mapping.decorator.AreaZone;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -24,7 +24,8 @@ public class Dungeon {
     MapMatrix map;
     Sizes size;
     
-    Room[] hubRooms;
+    HubRoom[] hubRooms;
+    AreaZone[] zones;
     Room endRoom;
     Vector3f playerStart;
     
@@ -55,9 +56,10 @@ public class Dungeon {
             doorFixer(); 
             RoomBFS seeker = new RoomBFS(this);
             bad = !seeker.test();
-            for(Room r : areas.getRoomList()) {
-                r.setGeomorph(random.nextInt(18));
-            }
+            //for(Room r : areas.getRoomList()) {
+            //    r.setGeomorph(random.nextInt(18));
+            //}        
+            setupRoomThemes();
             connectHubsSparcely(seeker);
             map.populateDirs();
         }
@@ -122,7 +124,7 @@ public class Dungeon {
     
     private void makeHubRooms() {
         int num = 4 + random.nextInt(2) + random.nextInt(2);
-        hubRooms = new Room[num];
+        hubRooms = new HubRoom[num];
         //int[] dims;
         List<Sector> sectors = Sector.getShuffledList(random);//Sector.getSectorList();
         //Collections.shuffle(sectors, random);
@@ -134,7 +136,7 @@ public class Dungeon {
             int z = random.nextInt(16) + (sector.z * 16);
             RoomSeed seed = new RoomSeed(x, 0, z);
             // Hubrooms are bigger than average
-            hubRooms[i] = seed.growRoom(random.nextInt(5) + 4, random.nextInt(5) + 4, 
+            hubRooms[i] = seed.growHubRoom(random.nextInt(5) + 4, random.nextInt(5) + 4, 
                     1, this, null, room);
             if(hubRooms[i] != null) {
                 RoomList rl = areas.getList(0);
@@ -268,6 +270,31 @@ public class Dungeon {
                 }			
             }
 	}
+        
+        
+        private void setupRoomThemes() {
+            zones = new AreaZone[hubRooms.length];
+            for(int i = 0; i < zones.length; i++) {
+                zones[i] = hubRooms[i].setAreaZone(this, Geomorphs.REGISTRY.getRandomID(random));
+            }
+            int n = areas.getRoomList().size();
+            for(int i = zones.length + 1; i < n; i++) {
+                AreaZone.summateEffect(zones, areas.getRoom(i));
+            }
+            n = areas.getDoorways().size();
+            for(int i = 0; i < n; i++) {
+                AreaZone.summateEffect(zones, areas.getDoorway(i));
+            }
+            n = areas.getTunnels().size();
+            for(int i = 0; i < n; i++) {
+                AreaZone.summateEffect(zones, areas.getTunnel(i));
+            }
+        }
+        
+        
+        public int getThemeIDforLoc(int x, int y, int z) {
+            return AreaZone.summateEffect(zones, x, z);
+        }
         
         
         public void findPlayerStart() {

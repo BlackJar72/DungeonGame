@@ -15,8 +15,12 @@ public class HubRoom extends Room {
     }
     
     
-    public void setAreaZone(Dungeon dungeon, int themeID) {
-        zone = new AreaZone(this, themeID, dungeon.random.nextDouble() + 1, dungeon);        
-    }
+    public AreaZone setAreaZone(Dungeon dungeon, int themeID) {
+        return zone = new AreaZone(this, themeID, dungeon.random.nextDouble() + 1, dungeon);        
+    }    
     
+    
+    public AreaZone getAreaZone() {
+        return zone;
+    }
 }

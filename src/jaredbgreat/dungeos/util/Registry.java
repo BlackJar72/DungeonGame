@@ -2,6 +2,7 @@ package jaredbgreat.dungeos.util;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 
 public class Registry<T> extends ArrayList<T> {
     private final HashMap<String, Integer> intMap = new HashMap<>();
@@ -85,5 +86,16 @@ public class Registry<T> extends ArrayList<T> {
      */
     public int getID(String name) {
         return intMap.get(name);
+    }
+    
+    
+    /**
+     * Returns a random ID.
+     * 
+     * @param random
+     * @return 
+     */
+    public int getRandomID(Random random) {
+        return random.nextInt(size());
     }
 }

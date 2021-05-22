@@ -2,6 +2,7 @@ package jaredbgreat.dungeos.mapping.decorator;
 
 import com.jme3.math.Vector3f;
 import jaredbgreat.dungeos.mapping.dld.Dungeon;
+import jaredbgreat.dungeos.mapping.dld.HubRoom;
 import jaredbgreat.dungeos.mapping.dld.Room;
 
 /**
@@ -13,10 +14,10 @@ public class AreaZone {
     final float x, z;
     final int   value;
     final double strength;
-    Room hub;
+    HubRoom hub;
     Vector3f center;
 
-    public AreaZone(Room hub, int value, double strength, Dungeon dungeon) {
+    public AreaZone(HubRoom hub, int value, double strength, Dungeon dungeon) {
         this.dungeon = dungeon;
         center = hub.getCenterAsVec();
         this.hub = hub;
@@ -48,6 +49,21 @@ public class AreaZone {
             }
         }
         r.setBaseGeomorph(n[index].value);
+    }
+    
+    
+    public static int summateEffect(AreaZone[] n, int x, int z) {
+        double effect = 0.0;
+        int index = 0;
+        double power;
+        for(int i = 0; i < n.length; i++)  {
+                power = n[i].strength / n[i].getWeaknessAt(x, z);
+                if(effect < power) {
+                    effect = power;
+                    index = i;
+            }
+        }
+        return n[index].value;
     }
     
 }

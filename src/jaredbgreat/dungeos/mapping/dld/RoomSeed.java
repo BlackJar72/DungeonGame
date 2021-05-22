@@ -51,8 +51,28 @@ public class RoomSeed {
 						 Dungeon dungeon, Room parent, Room previous) {
 		if(dungeon.areas.getList(0).size() >= dungeon.size.maxRooms) return null;
 		if(dungeon.random.nextBoolean()) 
-			return growRoomX(xdim, zdim, height, dungeon, parent, previous);
-		else return growRoomZ(xdim, zdim, height, dungeon, parent, previous);
+			return growRoomX(xdim, zdim, height, dungeon, parent, previous, false);
+		else return growRoomZ(xdim, zdim, height, dungeon, parent, previous, false);
+	}
+	
+	
+	/**
+	 * The same as growRoom() except the room will be a hub. 
+	 * 
+	 * @param xdim
+	 * @param zdim
+	 * @param height
+	 * @param dungeon
+	 * @param parent
+	 * @param previous
+	 * @return A new room, or null if a room is not created
+	 */
+	public HubRoom growHubRoom(int xdim, int zdim, int height, 
+						 Dungeon dungeon, Room parent, Room previous) {
+		if(dungeon.areas.getList(0).size() >= dungeon.size.maxRooms) return null;
+		if(dungeon.random.nextBoolean()) 
+			return (HubRoom)growRoomX(xdim, zdim, height, dungeon, parent, previous, true);
+		else return (HubRoom)growRoomZ(xdim, zdim, height, dungeon, parent, previous, true);
 	}
 	
 	
@@ -82,7 +102,7 @@ public class RoomSeed {
 	 * @return A new room if successfully create, or null if not
 	 */
 	public Room growRoomX(int xdim, int zdim, int height, 
-						 Dungeon dungeon, Room parent, Room previous) {
+				 Dungeon dungeon, Room parent, Room previous, boolean makeHub) {
 		int container;
 		// Parent should always be null unless growing an island sub-room.
 		if(parent == null) {
@@ -136,7 +156,12 @@ public class RoomSeed {
 			return null; // Not big enough for a room!
 		}
 		else {
-                    Room room = new Room(beginX, endX, beginZ, endZ, y, y + height);
+                    Room room;
+                    if(makeHub) {
+                        room = new HubRoom(beginX, endX, beginZ, endZ, y, y + height);
+                    } else {
+                        room = new Room(beginX, endX, beginZ, endZ, y, y + height);
+                    }
                     return room;
 		}
 	}
@@ -168,7 +193,7 @@ public class RoomSeed {
 	 * @return A new room if successfully create, or null if not
 	 */
 	public Room growRoomZ(int xdim, int zdim, int height, 
-						 Dungeon dungeon, Room parent, Room previous) {
+				 Dungeon dungeon, Room parent, Room previous, boolean makeHub) {
 		int container;
 		// Parent should always be null unless growing an island sub-room.
 		if(parent == null) {
@@ -222,7 +247,12 @@ public class RoomSeed {
 			return null; // Not big enough for a room!
 		}
 		else {
-                    Room room = new Room(beginX, endX, beginZ, endZ, y, y + height);
+                    Room room;
+                    if(makeHub) {
+                        room = new HubRoom(beginX, endX, beginZ, endZ, y, y + height);
+                    } else {
+                        room = new Room(beginX, endX, beginZ, endZ, y, y + height);
+                    }
                     return room;
 		}
 	}

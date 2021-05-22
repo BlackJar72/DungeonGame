@@ -200,7 +200,7 @@ public class Geomorphs {
             .setMaterials("Wall:Textures/stone-hr.png"));
        WALLS.add("SimpleStoneDark", makeSimpleGeomorph("SimpleFloorDark", 
             "Models/geomorphs/walls/simple/Geomorph-blank-wall", 1, 20)
-            .setMaterials("Wall:Textures/stone-hr.png"));
+            .setMaterials("Wall:Textures/stone-dark-hr.png"));
        WALLS.add("SimpleDarkStone", makeSimpleGeomorph("SimpleDarkStone", 
             "Models/geomorphs/walls/simpleb/Geomorph-blank-wall", ".gltf", 1, 20)
             .setMaterials("Wall:Textures/darkstone-hr.png"));
