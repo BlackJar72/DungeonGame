@@ -37,24 +37,7 @@ public class Room {
     }
 
     
-    @Deprecated
-    Room(int startx, int endx, int startz, int endz) {
-        exits = new ArrayList<>();
-        x1 = startx; x2 = endx;
-        z1 = startz; z2 = endz;
-        width = x2 - x1; 
-        length = z2 - z1;
-        centerx = ((float)(width + 1) / 2.0f) + (float)x1;
-        centerz = ((float)(length + 1) / 2.0f) + (float)z1;
-        ix = (int)centerx;
-        iz = (int)centerz;
-        height = 1;
-        y1 = 0;
-        y2 = y1 + height;        
-    }
-
-    
-     Room(int startx, int endx, int startz, int endz, int starty, int endy) {
+    Room(int startx, int endx, int startz, int endz, int starty, int endy) {
         exits = new ArrayList<>();
         x1 = startx; x2 = endx;
         z1 = startz; z2 = endz;
@@ -67,23 +50,6 @@ public class Room {
         height = 1;
         y1 = 0;
         y2 = endy;   
-    }
-
-    
-     @Deprecated
-    Room(int centerx, int centerz, int lowy, int width, int length, int height, boolean nothing) {
-        exits = new ArrayList<>();
-        this.width = width; 
-        this.length = length;
-        this.centerx = ix = centerx;
-        this.centerz = iz = centerz;        
-        x1 = centerx - (width / 2); 
-        x2 = centerx + (width / 2) + (width % 2);
-        z1 = centerz - (length / 2); 
-        z2 = centerz + (length / 2) + (length % 2);
-        this.height = height;
-        y1 = lowy;
-        y2 = y1 + height;        
     }
     
     
@@ -290,4 +256,11 @@ public class Room {
     public String coordsAsString() {
         return "(" + ix + ", " + y1 + ", " + iz + ")";
      }
+
+    public void setBaseGeomorph(int baseGeomorph) {
+        this.baseGeomorph = baseGeomorph;
+    }
+    
+    
+    
 }
