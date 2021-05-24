@@ -1,6 +1,7 @@
 package jaredbgreat.dungeos.entities.controls;
 
 import com.jme3.bullet.control.BetterCharacterControl;
+import com.jme3.light.PointLight;
 import com.jme3.math.FastMath;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
@@ -34,6 +35,8 @@ public class PlayerControl extends AbstractEntityControl {
     private float camHeight;
     private float walk;
     private final Quaternion camq;
+    
+    private PointLight t1, t2;
 
     
     public PlayerControl(AppStateSinglePlayer appState, BetterCharacterControl bcc) {
@@ -83,7 +86,19 @@ public class PlayerControl extends AbstractEntityControl {
             cam.setLocation(spatial.getWorldTranslation().add(0, camHeight, 0));
             cam.setRotation((spatial.getWorldRotation().mult(camq)));
         }
+        if(t1 != null) {
+            t1.setPosition(position.add(Vector3f.UNIT_Y));
+        }
+        if(t2 != null) {
+            t2.setPosition(position.add(Vector3f.UNIT_Y));
+        }
         wAxis = dAxis = 0f;
+    }
+    
+    
+    public void giveTorch(PointLight t1, PointLight t2) {
+        this.t1 = t1;
+        this.t2 = t2;
     }
     
     

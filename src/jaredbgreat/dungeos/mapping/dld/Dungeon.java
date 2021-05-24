@@ -56,9 +56,6 @@ public class Dungeon {
             doorFixer(); 
             RoomBFS seeker = new RoomBFS(this);
             bad = !seeker.test();
-            //for(Room r : areas.getRoomList()) {
-            //    r.setGeomorph(random.nextInt(18));
-            //}        
             setupRoomThemes();
             connectHubsSparcely(seeker);
             map.populateDirs();
@@ -273,12 +270,17 @@ public class Dungeon {
         
         
         private void setupRoomThemes() {
-            zones = new AreaZone[hubRooms.length];
-            for(int i = 0; i < zones.length; i++) {
-                zones[i] = hubRooms[i]
-                        .setAreaZone(this, Geomorphs
-                                .REGISTRY
-                                .getRandomID(random));
+            int nzones = 0;
+            ArrayList<AreaZone> tzones = new ArrayList<>();
+            for(int i = 0; i < hubRooms.length; i++) {
+                if(hubRooms[i] != null) {
+                    tzones.add(hubRooms[i].setAreaZone(this, Geomorphs.REGISTRY.getRandomID(random)));
+                    nzones++;
+                }
+            }
+            zones = new AreaZone[nzones];
+            for(int i = 0; i < nzones; i++) {
+                zones[i] = tzones.get(i);
             }
             int n = areas.getRoomList().size();
             for(int i = zones.length + 1; i < n; i++) {
@@ -287,10 +289,6 @@ public class Dungeon {
             n = areas.getDoorways().size();
             for(int i = 0; i < n; i++) {
                 AreaZone.summateEffect(zones, areas.getDoorway(i));
-            }
-            n = areas.getTunnels().size();
-            for(int i = 0; i < n; i++) {
-                AreaZone.summateEffect(zones, areas.getTunnel(i));
             }
         }
         

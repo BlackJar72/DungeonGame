@@ -266,7 +266,8 @@ public class Geomorphs {
         // Bricks
        WALLS.add("RedBrick", makeSimpleGeomorph("RedBrick", 
             "Models/geomorphs/walls/brick/Geomorph-brick-floor", 1, 20));
-       /*WALLS.add("StoneBrick", makeSimpleGeomorph("StoneBrick",  // Fuck of the fuck of the butt-fucked fuck!!!
+       // These are broken...for some reason, that doesn't appear to be any reason.
+       WALLS.add("StoneBrick", makeSimpleGeomorph("StoneBrick", 
             "Models/geomorphs/walls/StoneBrick/Geomorph-StoneBrick-wall", ".gltf", 1, 20)
             .setMaterials("Wall:Textures/stone-med-hr.png"));
        WALLS.add("SandstoneBrick", makeSimpleGeomorph("SandstoneBrick", 
@@ -274,7 +275,7 @@ public class Geomorphs {
             .setMaterials("Wall:Textures/Sandstone-lt-hr.png"));
        WALLS.add("SandstoneBrickDk", makeSimpleGeomorph("SandstoneBrickDk", 
             "Models/geomorphs/walls/StoneBrick/Geomorph-StoneBrick-wall", ".gltf", 1, 20)
-            .setMaterials("Wall:Textures/Sandstone-hr.png"));*/
+            .setMaterials("Wall:Textures/Sandstone-hr.png"));
     }
     
     

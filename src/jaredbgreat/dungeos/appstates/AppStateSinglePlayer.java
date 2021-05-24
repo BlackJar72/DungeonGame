@@ -79,8 +79,11 @@ public class AppStateSinglePlayer extends BaseAppState {
         player = new Player(this, phynode, physics, dungeon.getPlayerStart());
         app.getStateManager().attach(new AppStateFirstPerson(player));
                 
+        app.makeTestScene(dungeon.getPlayerStart());
+        
         // Lastly lights
         addFourPointLight(0.15f);
+        //giveTorch(dungeon, player);
         
         addbasicTestLights(dungeon);       
         addStartEndMarks(dungeon);
@@ -178,6 +181,23 @@ public class AppStateSinglePlayer extends BaseAppState {
         pLight.setRadius(10);
         rootnode.attachChild(lg);
         rootnode.addLight(pLight);
+    }
+    
+    private void giveTorch(Dungeon dungeon, Player player) {
+        Vector3f plloc = player.getLocation();
+        ColorRGBA lc = ColorRGBA.Yellow.add(ColorRGBA.White);
+        lc.multLocal(0.2f);
+        PointLight p1 = new PointLight(plloc, lc);
+        p1.setRadius(10f);
+        rootnode.addLight(p1);
+        
+        lc.addLocal(ColorRGBA.Orange.mult(0.4f));
+        lc.multLocal(0.025f);
+        PointLight p2 = new PointLight(plloc, lc);
+        p2.setRadius(30f);
+        rootnode.addLight(p2);
+        
+        player.giveTorch(p1, p2);
     }
     
     

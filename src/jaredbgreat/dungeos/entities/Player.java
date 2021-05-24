@@ -3,6 +3,7 @@ package jaredbgreat.dungeos.entities;
 import com.jme3.app.SimpleApplication;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.control.BetterCharacterControl;
+import com.jme3.light.PointLight;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
@@ -49,6 +50,11 @@ public class Player extends AbstractEntity {
         ((SimpleApplication)playgame.getApplication()).getRootNode().attachChild(spatial);
         alive = true;
         score = 0;
+    }
+    
+    
+    public void giveTorch(PointLight t1, PointLight t2) {
+        player.giveTorch(t1, t2);
     }
     
 
