@@ -52,7 +52,7 @@ public class AreaZone {
     }
     
     
-    public static int summateEffect(AreaZone[] n, int x, int z) {
+    public static int summateEffect(AreaZone[] n, float x, float z) {
         double effect = 0.0;
         int index = 0;
         double power;

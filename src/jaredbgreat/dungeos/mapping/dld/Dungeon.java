@@ -68,7 +68,7 @@ public class Dungeon {
         
         map.buildMap(this);
         
-        //addMobs();  
+        addMobs();  
         Main.proflogger.endTask("Build"); 
     }
     
@@ -292,7 +292,7 @@ public class Dungeon {
         }
         
         
-        public int getThemeIDforLoc(int x, int y, int z) {
+        public int getThemeIDforLoc(float x, float y, float z) {
             return AreaZone.summateEffect(zones, x, z);
         }
         

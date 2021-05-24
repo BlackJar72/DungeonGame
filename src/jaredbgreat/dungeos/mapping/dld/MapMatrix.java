@@ -109,7 +109,7 @@ public class MapMatrix {
                     Room theRoom = dungeon.areas.getArea(type[i][j], room[i][j]);
                     Spatial tile;
                     if(type[i][j] == AreaType.TUNNEL.tid) {
-                        tile = Geomorphs.REGISTRY.makeSpatialAt(geomorph[i][j] + dungeon.getThemeIDforLoc(i * 3, theRoom.y1, j * 3), 
+                        tile = Geomorphs.REGISTRY.makeSpatialAt(geomorph[i][j] + dungeon.getThemeIDforLoc((i * 3) + 1.5f, theRoom.y1, (j * 3) + 1.5f), 
                                 i * 3, theRoom.y1 * 3, j * 3);
                     } else {
                         tile = Geomorphs.REGISTRY.makeSpatialAt(geomorph[i][j] + theRoom.getBaseGeomorph(), 
