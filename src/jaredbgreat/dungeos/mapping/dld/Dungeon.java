@@ -68,7 +68,7 @@ public class Dungeon {
         
         map.buildMap(this);
         
-        addMobs();  
+        //addMobs();  
         Main.proflogger.endTask("Build"); 
     }
     
@@ -275,7 +275,10 @@ public class Dungeon {
         private void setupRoomThemes() {
             zones = new AreaZone[hubRooms.length];
             for(int i = 0; i < zones.length; i++) {
-                zones[i] = hubRooms[i].setAreaZone(this, Geomorphs.REGISTRY.getRandomID(random));
+                zones[i] = hubRooms[i]
+                        .setAreaZone(this, Geomorphs
+                                .REGISTRY
+                                .getRandomID(random));
             }
             int n = areas.getRoomList().size();
             for(int i = zones.length + 1; i < n; i++) {
