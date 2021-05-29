@@ -124,6 +124,9 @@ public class RoomBFS {
     
     
     public void connect(Room r1, Room r2) {
+        if((r1 == null) || r2 == null) {
+            return;
+        }
         int x1 = r1.ix, x2 = r2.ix, z1 = r1.iz, z2 = r2.iz;
         int xstep = 0, zstep = 0;
         if(x1 != x2) xstep = (x2 - x1) / Math.abs(x2 - x1);

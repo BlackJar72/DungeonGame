@@ -125,7 +125,7 @@ public class Dungeon {
         //int[] dims;
         List<Sector> sectors = Sector.getShuffledList(random);//Sector.getSectorList();
         //Collections.shuffle(sectors, random);
-        for(int i = 0; i < hubRooms.length; i++) {
+        for(int i = 0; (i < hubRooms.length) && (i < sectors.size()); i++) {
             //dims = Tables.getRoomSize(random);
             // FIXME: This can be done better!
             Sector sector = sectors.get(i);
@@ -133,8 +133,10 @@ public class Dungeon {
             int z = random.nextInt(16) + (sector.z * 16);
             RoomSeed seed = new RoomSeed(x, 0, z);
             // Hubrooms are bigger than average
+            do {
             hubRooms[i] = seed.growHubRoom(random.nextInt(5) + 4, random.nextInt(5) + 4, 
                     1, this, null, room);
+            } while (hubRooms[i] == null);
             if(hubRooms[i] != null) {
                 RoomList rl = areas.getList(0);
                 rl.add(hubRooms[i]);
