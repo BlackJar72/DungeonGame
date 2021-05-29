@@ -125,34 +125,35 @@ public class Dungeon {
         //int[] dims;
         List<Sector> sectors = Sector.getShuffledList(random);//Sector.getSectorList();
         //Collections.shuffle(sectors, random);
-        for(int i = 0; (i < hubRooms.length) && (i < sectors.size()); i++) {
-            //dims = Tables.getRoomSize(random);
-            // FIXME: This can be done better!
-            Sector sector = sectors.get(i);
-            int x = random.nextInt(16) + (sector.x * 16);
-            int z = random.nextInt(16) + (sector.z * 16);
-            RoomSeed seed = new RoomSeed(x, 0, z);
-            // Hubrooms are bigger than average
+        int j = 0;
+        for(int i = 0; (i < hubRooms.length) && ((i + j) < sectors.size()); i++) {            
             do {
-            hubRooms[i] = seed.growHubRoom(random.nextInt(5) + 4, random.nextInt(5) + 4, 
-                    1, this, null, room);
-            } while (hubRooms[i] == null);
-            if(hubRooms[i] != null) {
-                RoomList rl = areas.getList(0);
-                rl.add(hubRooms[i]);
-                hubRooms[i].setID(rl.realSize());
-                switch(random.nextInt(2)) {
-                    case 0:
-                        hubRooms[i].setGeomorph(b);
-                        break;
-                    case 1:
-                    default:
-                        hubRooms[i].setGeomorph(a);
-                        break;
+                Sector sector = sectors.get(i + j);
+                int x = random.nextInt(16) + (sector.x * 16);
+                int z = random.nextInt(16) + (sector.z * 16);
+                RoomSeed seed = new RoomSeed(x, 0, z);
+                // Hubrooms are bigger than average
+                hubRooms[i] = seed.growHubRoom(random.nextInt(5) + 4, random.nextInt(5) + 4, 
+                        1, this, null, room);
+                if(hubRooms[i] != null) {
+                    RoomList rl = areas.getList(0);
+                    rl.add(hubRooms[i]);
+                    hubRooms[i].setID(rl.realSize());
+                    switch(random.nextInt(2)) {
+                        case 0:
+                            hubRooms[i].setGeomorph(b);
+                            break;
+                        case 1:
+                        default:
+                            hubRooms[i].setGeomorph(a);
+                            break;
+                    }
+                    hubRooms[i].buildIn(map);
+                    hubRooms[i].addDoors(this, false);
+                } else {
+                    j++;
                 }
-                hubRooms[i].buildIn(map);
-                hubRooms[i].addDoors(this, false);
-            }
+            } while (hubRooms[i] == null);
         }
     }
     
