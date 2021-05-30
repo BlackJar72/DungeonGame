@@ -101,7 +101,6 @@ public class Main extends SimpleApplication {
     
     public void makeTestScene(Vector3f center) {
         addBedroom(center);
-        //addAnime(center);
         addTableScene(center);
     }
     
