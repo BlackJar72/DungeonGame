@@ -79,10 +79,10 @@ public class AppStateSinglePlayer extends BaseAppState {
         player = new Player(this, phynode, physics, dungeon.getPlayerStart());
         app.getStateManager().attach(new AppStateFirstPerson(player));
                 
-        //app.makeTestScene(dungeon.getPlayerStart());
+        app.makeTestScene(dungeon.getPlayerStart());
         
         // Lastly lights
-        addFourPointLight(0.15f);
+        addFourPointLight(0.5f);
         //giveTorch(dungeon, player);
         
         addbasicTestLights(dungeon);       

@@ -102,6 +102,7 @@ public class Main extends SimpleApplication {
     public void makeTestScene(Vector3f center) {
         addBedroom(center);
         addTableScene(center);
+        addTestGoblins(center);
     }
     
     
@@ -129,6 +130,14 @@ public class Main extends SimpleApplication {
                 "Models/test/Rin_2_(Native)/Rin_2_(Native).j3o");        
         rootNode.attachChild(anime.makeSpatialAt(center.x + 1, center.y, center.z));
         rootNode.attachChild(anime.makeSpatialAt(-3.5f + center.x, center.y + 0.01f, -0.8f + center.z));
+    }
+    
+    
+    private void addTestGoblins(Vector3f center) {
+        GeomorphModel goblin = new GeomorphModel("Goblin", 
+                "Models/Creatures/goblin/goblin001.glb");        
+        rootNode.attachChild(goblin.makeSpatialAt(center.x + 1, center.y, center.z));
+        //rootNode.attachChild(goblin.makeSpatialAt(-3.5f + center.x, center.y + 0.01f, -0.8f + center.z));
     }
     
     

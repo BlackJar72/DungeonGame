@@ -52,7 +52,7 @@ public class PlayerControl extends AbstractEntityControl {
         relativeBackward = 1f;
         spatialAngle = 0;
         camAngle = 0;
-        camHeight = height = 1.6f;
+        camHeight = height = 1.5f;
         camq = new Quaternion();
         physics = bcc;
         physics.setDuckedFactor(0.65f);
