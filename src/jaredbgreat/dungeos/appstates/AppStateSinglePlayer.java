@@ -1,10 +1,11 @@
 package jaredbgreat.dungeos.appstates;
 
-import com.jme3.animation.AnimControl;
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.asset.AssetManager;
 import com.jme3.bullet.BulletAppState;
+import com.jme3.font.BitmapFont;
+import com.jme3.font.BitmapText;
 import com.jme3.light.DirectionalLight;
 import com.jme3.light.PointLight;
 import com.jme3.material.Material;
@@ -17,7 +18,6 @@ import com.jme3.scene.shape.Sphere;
 import jaredbgreat.dungeos.Main;
 import jaredbgreat.dungeos.componenent.GeomorphManager;
 import jaredbgreat.dungeos.entities.Player;
-import jaredbgreat.dungeos.mapping.TestMap;
 import jaredbgreat.dungeos.mapping.dld.Dungeon;
 import java.util.Random;
 
@@ -35,8 +35,13 @@ public class AppStateSinglePlayer extends BaseAppState {
     Main app;
     Node rootnode; 
     
-    Player player; // wtf is this?!? Its not the object I assign to it!!!
-    volatile volatileVec playerPos; // "volatile," it does nothing!
+    Player player; 
+    volatile volatileVec playerPos;    
+    
+    BitmapFont font;
+    BitmapFont bigfont;
+    BitmapText healthtxt;
+    StringBuilder healthstr;
     
     
     public static final class volatileVec {
@@ -81,6 +86,7 @@ public class AppStateSinglePlayer extends BaseAppState {
         app.getStateManager().attach(new AppStateFirstPerson(player));
                 
         app.makeTestScene(dungeon.getPlayerStart());
+        setupTexts();
         
         // Lastly lights
         addFourPointLight(0.1f);
@@ -97,6 +103,22 @@ public class AppStateSinglePlayer extends BaseAppState {
     
     @Override
     protected void cleanup(Application app) {}
+    
+    
+    private void setupTexts() {        
+        font = app.getAssetManager().loadFont("Interface/Fonts/Default.fnt");        
+        bigfont = app.getAssetManager().loadFont("Interface/Fonts/Default.fnt");
+        healthtxt = new BitmapText(font);
+        
+        healthtxt.setText(healthstr = new StringBuilder("Health: 20"));
+        healthtxt.setSize(font.getCharSet().getRenderedSize() * 2);
+        healthtxt.move((app.getContext().getSettings().getWidth() 
+                              - healthtxt.getLineWidth()) / 2, 
+                      app.getContext().getSettings().getHeight() 
+                              - healthtxt.getLineHeight() * 2,
+                      0);
+        app.getGuiNode().attachChild(healthtxt);
+    }
     
     
     
@@ -238,6 +260,9 @@ public class AppStateSinglePlayer extends BaseAppState {
     
     
     public void hurtPlayer() {
-        System.out.println("\tYou have " + player.beHurt() + " hit points left.");
+        int hp = player.beHurt();
+        healthstr.delete(8, Integer.MAX_VALUE);
+        healthstr.append(hp);
+        healthtxt.setText(healthstr);
     }
 }

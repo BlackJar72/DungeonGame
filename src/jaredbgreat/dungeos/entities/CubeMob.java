@@ -73,7 +73,6 @@ public class CubeMob extends AbstractEntity implements PhysicsCollisionListener{
     private void hurtPlayer() {
         long t = System.currentTimeMillis();
         if(attackCoolDown < t) {
-            System.out.println(Player.NAME + ": Ouch, I ran into " + name + "!");
             game.hurtPlayer();
             attackCoolDown = t + 1000;
         }
