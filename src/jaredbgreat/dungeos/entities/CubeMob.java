@@ -10,6 +10,7 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import jaredbgreat.dungeos.appstates.AppStateSinglePlayer;
+import jaredbgreat.dungeos.componenent.geomorph.GeomorphModel;
 import jaredbgreat.dungeos.entities.controls.CubeMobControl;
 import jaredbgreat.dungeos.mapping.dld.Dungeon;
 
@@ -29,9 +30,11 @@ public class CubeMob extends AbstractEntity implements PhysicsCollisionListener{
             BulletAppState physics, Vector3f startPos, String name) {
         this.game = game;
         this.name = name;
-        spatial = dungeon.getGeomorphManager().dummyCube(0.65f, ColorRGBA.Red);
+        GeomorphModel cube = new GeomorphModel("DeathCube", 
+                "Models/Creatures/deathcube/DeathCube.glb");        
+        spatial = cube.getSpatial();
         spatial.setLocalTranslation(startPos);
-        physicsControl = new BetterCharacterControl(0.65f, 1.3f, 150f);
+        physicsControl = new BetterCharacterControl(0.5f, 1f, 150f);
         spatial.addControl(physicsControl);
         spatial.setName(name);
         physics.getPhysicsSpace().add(physicsControl);

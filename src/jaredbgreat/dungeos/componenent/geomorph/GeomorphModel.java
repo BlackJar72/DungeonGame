@@ -165,6 +165,13 @@ public class GeomorphModel {
     }
     
     
+    public Spatial getSpatial() {
+        Node out = template.clone(true);
+        System.out.println(out.getName());
+        return out;
+    }
+      
+    
     public static void setAssetManager(AssetManager manager) {
         assetman = manager;
     }

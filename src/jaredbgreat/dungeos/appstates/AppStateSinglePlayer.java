@@ -82,7 +82,7 @@ public class AppStateSinglePlayer extends BaseAppState {
         app.makeTestScene(dungeon.getPlayerStart());
         
         // Lastly lights
-        addFourPointLight(0.5f);
+        addFourPointLight(0.1f);
         //giveTorch(dungeon, player);
         
         addbasicTestLights(dungeon);       
