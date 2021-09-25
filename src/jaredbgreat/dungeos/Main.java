@@ -1,5 +1,6 @@
 package jaredbgreat.dungeos;
 
+import com.jme3.animation.AnimControl;
 import com.jme3.app.SimpleApplication;
 import com.jme3.asset.AssetManager;
 import com.jme3.bullet.BulletAppState;
@@ -43,7 +44,6 @@ public class Main extends SimpleApplication {
         initPhysics();
         initGeomorphs();      
         stateManager.attach(new AppStateSinglePlayer());
-        
         //makeTestScene();
     }
     

@@ -1,5 +1,6 @@
 package jaredbgreat.dungeos.mapping.dld;
 
+import com.jme3.animation.AnimControl;
 import com.jme3.math.Vector3f;
 import jaredbgreat.dungeos.Main;
 import jaredbgreat.dungeos.appstates.AppStateSinglePlayer;
@@ -336,8 +337,9 @@ public class Dungeon {
             for(Room r : areas.getRoomList()) {
                 if((r.id > 1) && random.nextInt(3) == 0) {
                     CubeMob cb = new CubeMob(game, this, game.getApplications().getRootNode(), 
-                            game.getPhysics(), r.getCenterAsVec(), "Cube" + i);
+                            game.getPhysics(), r.getCenterAsVec(), "DeathCube." + i);
                     i++;
+                    game.getPhysics().getPhysicsSpace().addCollisionListener(cb);
                 }
             }
         }

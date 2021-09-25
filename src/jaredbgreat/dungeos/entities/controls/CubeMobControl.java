@@ -2,15 +2,12 @@ package jaredbgreat.dungeos.entities.controls;
 
 import com.jme3.bullet.control.BetterCharacterControl;
 import com.jme3.collision.CollisionResults;
-import com.jme3.material.Material;
-import com.jme3.math.ColorRGBA;
 import com.jme3.math.FastMath;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 import com.jme3.math.Ray;
 import com.jme3.renderer.ViewPort;
-import com.jme3.scene.Node;
 import jaredbgreat.dungeos.appstates.AppStateSinglePlayer;
 import java.util.Random;
 
@@ -24,15 +21,15 @@ public class CubeMobControl extends AbstractEntityControl {
     private final Vector3f heading;
     private final Vector3f previous;
     private final Random random;
-    private float speed;
+    private final float speed;
     private float height;
-    private float hRotSpeed;
-    private float vRotSpeed;
+    private final float hRotSpeed;
+    private final float vRotSpeed;
     private float wAxis;
-    private float relativeForward;
-    private float relativeBackward;
+    private final float relativeForward;
+    private final float relativeBackward;
     private float spatialAngle;
-    private float walk;
+    private final float walk;
     private boolean moving;
     private boolean attacking;
     private int turnfails;

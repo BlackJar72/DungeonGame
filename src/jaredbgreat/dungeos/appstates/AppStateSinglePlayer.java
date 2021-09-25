@@ -1,5 +1,6 @@
 package jaredbgreat.dungeos.appstates;
 
+import com.jme3.animation.AnimControl;
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.asset.AssetManager;
@@ -233,5 +234,10 @@ public class AppStateSinglePlayer extends BaseAppState {
     
     public volatileVec getPlayerPos() {
         return playerPos;
+    }
+    
+    
+    public void hurtPlayer() {
+        System.out.println("\tYou have " + player.beHurt() + " hit points left.");
     }
 }
