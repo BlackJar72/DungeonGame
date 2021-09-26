@@ -101,10 +101,6 @@ public class MapMatrix {
         RoomList rooms = dungeon.areas.getList(0);
         for(int i = 0; i < geomorph.length; i++) {
             for(int j = 0; j < geomorph[i].length; j++) {
-                //if(room[i][j] > -1) System.out.print(' ');
-                //if(room[i][j] < 10) System.out.print(' ');
-                //if(room[i][j] < 100) System.out.print(' ');
-                //System.out.print(room[i][j]);
                 if(room[i][j] > 0) {
                     Room theRoom = dungeon.areas.getArea(type[i][j], room[i][j]);
                     Spatial tile;
@@ -115,12 +111,7 @@ public class MapMatrix {
                         tile = Geomorphs.REGISTRY.makeSpatialAt(geomorph[i][j] + theRoom.getBaseGeomorph(), 
                                 i * 3, theRoom.y1 * 3, j * 3);
                     }
-                    //System.out.println(geomorph[i][j] + " = " + theRoom.getBaseGeomorph() + "?");
-                    //for(Spatial s : ((Node)tile).getChildren()) {
-                    //    System.out.println(s.getName());
-                    //}
-                    //System.out.println(tile.getName());
-                    tile.setName("Dungeon!");
+                    tile.setName("Dungeon: Room " + theRoom.id + " at " + i + ", " + j);
                     dungeon.geoman.attachSpatial(tile, theRoom.roomSpace);                
                 }
             }

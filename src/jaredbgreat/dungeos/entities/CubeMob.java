@@ -1,9 +1,8 @@
 package jaredbgreat.dungeos.entities;
 
-import com.jme3.animation.AnimChannel;
-import com.jme3.animation.AnimControl;
 import com.jme3.app.SimpleApplication;
 import com.jme3.bullet.BulletAppState;
+import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.collision.PhysicsCollisionEvent;
 import com.jme3.bullet.collision.PhysicsCollisionListener;
 import com.jme3.bullet.control.BetterCharacterControl;
@@ -25,7 +24,7 @@ public class CubeMob extends AbstractEntity implements PhysicsCollisionListener{
     private final CubeMobControl mobControl;
     private final BetterCharacterControl physicsControl;
     private Geometry visual;
-    private final String name;
+    private String name;
     private boolean alive;
     private long attackCoolDown;
     
@@ -62,11 +61,13 @@ public class CubeMob extends AbstractEntity implements PhysicsCollisionListener{
 
     @Override
     public void collision(PhysicsCollisionEvent pce) {
-        String a = pce.getNodeA().getName();
-        String b = pce.getNodeB().getName();
-        if(((a == Player.NAME) && (b == name)) || ((b == Player.NAME) && (a == name))) {            
-            hurtPlayer();
-        }     
+        try {
+            String a = pce.getNodeA().getName();
+            String b = pce.getNodeB().getName();
+            if(((a == Player.NAME) && (b == name)) || ((b == Player.NAME) && (a == name))) {            
+                hurtPlayer();
+            } 
+        } catch (NullPointerException e) {}
     }
     
     
@@ -76,6 +77,18 @@ public class CubeMob extends AbstractEntity implements PhysicsCollisionListener{
             game.hurtPlayer();
             attackCoolDown = t + 1000;
         }
+    }
+    
+    
+    public void die(PhysicsSpace physics) {
+        Node parentNode = spatial.getParent();
+        physics.removeCollisionListener(this);
+        physics.removeAll(spatial);
+        spatial.removeControl(mobControl);
+        spatial.removeControl(physicsControl);
+        parentNode.detachChild(spatial);
+        spatial = null;
+        name = "_nothing_";
     }
     
 }

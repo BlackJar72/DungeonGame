@@ -7,6 +7,7 @@ import com.jme3.bullet.BulletAppState;
 import com.jme3.font.BitmapFont;
 import com.jme3.font.BitmapText;
 import com.jme3.light.DirectionalLight;
+import com.jme3.light.Light;
 import com.jme3.light.PointLight;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
@@ -19,6 +20,8 @@ import jaredbgreat.dungeos.Main;
 import jaredbgreat.dungeos.componenent.GeomorphManager;
 import jaredbgreat.dungeos.entities.Player;
 import jaredbgreat.dungeos.mapping.dld.Dungeon;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -36,20 +39,36 @@ public class AppStateSinglePlayer extends BaseAppState {
     Node rootnode; 
     
     Player player; 
-    volatile volatileVec playerPos;    
+    volatile VolatileVec playerPos;    
     
     BitmapFont font;
     BitmapFont bigfont;
     BitmapText healthtxt;
     StringBuilder healthstr;
+    Dungeon dungeon;
+    static final List<Light> LIGHTS = new ArrayList<>();
     
     
-    public static final class volatileVec {
+    public static final class VolatileVec {
         volatile float x, y, z;
         public void set(float nx, float ny, float nz) {
             x = nx; y = ny; z = nz;
         }
         public void set(Vector3f v) {
+            x = v.x; y = v.y; z = v.z;
+        }
+        public void get(Vector3f v) {
+            v.x = x; v.y = y; v.z = z;
+        }
+    }
+    
+    
+    public static final class FinalVec {
+        public final float x, y, z;
+        public FinalVec(float nx, float ny, float nz) {
+            x = nx; y = ny; z = nz;
+        }
+        public FinalVec(Vector3f v) {
             x = v.x; y = v.y; z = v.z;
         }
         public void get(Vector3f v) {
@@ -66,31 +85,21 @@ public class AppStateSinglePlayer extends BaseAppState {
         assetman = app.getAssetManager();
         rootnode = app.getRootNode();
         phynode = geomanager.getPhysicsNode();
-        playerPos = new volatileVec();
+        playerPos = new VolatileVec();
     }
 
     
     @Override
-    protected void onEnable() {
-        
-        app.getFlyByCamera().setMoveSpeed(10);
-        // Create world from map
-        //TestMap testmap = new TestMap();
-        //testmap.build(); 
-        //TestMap testmap = new TestMap();
-        //testmap.build(); 
-        Dungeon dungeon = new Dungeon(this, geomanager);
-                
-        //player = new Player(this, phynode, physics);
+    protected void onEnable() { 
+        dungeon = new Dungeon(this, geomanager);
         player = new Player(this, phynode, physics, dungeon.getPlayerStart());
         app.getStateManager().attach(new AppStateFirstPerson(player));
                 
-        app.makeTestScene(dungeon.getPlayerStart());
         setupTexts();
         
         // Lastly lights
-        addFourPointLight(0.1f);
-        //giveTorch(dungeon, player);
+        addFourPointLight(0.01f);
+        giveTorch(dungeon, player);
         
         addbasicTestLights(dungeon);       
         addStartEndMarks(dungeon);
@@ -103,6 +112,13 @@ public class AppStateSinglePlayer extends BaseAppState {
     
     @Override
     protected void cleanup(Application app) {}
+    
+    
+    public void clearDungeon() {
+        dungeon.clear();
+        dungeon = null;
+        removeAllLights();
+    }
     
     
     private void setupTexts() {        
@@ -121,6 +137,18 @@ public class AppStateSinglePlayer extends BaseAppState {
     }
     
     
+    public void addLight(Light l) {        
+        rootnode.addLight(l);
+        LIGHTS.add(l);
+    }
+    
+    
+    public void removeAllLights() {
+        for(Light l : LIGHTS) {
+            rootnode.removeLight(l);
+        }
+        LIGHTS.clear();
+    }
     
     
     private void addFourPointLight(float brightness) {
@@ -134,10 +162,10 @@ public class AppStateSinglePlayer extends BaseAppState {
         p2 = new DirectionalLight(d2, ColorRGBA.White.mult(brightness));
         p3 = new DirectionalLight(d3, ColorRGBA.White.mult(brightness));
         p4 = new DirectionalLight(d4, ColorRGBA.White.mult(brightness / 2.0f));
-        rootnode.addLight(p1);
-        rootnode.addLight(p2);
-        rootnode.addLight(p3);
-        rootnode.addLight(p4);        
+        addLight(p1);
+        addLight(p2);
+        addLight(p3);
+        addLight(p4);        
     }
     
     private void addbasicTestLights(Dungeon dungeon) {
@@ -156,27 +184,9 @@ public class AppStateSinglePlayer extends BaseAppState {
         lg.setLocalTranslation(plloc);
         pLight.setRadius(10);
         rootnode.attachChild(lg);
-        rootnode.addLight(pLight);
+        addLight(pLight);
     }
     
-    private void addbasicTestLights() {
-        //addFourPointLight(0.15f);
-        Vector3f plloc = new Vector3f(0, 2.5f, 0);
-        PointLight pLight = new PointLight(plloc, (ColorRGBA.White
-                    .add(ColorRGBA.Orange).add(ColorRGBA.Yellow))
-                .multLocal(0.20f));
-        Mesh lb = new Sphere(8, 8, 0.1f);
-        Material lm = new Material(assetman, 
-                "Common/MatDefs/Misc/Unshaded.j3md");
-        lm.setColor("Color", ColorRGBA.White
-                    .add(ColorRGBA.Orange).add(ColorRGBA.Yellow).mult(0.3f));
-        Geometry lg = new Geometry("Light", lb);
-        lg.setMaterial(lm);
-        lg.setLocalTranslation(plloc);
-        pLight.setRadius(10);
-        rootnode.attachChild(lg);
-        rootnode.addLight(pLight);
-    }
     
     private void addStartEndMarks(Dungeon dungeon) {
         Vector3f plloc = dungeon.getLevelEndSpot().add(new Vector3f(0, 4.5f, 0));
@@ -190,7 +200,7 @@ public class AppStateSinglePlayer extends BaseAppState {
         lg.setLocalTranslation(plloc);
         pLight.setRadius(10);
         rootnode.attachChild(lg);
-        rootnode.addLight(pLight);
+        addLight(pLight);
         
         plloc = dungeon.getPlayerStart().add(new Vector3f(0, 4.5f, 0));
         pLight = new PointLight(plloc, ColorRGBA.Blue);
@@ -203,7 +213,7 @@ public class AppStateSinglePlayer extends BaseAppState {
         lg.setLocalTranslation(plloc);
         pLight.setRadius(10);
         rootnode.attachChild(lg);
-        rootnode.addLight(pLight);
+        addLight(pLight);
     }
     
     private void giveTorch(Dungeon dungeon, Player player) {
@@ -212,13 +222,13 @@ public class AppStateSinglePlayer extends BaseAppState {
         lc.multLocal(0.2f);
         PointLight p1 = new PointLight(plloc, lc);
         p1.setRadius(10f);
-        rootnode.addLight(p1);
+        addLight(p1);
         
         lc.addLocal(ColorRGBA.Orange.mult(0.4f));
         lc.multLocal(0.025f);
         PointLight p2 = new PointLight(plloc, lc);
         p2.setRadius(30f);
-        rootnode.addLight(p2);
+        addLight(p2);
         
         player.giveTorch(p1, p2);
     }
@@ -254,7 +264,7 @@ public class AppStateSinglePlayer extends BaseAppState {
     }
     
     
-    public volatileVec getPlayerPos() {
+    public VolatileVec getPlayerPos() {
         return playerPos;
     }
     

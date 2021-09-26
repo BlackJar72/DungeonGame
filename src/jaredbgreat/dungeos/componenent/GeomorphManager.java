@@ -13,6 +13,8 @@ import com.jme3.scene.Spatial;
 import com.jme3.scene.shape.Box;
 import com.jme3.scene.shape.Line;
 import jaredbgreat.dungeos.mapping.AbstractMap;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -23,6 +25,7 @@ public class GeomorphManager {
     final AssetManager assetman;
     final BulletAppState physics;
     final Node phynode, rootnode;
+    final List<Spatial> inWorld;
     
     //TODO: A system for tracking spatials for removal
     
@@ -32,7 +35,8 @@ public class GeomorphManager {
         assetman = assetManager;
         physics = bullet;
         rootnode = rootNode;
-        phynode = physicsNode;        
+        phynode = physicsNode;
+        inWorld = new ArrayList<>();
     }
     
     
@@ -59,7 +63,8 @@ public class GeomorphManager {
         rootnode.attachChild(spatial);
         RigidBodyControl spphy = new RigidBodyControl(0f);
         spatial.addControl(spphy);
-        physics.getPhysicsSpace().add(spphy);        
+        physics.getPhysicsSpace().add(spphy);     
+        inWorld.add(spatial);
     }
     
     
@@ -67,12 +72,14 @@ public class GeomorphManager {
         node.attachChild(spatial);
         RigidBodyControl spphy = new RigidBodyControl(0f);
         spatial.addControl(spphy);
-        physics.getPhysicsSpace().add(spphy);        
+        physics.getPhysicsSpace().add(spphy);
+        inWorld.add(spatial);
     }
     
     
     public void attachNode(Node spatial) {
-        rootnode.attachChild(spatial);        
+        rootnode.attachChild(spatial);
+        inWorld.add(spatial);
     }
     
     
@@ -91,9 +98,19 @@ public class GeomorphManager {
         spatial.removeFromParent();
     }
     
+    
+    public void removeSpatials() {
+        for(Spatial s : inWorld) {
+            removeSpatial(s);
+        }
+        inWorld.clear();
+    }
+    
+    
     public Node getPhysicsNode() {
         return phynode;
     }
+    
     
     public BulletAppState getPhysics() {
         return physics;
@@ -113,7 +130,8 @@ public class GeomorphManager {
         gl.setMesh(ml);
         Material mat = new Material(assetman, "Common/MatDefs/Misc/Unshaded.j3md");
         mat.setColor("Color", ColorRGBA.Green);
-        gl.setMaterial(mat);
+        gl.setMaterial(mat);        
+        inWorld.add(gl);
         rootnode.attachChild(gl);
     }
     
@@ -124,7 +142,8 @@ public class GeomorphManager {
         gl.setMesh(ml);
         Material mat = new Material(assetman, "Common/MatDefs/Misc/Unshaded.j3md");
         mat.setColor("Color", c);
-        gl.setMaterial(mat);
+        gl.setMaterial(mat);      
+        inWorld.add(gl);
         rootnode.attachChild(gl);
     }
     
@@ -137,8 +156,9 @@ public class GeomorphManager {
         mat.setColor("Color", c);
         cube.setMaterial(mat);
         cube.setLocalTranslation(0f, size, 0f);
-        Node model = new Node();
-        model.attachChild(cube);
+        Node model = new Node(); 
+        model.attachChild(cube);     
+        inWorld.add(cube);
         return model;
     }
 
@@ -151,7 +171,8 @@ public class GeomorphManager {
         cube.setMaterial(mat);
         cube.setLocalTranslation(0f, size, 0f);
         Node model = new Node();
-        model.attachChild(cube);
+        model.attachChild(cube);     
+        inWorld.add(cube);
         return model;
     }
     

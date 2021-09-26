@@ -1,6 +1,5 @@
 package jaredbgreat.dungeos;
 
-import com.jme3.animation.AnimControl;
 import com.jme3.app.SimpleApplication;
 import com.jme3.asset.AssetManager;
 import com.jme3.bullet.BulletAppState;
@@ -13,11 +12,15 @@ import com.jme3.renderer.RenderManager;
 import com.jme3.scene.Node;
 import com.jme3.system.AppSettings;
 import jaredbgreat.dungeos.appstates.AppStateSinglePlayer;
+import jaredbgreat.dungeos.appstates.AppStateStartScreen;
 import jaredbgreat.dungeos.componenent.GeomorphManager;
 import jaredbgreat.dungeos.componenent.geomorph.GeomorphModel;
 import jaredbgreat.dungeos.componenent.geomorph.Geomorphs;
 import jaredbgreat.dungeos.util.debug.DLDProfile;
 import jaredbgreat.dungeos.util.debug.IProfiler;
+import java.awt.DisplayMode;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.util.Random;
 
 /**
@@ -27,24 +30,38 @@ import java.util.Random;
  */
 public class Main extends SimpleApplication {    
     public static final IProfiler  proflogger = new DLDProfile();
+    private static AppStateSinglePlayer play;
+    private static AppStateStartScreen start;
     GeomorphManager geomanager;
     BulletAppState physics;
     Node worldNode;
 
     public static void main(String[] args) {
-        AppSettings settings = new AppSettings(true);
-        settings.setTitle("Dungeon Game");
-        settings.setVSync(true);
         Main app = new Main();
+        AppSettings settings = new AppSettings(false);
+        settings.setTitle("Cubic Nightmare");
+        settings.setSettingsDialogImage("Interface/CubicNightmare.png");
+        GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+        DisplayMode mode = device.getDisplayMode();
+        settings.setFullscreen(true);
+        settings.setFrameRate(mode.getRefreshRate());
+        settings.setFrequency(mode.getRefreshRate());
+        settings.setHeight(mode.getHeight());
+        settings.setWidth(mode.getWidth());
+        settings.setBitsPerPixel(mode.getBitDepth());
+        settings.setVSync(true);
+        app.setSettings(settings);
         app.start();
     }
 
     @Override
     public void simpleInitApp() {
         initPhysics();
-        initGeomorphs();      
-        stateManager.attach(new AppStateSinglePlayer());
-        //makeTestScene();
+        initGeomorphs();
+        play  = new AppStateSinglePlayer();
+        start = new AppStateStartScreen();
+        stateManager.attach(start);
+        //stateManager.attach(play);
     }
     
     
@@ -83,6 +100,26 @@ public class Main extends SimpleApplication {
         mat.setBoolean("UseMaterialColors", false);
         mat.setFloat("Shininess", specular);
         return mat;
+    }
+    
+    
+    public void startGame() {
+        if(stateManager.hasState(start)) {
+            stateManager.detach(start);
+        }
+        if(stateManager.hasState(play)) {
+            stateManager.detach(play);            
+        }
+        stateManager.attach(play = new AppStateSinglePlayer());
+    }
+    
+    
+    public void endGame() {
+        if(stateManager.hasState(play)) {
+            play.clearDungeon();
+            stateManager.detach(play); 
+        }
+        stateManager.attach(start);
     }
     
     

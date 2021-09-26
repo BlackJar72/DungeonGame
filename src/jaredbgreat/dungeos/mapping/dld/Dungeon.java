@@ -1,6 +1,6 @@
 package jaredbgreat.dungeos.mapping.dld;
 
-import com.jme3.animation.AnimControl;
+import com.jme3.bullet.PhysicsSpace;
 import com.jme3.math.Vector3f;
 import jaredbgreat.dungeos.Main;
 import jaredbgreat.dungeos.appstates.AppStateSinglePlayer;
@@ -30,6 +30,7 @@ public class Dungeon {
     Room endRoom;
     Vector3f playerStart;
     
+    final List<CubeMob> mobs;    
     
     int b;
     int a;
@@ -42,6 +43,7 @@ public class Dungeon {
         this.geoman = geoman;
         size = Sizes.LARGE;
         playerStart = new Vector3f();
+        mobs = new ArrayList<>();
         build();
     }
     
@@ -340,8 +342,24 @@ public class Dungeon {
                             game.getPhysics(), r.getCenterAsVec(), "DeathCube." + i);
                     i++;
                     game.getPhysics().getPhysicsSpace().addCollisionListener(cb);
+                    mobs.add(cb);
                 }
             }
+        }
+        
+        
+        public void removeMobs() {
+            PhysicsSpace physics = game.getPhysics().getPhysicsSpace();
+            for(CubeMob mob : mobs) {
+                mob.die(physics);
+            }
+            mobs.clear();
+        }
+        
+        
+        public void clear() {
+            removeMobs();
+            geoman.removeSpatials();
         }
     
     

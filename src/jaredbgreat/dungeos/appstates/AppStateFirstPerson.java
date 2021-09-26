@@ -135,8 +135,8 @@ public class AppStateFirstPerson extends BaseAppState implements ActionListener,
             case ControlConstants.RUN:
                 control.setWalk(isPressed);
                 break;
-        //app.endGame();
             case ControlConstants.TO_MENUS:
+                app.endGame();
                 break;
             default:
                 break;
