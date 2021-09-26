@@ -101,7 +101,7 @@ public class AppStateSinglePlayer extends BaseAppState {
         setupTexts();
         
         // Lastly lights
-        addFourPointLight(0.01f);
+        addFourPointLight(0.1f);
         giveTorch(dungeon, player);      
         addStartEndMarks(dungeon);
     }
