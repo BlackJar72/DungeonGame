@@ -94,7 +94,7 @@ public class Geomorphs {
      * Methods calls to add floor sections.
      */
     private void addFloors() {
-        // Basic and unworked stone
+        // Basic and unworked stone 
         FLOORS.add("SimpleStone", new GeomorphModel("SimpleStone", 
             "Models/geomorphs/floors/Geomorph-blank-floor.j3o")
                 .setMaterials("Floor:Textures/stone-hr.png"));
@@ -110,6 +110,8 @@ public class Geomorphs {
         FLOORS.add("SimpleMudstone", new GeomorphModel("SimpleMudstone", 
             "Models/geomorphs/walls/simpleb/Geomorph-blank-floor.gltf")
                 .setMaterials("Floor:Textures/mudstone.png"));
+        FLOORS.add("CobbleStone", new GeomorphModel("CobbleStone", 
+            "Models/geomorphs/floors/Geomorph-cobble-nml-floor.glb"));
         
         // Marble
         FLOORS.add("SimpleMarble", new GeomorphModel("SimpleMarble", 
@@ -266,15 +268,14 @@ public class Geomorphs {
         // Bricks
        WALLS.add("RedBrick", makeSimpleGeomorph("RedBrick", 
             "Models/geomorphs/walls/brick/Geomorph-brick-floor", 1, 20));
-       // These are broken...for some reason, that doesn't appear to be any reason.
        WALLS.add("StoneBrick", makeSimpleGeomorph("StoneBrick", 
-            "Models/geomorphs/walls/StoneBrick/Geomorph-StoneBrick-wall", ".gltf", 1, 20)
+            "Models/geomorphs/walls/StoneBrick/Geomorph-StoneBrick-wall", ".glb", 1, 20)
             .setMaterials("Wall:Textures/stone-med-hr.png"));
        WALLS.add("SandstoneBrick", makeSimpleGeomorph("SandstoneBrick", 
-            "Models/geomorphs/walls/StoneBrick/Geomorph-StoneBrick-wall", ".gltf", 1, 20)
+            "Models/geomorphs/walls/StoneBrick/Geomorph-StoneBrick-wall", ".glb", 1, 20)
             .setMaterials("Wall:Textures/Sandstone-lt-hr.png"));
        WALLS.add("SandstoneBrickDk", makeSimpleGeomorph("SandstoneBrickDk", 
-            "Models/geomorphs/walls/StoneBrick/Geomorph-StoneBrick-wall", ".gltf", 1, 20)
+            "Models/geomorphs/walls/StoneBrick/Geomorph-StoneBrick-wall", ".glb", 1, 20)
             .setMaterials("Wall:Textures/Sandstone-hr.png"));
     }
     
@@ -394,9 +395,8 @@ public class Geomorphs {
         //Bricks
         register(new Geomorph("BrickNStone", "Concrete01", "RedBrick", "Concrete03"));
         register(new Geomorph("BrickNCarpet", "SimpleCarpet02", "RedBrick", "SimpleOldWood"));
-        //register(new Geomorph("StoneBrick01", "SimpleStoneDark", "StoneBrick", "SimpleStone"));
-        //register(new Geomorph("StoneBrick02", "SimpleCarpet02", "StoneBrick", "SimpleOldWood"));
-        //register(new Geomorph("SandstoneBrick01", "SimpleSandstoneLt", "SandstoneBrick", "SimpleSandstoneLt"));
-        //register(new Geomorph("SandstoneBrick02", "SimpleSandstone", "SandstoneBrickDk", "SimpleSandstone"));
+        register(new Geomorph("StoneBrick02", "CobbleStone", "StoneBrick", "SimpleOldWood"));
+        register(new Geomorph("SandstoneBrick01", "SimpleSandstoneLt", "SandstoneBrick", "SimpleSandstoneLt"));
+        register(new Geomorph("SandstoneBrick02", "SimpleSandstone", "SandstoneBrickDk", "SimpleSandstone"));
     }
 }

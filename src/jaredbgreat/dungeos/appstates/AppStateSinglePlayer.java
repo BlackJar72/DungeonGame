@@ -15,11 +15,13 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Mesh;
 import com.jme3.scene.Node;
+import com.jme3.scene.Spatial;
 import com.jme3.scene.shape.Sphere;
 import jaredbgreat.dungeos.Main;
 import jaredbgreat.dungeos.componenent.GeomorphManager;
 import jaredbgreat.dungeos.entities.Player;
 import jaredbgreat.dungeos.mapping.dld.Dungeon;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -47,6 +49,7 @@ public class AppStateSinglePlayer extends BaseAppState {
     StringBuilder healthstr;
     Dungeon dungeon;
     static final List<Light> LIGHTS = new ArrayList<>();
+    Spatial startMarker, finishMarker;
     
     
     public static final class VolatileVec {
@@ -99,9 +102,7 @@ public class AppStateSinglePlayer extends BaseAppState {
         
         // Lastly lights
         addFourPointLight(0.01f);
-        giveTorch(dungeon, player);
-        
-        addbasicTestLights(dungeon);       
+        giveTorch(dungeon, player);      
         addStartEndMarks(dungeon);
     }
 
@@ -148,6 +149,10 @@ public class AppStateSinglePlayer extends BaseAppState {
             rootnode.removeLight(l);
         }
         LIGHTS.clear();
+        rootnode.detachChild(startMarker);        
+        startMarker.removeFromParent();
+        rootnode.detachChild(finishMarker);
+        finishMarker.removeFromParent();
     }
     
     
@@ -168,51 +173,33 @@ public class AppStateSinglePlayer extends BaseAppState {
         addLight(p4);        
     }
     
-    private void addbasicTestLights(Dungeon dungeon) {
-        //addFourPointLight(0.15f);
-        Vector3f plloc = dungeon.getLevelEndSpot().add(new Vector3f(0, 2.5f, 0));
-        PointLight pLight = new PointLight(plloc, (ColorRGBA.White
-                    .add(ColorRGBA.Orange).add(ColorRGBA.Yellow))
-                .multLocal(0.20f));
-        Mesh lb = new Sphere(8, 8, 0.1f);
-        Material lm = new Material(assetman, 
-                "Common/MatDefs/Misc/Unshaded.j3md");
-        lm.setColor("Color", ColorRGBA.White
-                    .add(ColorRGBA.Orange).add(ColorRGBA.Yellow).mult(0.3f));
-        Geometry lg = new Geometry("Light", lb);
-        lg.setMaterial(lm);
-        lg.setLocalTranslation(plloc);
-        pLight.setRadius(10);
-        rootnode.attachChild(lg);
-        addLight(pLight);
-    }
-    
     
     private void addStartEndMarks(Dungeon dungeon) {
-        Vector3f plloc = dungeon.getLevelEndSpot().add(new Vector3f(0, 4.5f, 0));
-        PointLight pLight = new PointLight(plloc, ColorRGBA.Red);
+        ColorRGBA ec = ColorRGBA.White.add(ColorRGBA.Orange).add(ColorRGBA.Yellow);
+        Vector3f plloc = dungeon.getLevelEndSpot().add(new Vector3f(0, 2.5f, 0));
+        PointLight pLight = new PointLight(plloc, ColorRGBA.Red.mult(0.5f).add(ec.mult(0.1f)));
         Mesh lb = new Sphere(8, 8, 0.1f);
         Material lm = new Material(assetman, 
                 "Common/MatDefs/Misc/Unshaded.j3md");
-        lm.setColor("Color", ColorRGBA.Red);
-        Geometry lg = new Geometry("Light", lb);
-        lg.setMaterial(lm);
-        lg.setLocalTranslation(plloc);
+        lm.setColor("Color", ec.multLocal(0.3f));
+        finishMarker = (Spatial)(new Geometry("Light", lb));
+        finishMarker.setMaterial(lm);
+        finishMarker.setLocalTranslation(plloc);
         pLight.setRadius(10);
-        rootnode.attachChild(lg);
+        rootnode.attachChild(finishMarker);
         addLight(pLight);
         
-        plloc = dungeon.getPlayerStart().add(new Vector3f(0, 4.5f, 0));
+        plloc = dungeon.getPlayerStart().add(new Vector3f(0, 2.5f, 0));
         pLight = new PointLight(plloc, ColorRGBA.Blue);
         lb = new Sphere(8, 8, 0.1f);
         lm = new Material(assetman, 
                 "Common/MatDefs/Misc/Unshaded.j3md");
         lm.setColor("Color", ColorRGBA.Blue);
-        lg = new Geometry("Light", lb);
-        lg.setMaterial(lm);
-        lg.setLocalTranslation(plloc);
+        startMarker = new Geometry("Light", lb);
+        startMarker.setMaterial(lm);
+        startMarker.setLocalTranslation(plloc);
         pLight.setRadius(10);
-        rootnode.attachChild(lg);
+        rootnode.attachChild(startMarker);
         addLight(pLight);
     }
     
