@@ -80,7 +80,7 @@ public class AppStateStartScreen extends BaseAppState implements ActionListener 
         quitNode.setLocalTranslation((w - 224) / 2, ((h - 96) / 2) - 64, 1);
         app.getGuiNode().attachChild(quitNode);
         Mesh quitquad = new Quad(224, 96);
-        Geometry quitButton = new Geometry("squitButton", quitquad);
+        Geometry quitButton = new Geometry("quitButton", quitquad);
         mat = MaterialMaker.makeGuiMaterial(app.getAssetManager(), "Interface/QuitGame.png");
         quitButton.setMaterial(mat);
         quitNode.attachChild(quitButton);
