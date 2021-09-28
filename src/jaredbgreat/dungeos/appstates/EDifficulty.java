@@ -9,7 +9,7 @@ public enum EDifficulty {
     LOOKING (0.3f,   0f,     10f, 30f, 5.5f, 1000L),
     EASY    (0.1f,   0.1f,   10f, 30f, 5.75f, 900L),
     NORMAL  (0.03f,  0.2f,   10f, 30f, 6.0f,  800L),
-    HARD    (0.01f,  0.2f ,  10f, 30f, 6.25f, 750L),
+    HARD    (0.01f,  0.2f ,  10f, 30f, 6.25f, 700L),
     HORROR  (0f,     0.175f,  6f, 10f, 6.5f,  500L);
     
     
