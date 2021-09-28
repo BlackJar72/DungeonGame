@@ -9,6 +9,7 @@ import com.jme3.renderer.RenderManager;
 import com.jme3.math.Ray;
 import com.jme3.renderer.ViewPort;
 import jaredbgreat.dungeos.appstates.AppStateSinglePlayer;
+import jaredbgreat.dungeos.appstates.EDifficulty;
 import java.util.Random;
 
 /**
@@ -33,12 +34,14 @@ public class CubeMobControl extends AbstractEntityControl {
     private boolean moving;
     private boolean attacking;
     private int turnfails;
+    EDifficulty diff;
 
     
     public CubeMobControl(AppStateSinglePlayer appState, BetterCharacterControl bcc) {
         super(appState);
         random = new Random();
-        speed = appState.getApplications().getDifficulty().mobSpeed;
+        diff = appState.getApplications().getDifficulty();
+        speed = diff.mobSpeed * diff.genericFactor;
         walk = 1.0f;
         hRotSpeed = 100f;
         vRotSpeed = 100f;
@@ -92,7 +95,7 @@ public class CubeMobControl extends AbstractEntityControl {
             physics.setViewDirection(new Quaternion()
                     .fromAngleNormalAxis(spatialAngle, Vector3f.UNIT_Y).mult(heading, heading));        
         }
-        if((d > 1) && (previous.distance(spatial.getLocalTranslation()) < (3 * f))) {
+        if((d > 1) && (previous.distance(spatial.getLocalTranslation()) < (3 * f * diff.genericFactor))) {
             if((distToPlayer() > 4)) attacking = false;
             if(random.nextInt(3) < turnfails) {
                 spatialAngle += FastMath.PI;

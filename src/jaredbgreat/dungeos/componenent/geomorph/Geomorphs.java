@@ -287,8 +287,7 @@ public class Geomorphs {
        WALLS.add("RedBrick", makeSimpleGeomorph("RedBrick", 
             "Models/geomorphs/walls/brick/Geomorph-brick-floor", 1, 20));
        WALLS.add("StoneBrick", makeSimpleGeomorph("StoneBrick", 
-            "Models/geomorphs/walls/StoneBrick/Geomorph-StoneBrick-wall", ".glb", 1, 20)
-            .setMaterials("Wall:Textures/stone-med-hr.png"));
+            "Models/geomorphs/walls/StoneBrick/Geomorph-StoneBrick-wall", ".glb", 1, 20));
        WALLS.add("SandstoneBrick", makeSimpleGeomorph("SandstoneBrick", 
             "Models/geomorphs/walls/StoneBrick/Geomorph-StoneBrick-wall", ".glb", 1, 20)
             .setMaterials("Wall:Textures/Sandstone-lt-hr.png"));

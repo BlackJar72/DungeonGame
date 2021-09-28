@@ -41,7 +41,7 @@ public class PlayerControl extends AbstractEntityControl {
     
     public PlayerControl(AppStateSinglePlayer appState, BetterCharacterControl bcc) {
         super(appState);
-        speed = 8.0f;
+        speed = 8.0f * appState.getApplications().getDifficulty().genericFactor;
         walk = 1.0f;
         hRotSpeed = 100f;
         vRotSpeed = 100f;

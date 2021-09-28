@@ -9,14 +9,10 @@ import com.jme3.font.BitmapText;
 import com.jme3.light.DirectionalLight;
 import com.jme3.light.Light;
 import com.jme3.light.PointLight;
-import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
-import com.jme3.scene.Geometry;
-import com.jme3.scene.Mesh;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
-import com.jme3.scene.shape.Sphere;
 import jaredbgreat.dungeos.Main;
 import jaredbgreat.dungeos.componenent.GeomorphManager;
 import jaredbgreat.dungeos.componenent.geomorph.Geomorphs;
@@ -111,11 +107,20 @@ public class AppStateSinglePlayer extends BaseAppState {
         }
         addStartEndMarks(dungeon);
     }
+    
+    
+    @Override
+    public void update(float tpf) {
+        if(player.getLocation().distanceSquared(dungeon.getLevelEndSpot()) < 0.707106781187f) {
+            app.endGame();
+        }
+    }
 
     
     @Override
     protected void onDisable() {}
-
+    
+    
     
     @Override
     protected void cleanup(Application app) {}
