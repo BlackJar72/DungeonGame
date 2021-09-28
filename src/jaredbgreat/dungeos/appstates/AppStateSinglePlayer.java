@@ -19,6 +19,7 @@ import com.jme3.scene.Spatial;
 import com.jme3.scene.shape.Sphere;
 import jaredbgreat.dungeos.Main;
 import jaredbgreat.dungeos.componenent.GeomorphManager;
+import jaredbgreat.dungeos.componenent.geomorph.Geomorphs;
 import jaredbgreat.dungeos.entities.Player;
 import jaredbgreat.dungeos.mapping.dld.Dungeon;
 import java.util.ArrayList;
@@ -181,32 +182,26 @@ public class AppStateSinglePlayer extends BaseAppState {
     
     private void addStartEndMarks(Dungeon dungeon) {
         ColorRGBA ec = ColorRGBA.White.add(ColorRGBA.Orange).add(ColorRGBA.Yellow);
-        Vector3f plloc = dungeon.getLevelEndSpot().add(new Vector3f(0, 2.5f, 0));
-        PointLight pLight = new PointLight(plloc, ColorRGBA.Red.mult(0.5f).add(ec.mult(0.1f)));
-        Mesh lb = new Sphere(8, 8, 0.1f);
-        Material lm = new Material(assetman, 
-                "Common/MatDefs/Misc/Unshaded.j3md");
-        lm.setColor("Color", ec.multLocal(0.3f));
-        finishMarker = (Spatial)(new Geometry("Light", lb));
-        finishMarker.setMaterial(lm);
+        Vector3f plloc = dungeon.getLevelEndSpot();
+        PointLight pLight = new PointLight(plloc.add(Vector3f.UNIT_Y), 
+                (ColorRGBA.Red.mult(0.25f).add(ec.mult(0.25f)).mult(difficulty.genericFactor)));
+        finishMarker = Geomorphs.getDecor().getFromName("EndPad").getSpatial();
         finishMarker.setLocalTranslation(plloc);
+        GeomorphManager.manager.attachSpatial(finishMarker);
         pLight.setRadius(10);
-        rootnode.attachChild(finishMarker);
         addLight(pLight);
         
-        plloc = dungeon.getPlayerStart().add(new Vector3f(0, 2.5f, 0));
-        pLight = new PointLight(plloc, ColorRGBA.Blue);
-        lb = new Sphere(8, 8, 0.1f);
-        lm = new Material(assetman, 
-                "Common/MatDefs/Misc/Unshaded.j3md");
-        lm.setColor("Color", ColorRGBA.Blue);
-        startMarker = new Geometry("Light", lb);
-        startMarker.setMaterial(lm);
+        plloc = dungeon.getPlayerStart();
+        pLight = new PointLight(plloc.add(Vector3f.UNIT_Y), 
+                (ColorRGBA.Blue.add(ColorRGBA.White).mult(0.5f)).mult(difficulty.genericFactor));
+        startMarker = Geomorphs.getDecor().getFromName("StartPad").getSpatial();
         startMarker.setLocalTranslation(plloc);
-        pLight.setRadius(10);
+        GeomorphManager.manager.attachSpatial(startMarker);
         rootnode.attachChild(startMarker);
+        pLight.setRadius(10);
         addLight(pLight);
     }
+    
     
     private void giveTorch(Dungeon dungeon, Player player) {
         Vector3f plloc = player.getLocation();

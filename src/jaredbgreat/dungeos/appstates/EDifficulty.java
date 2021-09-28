@@ -19,6 +19,7 @@ public enum EDifficulty {
     public final float tmax2;
     public final float mobSpeed;
     public final long  mobCooldown;
+    public final float genericFactor;
     
 
     static final EDifficulty DEFAULT = NORMAL;
@@ -32,6 +33,7 @@ public enum EDifficulty {
         this.tmax2       = tmax2;
         this.mobSpeed    = mobSpeed;
         this.mobCooldown = mobCooldown;
+        genericFactor    = (float)(((double)mobCooldown) / 1000d);
     }
     
     

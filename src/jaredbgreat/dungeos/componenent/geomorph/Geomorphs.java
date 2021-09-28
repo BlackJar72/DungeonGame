@@ -13,6 +13,7 @@ public class Geomorphs {
     static final Registry<GeomorphModel>  FLOORS   = new Registry<>();
     static final Registry<GeomorphModel>  CIELINGS = new Registry<>();
     static final Registry<SimpleGeomorph> WALLS    = new Registry<>();
+    static final Registry<GeomorphModel>  DECOR    = new Registry<>();
     
     
     private Geomorphs() {}
@@ -87,6 +88,23 @@ public class Geomorphs {
     
     SimpleGeomorph getWalls(String name) {
         return WALLS.getFromName(name);
+    }
+    
+    
+    GeomorphModel getDecor(String name) {
+        return DECOR.getFromName(name);
+    }
+    
+    
+    /**
+     * Methods calls to add decor models.
+     */
+    private void addDecor() {
+        // Gameplay objects 
+        DECOR.add("StartPad", new GeomorphModel("StartPad", 
+            "Models/geomorphs/gameplay/StartPad.glb")); 
+        DECOR.add("EndPad", new GeomorphModel("EndPad", 
+            "Models/geomorphs/gameplay/EndPad.glb"));
     }
     
     
@@ -372,6 +390,7 @@ public class Geomorphs {
         addFloors();
         addCielings();
         addWalls();
+        addDecor();
         
         // Then, make the actual geomorphs!
         // First, pure stone...
@@ -398,5 +417,10 @@ public class Geomorphs {
         register(new Geomorph("StoneBrick02", "CobbleStone", "StoneBrick", "SimpleOldWood"));
         register(new Geomorph("SandstoneBrick01", "SimpleSandstoneLt", "SandstoneBrick", "SimpleSandstoneLt"));
         register(new Geomorph("SandstoneBrick02", "SimpleSandstone", "SandstoneBrickDk", "SimpleSandstone"));
+    }
+    
+    
+    public static Registry<GeomorphModel> getDecor() {
+        return DECOR;
     }
 }

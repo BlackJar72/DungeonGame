@@ -11,12 +11,13 @@ import java.util.Random;
  */
 public class GeomorphRegistry extends Registry<IGeomorph> {
     
-    
-    @Deprecated
+
     /**
      * This exists only to add deprecation; do not use this, use 
      * getGeomorph() instead (or getModel() for GeomorphModels).
-     */  
+     */      
+    @Deprecated
+    @Override
     public IGeomorph get(int index) {
         return super.get(index);
     }
