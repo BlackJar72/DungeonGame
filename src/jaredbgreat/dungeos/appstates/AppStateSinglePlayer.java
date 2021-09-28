@@ -21,7 +21,6 @@ import jaredbgreat.dungeos.Main;
 import jaredbgreat.dungeos.componenent.GeomorphManager;
 import jaredbgreat.dungeos.entities.Player;
 import jaredbgreat.dungeos.mapping.dld.Dungeon;
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -42,6 +41,7 @@ public class AppStateSinglePlayer extends BaseAppState {
     
     Player player; 
     volatile VolatileVec playerPos;    
+    EDifficulty difficulty;
     
     BitmapFont font;
     BitmapFont bigfont;
@@ -93,7 +93,8 @@ public class AppStateSinglePlayer extends BaseAppState {
 
     
     @Override
-    protected void onEnable() { 
+    protected void onEnable() {
+        difficulty = app.getDifficulty();
         dungeon = new Dungeon(this, geomanager);
         player = new Player(this, phynode, physics, dungeon.getPlayerStart());
         app.getStateManager().attach(new AppStateFirstPerson(player));
@@ -101,8 +102,12 @@ public class AppStateSinglePlayer extends BaseAppState {
         setupTexts();
         
         // Lastly lights
-        addFourPointLight(0.1f);
-        giveTorch(dungeon, player);      
+        if(difficulty.alight > 0) {
+            addFourPointLight(difficulty.alight);
+        }
+        if(difficulty.tbright > 0) {
+            giveTorch(dungeon, player); 
+        }
         addStartEndMarks(dungeon);
     }
 
@@ -206,15 +211,15 @@ public class AppStateSinglePlayer extends BaseAppState {
     private void giveTorch(Dungeon dungeon, Player player) {
         Vector3f plloc = player.getLocation();
         ColorRGBA lc = ColorRGBA.Yellow.add(ColorRGBA.White);
-        lc.multLocal(0.2f);
+        lc.multLocal(difficulty.tbright);
         PointLight p1 = new PointLight(plloc, lc);
-        p1.setRadius(10f);
+        p1.setRadius(difficulty.tmax1);
         addLight(p1);
         
         lc.addLocal(ColorRGBA.Orange.mult(0.4f));
-        lc.multLocal(0.025f);
+        lc.multLocal(Math.max(difficulty.alight, 0.025f));
         PointLight p2 = new PointLight(plloc, lc);
-        p2.setRadius(30f);
+        p2.setRadius(difficulty.tmax2);
         addLight(p2);
         
         player.giveTorch(p1, p2);

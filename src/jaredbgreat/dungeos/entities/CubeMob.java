@@ -10,6 +10,7 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import jaredbgreat.dungeos.appstates.AppStateSinglePlayer;
+import jaredbgreat.dungeos.appstates.EDifficulty;
 import jaredbgreat.dungeos.componenent.geomorph.GeomorphModel;
 import jaredbgreat.dungeos.entities.controls.CubeMobControl;
 import jaredbgreat.dungeos.mapping.dld.Dungeon;
@@ -23,15 +24,16 @@ public class CubeMob extends AbstractEntity implements PhysicsCollisionListener{
     private final AppStateSinglePlayer game;
     private final CubeMobControl mobControl;
     private final BetterCharacterControl physicsControl;
-    private Geometry visual;
     private String name;
     private boolean alive;
+    private final EDifficulty diff;
     private long attackCoolDown;
     
     public CubeMob(AppStateSinglePlayer game, Dungeon dungeon, Node parent, 
             BulletAppState physics, Vector3f startPos, String name) {
         this.game = game;
         this.name = name;
+        diff = game.getApplications().getDifficulty();
         GeomorphModel cube = new GeomorphModel("DeathCube", 
                 "Models/Creatures/deathcube/DeathCube.glb");        
         spatial = cube.getSpatial();
@@ -75,12 +77,13 @@ public class CubeMob extends AbstractEntity implements PhysicsCollisionListener{
         long t = System.currentTimeMillis();
         if(attackCoolDown < t) {
             game.hurtPlayer();
-            attackCoolDown = t + 1000;
+            attackCoolDown = t + diff.mobCooldown;
         }
     }
     
     
     public void die(PhysicsSpace physics) {
+        alive = false;
         Node parentNode = spatial.getParent();
         physics.removeCollisionListener(this);
         physics.removeAll(spatial);

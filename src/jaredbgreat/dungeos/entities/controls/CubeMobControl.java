@@ -38,7 +38,7 @@ public class CubeMobControl extends AbstractEntityControl {
     public CubeMobControl(AppStateSinglePlayer appState, BetterCharacterControl bcc) {
         super(appState);
         random = new Random();
-        speed = 6.0f;
+        speed = appState.getApplications().getDifficulty().mobSpeed;
         walk = 1.0f;
         hRotSpeed = 100f;
         vRotSpeed = 100f;

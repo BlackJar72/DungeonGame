@@ -22,6 +22,7 @@ public final class RadioButton extends ToggleButton {
         this.id = id;
         this.holder = holder;
         super.attachGeometries(on, off);
+        super.setCommand(notifier);
     }
     
     
@@ -33,6 +34,9 @@ public final class RadioButton extends ToggleButton {
     public int getID() {
         return id;
     }
+    
+    
+    
         
     
 }

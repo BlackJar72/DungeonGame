@@ -13,6 +13,7 @@ import com.jme3.scene.Node;
 import com.jme3.system.AppSettings;
 import jaredbgreat.dungeos.appstates.AppStateSinglePlayer;
 import jaredbgreat.dungeos.appstates.AppStateStartScreen;
+import jaredbgreat.dungeos.appstates.EDifficulty;
 import jaredbgreat.dungeos.componenent.GeomorphManager;
 import jaredbgreat.dungeos.componenent.geomorph.GeomorphModel;
 import jaredbgreat.dungeos.componenent.geomorph.Geomorphs;
@@ -32,6 +33,7 @@ public class Main extends SimpleApplication {
     public static final IProfiler  proflogger = new DLDProfile();
     private static AppStateSinglePlayer play;
     private static AppStateStartScreen start;
+    EDifficulty difficulty;
     GeomorphManager geomanager;
     BulletAppState physics;
     Node worldNode;
@@ -104,6 +106,7 @@ public class Main extends SimpleApplication {
     
     
     public void startGame() {
+        difficulty = start.getDifficulty();
         if(stateManager.hasState(start)) {
             stateManager.detach(start);
         }
@@ -120,6 +123,11 @@ public class Main extends SimpleApplication {
             stateManager.detach(play); 
         }
         stateManager.attach(start);
+    }
+    
+    
+    public EDifficulty getDifficulty() {
+        return difficulty;
     }
     
     

@@ -16,9 +16,11 @@ import com.jme3.material.Material;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Mesh;
+import com.jme3.scene.Node;
 import com.jme3.scene.shape.Quad;
 import jaredbgreat.boulders.util.MaterialMaker;
 import jaredbgreat.dungeos.Main;
+import jaredbgreat.gui.ButtonList;
 import jaredbgreat.gui.CommandFinder;
 import jaredbgreat.gui.CommandNode;
 import jaredbgreat.gui.IGuiCommand;
@@ -33,6 +35,7 @@ public class AppStateStartScreen extends BaseAppState implements ActionListener 
             = new MouseButtonTrigger(MouseInput.BUTTON_LEFT);
     private static final Trigger RIGHT_CLICK 
             = new MouseButtonTrigger(MouseInput.BUTTON_RIGHT);
+    ButtonList difflist;
     CommandFinder interpreter;
     Main app;
 
@@ -50,40 +53,9 @@ public class AppStateStartScreen extends BaseAppState implements ActionListener 
         
         int h = app.getContext().getSettings().getHeight();
         int w = app.getContext().getSettings().getWidth();
-        Mesh backquad = new Quad(w, h);
-        Geometry background = new Geometry("background", backquad);
-        Material mat = MaterialMaker.makeGuiMaterial(app.getAssetManager(), 
-                "Interface/MenuTitle.png");
-        background.setMaterial(mat);
-        app.getGuiNode().attachChild(background);
         
-        CommandNode startNode = new CommandNode(new IGuiCommand() {
-            @Override
-            public void execute() {
-                app.startGame();
-            }            
-        });        
-        startNode.setLocalTranslation((w - 224) / 2, ((h - 96) / 2) + 64, 1);
-        app.getGuiNode().attachChild(startNode);
-        Mesh startquad = new Quad(224, 96);
-        Geometry startButton = new Geometry("startButton", startquad);
-        mat = MaterialMaker.makeGuiMaterial(app.getAssetManager(), "Interface/StartGame.png");
-        startButton.setMaterial(mat);
-        startNode.attachChild(startButton);
-        
-        CommandNode quitNode = new CommandNode(new IGuiCommand() {
-            @Override
-            public void execute() {
-                app.stop();
-            }            
-        });        
-        quitNode.setLocalTranslation((w - 224) / 2, ((h - 96) / 2) - 64, 1);
-        app.getGuiNode().attachChild(quitNode);
-        Mesh quitquad = new Quad(224, 96);
-        Geometry quitButton = new Geometry("quitButton", quitquad);
-        mat = MaterialMaker.makeGuiMaterial(app.getAssetManager(), "Interface/QuitGame.png");
-        quitButton.setMaterial(mat);
-        quitNode.attachChild(quitButton);
+        addMainButtons(h, w);
+        addDifficultyButtons(h, w);
         
         app.getInputManager().addMapping(CLICK_GUI, LEFT_CLICK);
         app.getInputManager().addListener(this, CLICK_GUI);
@@ -110,6 +82,146 @@ public class AppStateStartScreen extends BaseAppState implements ActionListener 
             interpreter.processClick();
         }
     }
+    
+    
+    public EDifficulty getDifficulty() {
+        return EDifficulty.setCurrent(difflist.getSelected());
+    }
+    
+    
+    private void addMainButtons(int h, int w) {
+        int mh = Math.min(((h - 96) / 2) + 64, (h / 2) - 96);
+        Mesh backquad = new Quad(w, h);
+        Geometry background = new Geometry("background", backquad);
+        Material mat = MaterialMaker.makeGuiMaterial(app.getAssetManager(), 
+                "Interface/MenuTitle.png");
+        background.setMaterial(mat);
+        app.getGuiNode().attachChild(background);
+        
+        CommandNode startNode = new CommandNode(new IGuiCommand() {
+            @Override
+            public void execute() {
+                app.startGame();
+            }            
+        });        
+        startNode.setLocalTranslation((w - 224) / 2, mh + 64, 1);
+        app.getGuiNode().attachChild(startNode);
+        Mesh startquad = new Quad(224, 96);
+        Geometry startButton = new Geometry("startButton", startquad);
+        mat = MaterialMaker.makeGuiMaterial(app.getAssetManager(), "Interface/StartGame.png");
+        startButton.setMaterial(mat);
+        startNode.attachChild(startButton);
+        
+        CommandNode quitNode = new CommandNode(new IGuiCommand() {
+            @Override
+            public void execute() {
+                app.stop();
+            }            
+        });        
+        quitNode.setLocalTranslation((w - 224) / 2, mh - 64, 1);
+        app.getGuiNode().attachChild(quitNode);
+        Mesh quitquad = new Quad(224, 96);
+        Geometry quitButton = new Geometry("quitButton", quitquad);
+        mat = MaterialMaker.makeGuiMaterial(app.getAssetManager(), "Interface/QuitGame.png");
+        quitButton.setMaterial(mat);
+        quitNode.attachChild(quitButton);        
+    }
+    
+    
+    private void addDifficultyButtons(int h1, int w1) {
+        difflist = new ButtonList();
+        Node gui = app.getGuiNode();
+        int bw = Math.min((w1 / 2) - 112, 256);
+        int bh = (72 * bw) / 256;
+        int w = w1 - bw;
+        int h = Math.min((h1 / 2) + bh, (h1 / 2));
+        Material mat;
+        Geometry bon, boff;
+        Mesh quad;
+        Node node;
+        
+        quad = new Quad(bw, bh);
+        bon = new Geometry("lookingOn", quad);
+        mat = MaterialMaker.makeGuiMaterial(app.getAssetManager(), "Interface/Looking-on.png");
+        bon.setMaterial(mat);
+        bon.setLocalTranslation(Vector3f.ZERO);
+        quad = new Quad(bw, bh);        
+        boff = new Geometry("lookingOff", quad);
+        mat = MaterialMaker.makeGuiMaterial(app.getAssetManager(), "Interface/Looking-off.png");
+        boff.setMaterial(mat);
+        bon.setLocalTranslation(Vector3f.ZERO);
+        difflist.addButton(bon, boff);
+        node = difflist.getNode(0);
+        node.setLocalTranslation(w, h, 1);
+        gui.attachChild(node);
+        h -= bh;
+        
+        quad = new Quad(bw, bh);
+        bon = new Geometry("EasyOn", quad);
+        mat = MaterialMaker.makeGuiMaterial(app.getAssetManager(), "Interface/Easy-on.png");
+        bon.setMaterial(mat);
+        bon.setLocalTranslation(Vector3f.ZERO);
+        quad = new Quad(bw, bh);        
+        boff = new Geometry("EasyOff", quad);
+        mat = MaterialMaker.makeGuiMaterial(app.getAssetManager(), "Interface/Easy-off.png");
+        boff.setMaterial(mat);
+        bon.setLocalTranslation(Vector3f.ZERO);
+        difflist.addButton(bon, boff);
+        node = difflist.getNode(1);
+        node.setLocalTranslation(w, h, 1);
+        gui.attachChild(node);
+        h -= bh;
+        
+        quad = new Quad(bw, bh);
+        bon = new Geometry("normalOn", quad);
+        mat = MaterialMaker.makeGuiMaterial(app.getAssetManager(), "Interface/Normal-on.png");
+        bon.setMaterial(mat);
+        bon.setLocalTranslation(Vector3f.ZERO);
+        quad = new Quad(bw, bh);        
+        boff = new Geometry("normalOff", quad);
+        mat = MaterialMaker.makeGuiMaterial(app.getAssetManager(), "Interface/Normal-off.png");
+        boff.setMaterial(mat);
+        bon.setLocalTranslation(Vector3f.ZERO);
+        difflist.addButton(bon, boff);
+        node = difflist.getNode(2);
+        node.setLocalTranslation(w, h, 1);
+        gui.attachChild(node);
+        h -= bh;
+        
+        quad = new Quad(bw, bh);
+        bon = new Geometry("hardOn", quad);
+        mat = MaterialMaker.makeGuiMaterial(app.getAssetManager(), "Interface/Hard-on.png");
+        bon.setMaterial(mat);
+        bon.setLocalTranslation(Vector3f.ZERO);
+        quad = new Quad(bw, bh);        
+        boff = new Geometry("hardOff", quad);
+        mat = MaterialMaker.makeGuiMaterial(app.getAssetManager(), "Interface/Hard-off.png");
+        boff.setMaterial(mat);
+        bon.setLocalTranslation(Vector3f.ZERO);
+        difflist.addButton(bon, boff);
+        node = difflist.getNode(3);
+        node.setLocalTranslation(w, h, 1);
+        gui.attachChild(node);
+        h -= bh;
+        
+        quad = new Quad(bw, bh);
+        bon = new Geometry("horrorOn", quad);
+        mat = MaterialMaker.makeGuiMaterial(app.getAssetManager(), "Interface/Horror-on.png");
+        bon.setMaterial(mat);
+        bon.setLocalTranslation(Vector3f.ZERO);
+        quad = new Quad(bw, bh);        
+        boff = new Geometry("horrorOff", quad);
+        mat = MaterialMaker.makeGuiMaterial(app.getAssetManager(), "Interface/Horror-off.png");
+        boff.setMaterial(mat);
+        bon.setLocalTranslation(Vector3f.ZERO);
+        difflist.addButton(bon, boff);
+        node = difflist.getNode(4);
+        node.setLocalTranslation(w, h, 1);
+        gui.attachChild(node);
+        
+        difflist.setSelected(2);
+    }
+    
     
     
     private void nixMyControls() {
