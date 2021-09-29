@@ -9,10 +9,15 @@ import com.jme3.font.BitmapText;
 import com.jme3.light.DirectionalLight;
 import com.jme3.light.Light;
 import com.jme3.light.PointLight;
+import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
+import com.jme3.scene.Geometry;
+import com.jme3.scene.Mesh;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
+import com.jme3.scene.shape.Quad;
+import jaredbgreat.boulders.util.MaterialMaker;
 import jaredbgreat.cubicnightmare.Main;
 import jaredbgreat.cubicnightmare.componenent.GeomorphManager;
 import jaredbgreat.cubicnightmare.componenent.geomorph.Geomorphs;
@@ -42,6 +47,7 @@ public class AppStateSinglePlayer extends BaseAppState {
     volatile VolatileVec playerPos;    
     EDifficulty difficulty;
     
+    Geometry hud;
     BitmapFont font;
     BitmapFont bigfont;
     BitmapText healthtxt;
@@ -130,7 +136,6 @@ public class AppStateSinglePlayer extends BaseAppState {
     
     public void declareEnd() {
         Node gui = app.getGuiNode();
-        gui.detachChild(healthtxt);
         gui.attachChild(deathtxt);
         gameOver = true;
         long now = System.currentTimeMillis();
@@ -184,13 +189,22 @@ public class AppStateSinglePlayer extends BaseAppState {
         healthtxt = new BitmapText(font);
         deathtxt = new BitmapText(bigfont);
         
+        int screenWidth = app.getContext().getSettings().getWidth();
+        int screenHeight = app.getContext().getSettings().getHeight();
+        int hudHeight = screenHeight  / 10;
+        
+        Mesh hudquad = new Quad(screenWidth, hudHeight);
+        hud = new Geometry("hud", hudquad);
+        Material mat = MaterialMaker.makeGuiMaterial(app.getAssetManager(), 
+                "Interface/CNHud.png");
+        hud.setMaterial(mat);
+        app.getGuiNode().attachChild(hud);
+        
         healthtxt.setText(healthstr = new StringBuilder("Health: 20"));
-        healthtxt.setSize(font.getCharSet().getRenderedSize() * 2);
-        healthtxt.move((app.getContext().getSettings().getWidth() 
-                              - healthtxt.getLineWidth()) / 2, 
-                      app.getContext().getSettings().getHeight() 
-                              - healthtxt.getLineHeight() * 2,
-                      0);
+        healthtxt.setSize(Math.min(font.getCharSet().getRenderedSize() 
+                * 2.5f, screenHeight / 20f));
+        healthtxt.move((screenWidth - healthtxt.getLineWidth()) / 2, 
+                       (hudHeight + healthtxt.getLineHeight()) / 2, 0);
         app.getGuiNode().attachChild(healthtxt);        
         
         deathtxt.setText("You Died!");
