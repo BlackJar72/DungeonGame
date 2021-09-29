@@ -20,9 +20,10 @@ public class MapMatrix {
     public static final int BOUNDARY = -1; // Marks area around rooms where doorways appear
     int[][] room;
     int[][] geomorph; // Do I need this, or should a let rooms build themselves, as nodes?
-    int[][] type;  // What kind of "room"; is it a room, doorway, etc. (What table to reference.)
+    int[][] type;     // What kind of "room"; is it a room, doorway, etc. (What table to reference.)
     int[][] passable; // Is this an area that can be normally entered? (Treated as numeric for special reasons.)
-    int[][] dirs; // Is this an area that can be normally entered? (Treated as numeric for special reasons.)
+    int[][] dirs;     // Is this an area that can be normally entered? (Treated as numeric for special reasons.)
+    int[][] pillars;  // pillars used to endcap walls
     
     
     public MapMatrix() {
@@ -36,7 +37,7 @@ public class MapMatrix {
         type     = new int[size][size];
         passable = new int[size][size];
         dirs     = new int[size][size];
-        
+        pillars  = new int[size-1][size-1];
     }
     
     
@@ -105,7 +106,8 @@ public class MapMatrix {
                     Room theRoom = dungeon.areas.getArea(type[i][j], room[i][j]);
                     Spatial tile;
                     if(type[i][j] == AreaType.TUNNEL.tid) {
-                        tile = Geomorphs.REGISTRY.makeSpatialAt(geomorph[i][j] + dungeon.getThemeIDforLoc((i * 3) + 1.5f, theRoom.y1, (j * 3) + 1.5f), 
+                        tile = Geomorphs.REGISTRY.makeSpatialAt(geomorph[i][j] + 
+                                dungeon.getThemeIDforLoc((i * 3) + 1.5f, theRoom.y1, (j * 3) + 1.5f), 
                                 i * 3, theRoom.y1 * 3, j * 3);
                     } else {
                         tile = Geomorphs.REGISTRY.makeSpatialAt(geomorph[i][j] + theRoom.getBaseGeomorph(), 
@@ -196,5 +198,36 @@ public class MapMatrix {
         type[x][z] = tunnel.getType();
         geomorph[x][z] = tunnel.getBaseGeomorph();
         passable[x][z] = 1;
+    }
+    
+    
+    /**
+     * This should detect wall corners by finding tile corners with walls along 
+     * the tile boundaries adjacent to the corner.
+     * 
+     * @param x
+     * @param z
+     * @return true is there is a corner, false otherwise
+     */
+    private boolean shouldHavePillar(int x, int z) {
+        int ew, ns;
+        int nw = geomorph[x][z]     >> 16;
+        int ne = geomorph[x+1][z]   >> 16; 
+        int se = geomorph[x+1][z+1] >> 16; 
+        int sw = geomorph[x][z+1]   >> 16;
+        ew = ((ne | se) ^ 1) | ((nw | sw) ^ 16);
+        ns = ((se | sw) ^ 4) | ((ne | nw) ^ 64);
+        return (ew > 0) && (ns > 0);
+    }
+    
+    
+    private void findPillars() {
+        for(int i = 0; i < pillars.length; i++)
+            for(int j = 0; j < pillars[i].length; j++) {
+                if(shouldHavePillar(i, j)) {
+                    // TODO: Make pillar variants and a way to select them
+                    pillars[i][j] = 1;
+                }
+            }
     }
 }
