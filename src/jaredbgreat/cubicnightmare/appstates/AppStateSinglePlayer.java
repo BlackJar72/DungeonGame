@@ -33,7 +33,6 @@ import java.util.Random;
  * @author jared
  */
 public class AppStateSinglePlayer extends BaseAppState {
-    AppStateLoadingScreen loadingScreen;
     GeomorphManager geomanager;
     AssetManager assetman;
     BaseAppState controls;
@@ -98,7 +97,6 @@ public class AppStateSinglePlayer extends BaseAppState {
         rootnode = app.getRootNode();
         phynode = geomanager.getPhysicsNode();
         playerPos = new VolatileVec();
-        loadingScreen = new AppStateLoadingScreen();
     }
 
     
