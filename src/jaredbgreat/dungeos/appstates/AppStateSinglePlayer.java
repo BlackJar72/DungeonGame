@@ -21,12 +21,15 @@ import jaredbgreat.dungeos.mapping.dld.Dungeon;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author jared
  */
 public class AppStateSinglePlayer extends BaseAppState {
+    AppStateLoadingScreen loadingScreen;
     GeomorphManager geomanager;
     AssetManager assetman;
     BaseAppState controls;
@@ -43,10 +46,14 @@ public class AppStateSinglePlayer extends BaseAppState {
     BitmapFont font;
     BitmapFont bigfont;
     BitmapText healthtxt;
+    BitmapText deathtxt;
     StringBuilder healthstr;
     Dungeon dungeon;
     static final List<Light> LIGHTS = new ArrayList<>();
     Spatial startMarker, finishMarker;
+    long specialTimer;
+    boolean gameOver;
+    int level;
     
     
     public static final class VolatileVec {
@@ -86,14 +93,17 @@ public class AppStateSinglePlayer extends BaseAppState {
         rootnode = app.getRootNode();
         phynode = geomanager.getPhysicsNode();
         playerPos = new VolatileVec();
+        loadingScreen = new AppStateLoadingScreen();
     }
 
     
     @Override
     protected void onEnable() {
         difficulty = app.getDifficulty();
+        level = 1;
         dungeon = new Dungeon(this, geomanager);
-        player = new Player(this, phynode, physics, dungeon.getPlayerStart());
+        player = new Player(this, phynode, physics, 
+                dungeon.getPlayerStart().add(new Vector3f(0f, 0.2f, 0f)));
         app.getStateManager().attach(new AppStateFirstPerson(player));
                 
         setupTexts();
@@ -112,18 +122,49 @@ public class AppStateSinglePlayer extends BaseAppState {
     @Override
     public void update(float tpf) {
         if(player.getLocation().distanceSquared(dungeon.getLevelEndSpot()) < 0.707106781187f) {
+            //app.endGame();
+            nextLevel();
+        } else if(gameOver && System.currentTimeMillis() > specialTimer) {
+            app.endGame();
+        }
+    }
+    
+    public void declareEnd() {
+        Node gui = app.getGuiNode();
+        gui.detachChild(healthtxt);
+        gui.attachChild(deathtxt);
+        gameOver = true;
+        long now = System.currentTimeMillis();
+        specialTimer = now + 1500;
+        if(now > specialTimer) {
             app.endGame();
         }
     }
 
     
     @Override
-    protected void onDisable() {}
-    
+    protected void onDisable() {}    
     
     
     @Override
     protected void cleanup(Application app) {}
+    
+    
+    public void nextLevel() {
+        level++;
+        clearDungeon();
+        dungeon = new Dungeon(this, geomanager);
+        player.movePlayer(dungeon.getPlayerStart().add(new Vector3f(0f, 0.2f, 0f)));
+        // Lastly lights
+        if(difficulty.alight > 0) {
+            addFourPointLight(difficulty.alight);
+        }
+        if(difficulty.tbright > 0) {
+            giveTorch(dungeon, player); 
+        }
+        addStartEndMarks(dungeon);
+        
+    }
     
     
     public void clearDungeon() {
@@ -137,6 +178,7 @@ public class AppStateSinglePlayer extends BaseAppState {
         font = app.getAssetManager().loadFont("Interface/Fonts/Default.fnt");        
         bigfont = app.getAssetManager().loadFont("Interface/Fonts/Default.fnt");
         healthtxt = new BitmapText(font);
+        deathtxt = new BitmapText(bigfont);
         
         healthtxt.setText(healthstr = new StringBuilder("Health: 20"));
         healthtxt.setSize(font.getCharSet().getRenderedSize() * 2);
@@ -145,7 +187,16 @@ public class AppStateSinglePlayer extends BaseAppState {
                       app.getContext().getSettings().getHeight() 
                               - healthtxt.getLineHeight() * 2,
                       0);
-        app.getGuiNode().attachChild(healthtxt);
+        app.getGuiNode().attachChild(healthtxt);        
+        
+        deathtxt.setText("You Died!");
+        deathtxt.setSize(bigfont.getCharSet().getRenderedSize() * 4);
+        deathtxt.move((app.getContext().getSettings().getWidth() 
+                              - deathtxt.getLineWidth()) / 2, 
+                      app.getContext().getSettings().getHeight() 
+                              - deathtxt.getLineHeight() * 2,
+                      0);
+        
     }
     
     

@@ -17,6 +17,7 @@ import jaredbgreat.dungeos.entities.controls.PlayerControl;
  */
 public class Player extends AbstractEntity {
     public static final String NAME = "player";
+    AppStateSinglePlayer game;
     PlayerControl player;
     BetterCharacterControl control;
     Geometry visual;
@@ -25,6 +26,7 @@ public class Player extends AbstractEntity {
     int health;
     
     public Player(AppStateSinglePlayer playgame, Node parent, BulletAppState physics, Vector3f playerStart) {     
+        game = playgame;
         spatial = new Node();
         spatial.setLocalTranslation(playerStart);
         control = new BetterCharacterControl(0.5f, 1.8f, 150f);
@@ -88,11 +90,15 @@ public class Player extends AbstractEntity {
     
     
     public void die() {
+        alive = false;
         Node node = (Node)spatial;
         if(node.hasChild(visual)) {
             node.detachChild(visual);
         }
         alive = false;
+        spatial.removeControl(control);
+        spatial.removeControl(player);
+        game.declareEnd();
     }
     
     
@@ -109,7 +115,15 @@ public class Player extends AbstractEntity {
     
     public int beHurt() {
         health--;
+        if(health < 1) {
+            die();
+        }        
         return health;
+    }
+    
+    
+    public void movePlayer(Vector3f location) {
+        control.warp(location);
     }
     
 }

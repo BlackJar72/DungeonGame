@@ -78,6 +78,7 @@ public class CubeMob extends AbstractEntity implements PhysicsCollisionListener{
             game.hurtPlayer();
             attackCoolDown = t + diff.mobCooldown;
         }
+        mobControl.setJustHit(attackCoolDown);
     }
     
     

@@ -6,11 +6,11 @@ package jaredbgreat.dungeos.appstates;
  */
 public enum EDifficulty {
     
-    LOOKING (0.3f,   0f,     10f, 30f, 5.5f, 1000L),
-    EASY    (0.05f,  0.1f,   10f, 30f, 5.75f, 900L),
-    NORMAL  (0.03f,  0.2f,   10f, 30f, 6.0f,  800L),
-    HARD    (0.01f,  0.2f ,  10f, 30f, 6.25f, 700L),
-    HORROR  (0f,     0.175f,  6f, 10f, 6.5f,  500L);
+    LOOKING (0.3f,   0f,     10f, 30f, 5.5f,  500L),
+    EASY    (0.05f,  0.1f,   10f, 30f, 5.75f, 450L),
+    NORMAL  (0.03f,  0.2f,   10f, 30f, 6.0f,  400L),
+    HARD    (0.01f,  0.2f ,  10f, 30f, 6.25f, 350L),
+    HORROR  (0f,     0.175f,  6f, 10f, 6.5f,  300L);
     
     
     public final float alight;
@@ -33,7 +33,7 @@ public enum EDifficulty {
         this.tmax2       = tmax2;
         this.mobSpeed    = mobSpeed;
         this.mobCooldown = mobCooldown;
-        genericFactor    = (float)(((double)mobCooldown) / 1000d);
+        genericFactor    = (float)(((double)mobCooldown) / 500d);
     }
     
     

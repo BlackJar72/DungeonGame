@@ -33,6 +33,8 @@ public class CubeMobControl extends AbstractEntityControl {
     private final float walk;
     private boolean moving;
     private boolean attacking;
+    private boolean justHit;
+    private long nextHit;
     private int turnfails;
     EDifficulty diff;
 
@@ -53,7 +55,9 @@ public class CubeMobControl extends AbstractEntityControl {
         spatialAngle = random.nextFloat() * FastMath.TWO_PI;
         physics = bcc;
         physics.setDuckedFactor(0.65f);
-        moving = true;//false;
+        moving = true;
+        justHit = false;
+        nextHit = 0;
         turnfails = 0;
     }
     
@@ -64,12 +68,6 @@ public class CubeMobControl extends AbstractEntityControl {
             attacking = canSeePlayer();
         }
         move(f);
-        /*if(attacking) { // Broken 'cause JME sucks!!!
-            System.out.println("I see you!");
-            Material mat = new Material(game.getApplication().getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
-            mat.setColor("Color", ColorRGBA.Blue);
-            ((Node)spatial).getChild("Cube").setMaterial(mat);             
-        }*/
     }  
     
     
@@ -78,10 +76,17 @@ public class CubeMobControl extends AbstractEntityControl {
     
     
     private void move(float f) {
+        if(justHit && (System.currentTimeMillis() > nextHit)) {
+            justHit = false;
+        }
         movement.set(0, 0, speed);
         Quaternion q = spatial.getLocalRotation();
         movement.set(q.mult(movement));
-        physics.setWalkDirection(movement);
+        if(justHit) {
+            physics.setWalkDirection(movement.negate());
+        } else {
+            physics.setWalkDirection(movement);
+        }
         float d = distToPlayer();
         if(attacking) {
             if((d > 4) && (random.nextInt(256) == 0)) attacking = false;
@@ -120,11 +125,8 @@ public class CubeMobControl extends AbstractEntityControl {
         game.getPlayerPos().get(ploc);
         Vector3f mloc = physics.getSpatial().getLocalTranslation();
         Vector3f tdir  = ploc.subtract(mloc);
-        //System.out.println(tdir.lengthSquared());
-        //System.out.println(ploc);
         if(tdir.lengthSquared() > 5184) return false; // Too far (over 24^2 units)
         Vector3f vdir = physics.getViewDirection();
-        //System.out.println(tdir.dot(vdir));
         if(tdir.dot(vdir) < 0) return false; // Behind mob
         CollisionResults results = new CollisionResults();
         Ray ray = new Ray(mloc, vdir);
@@ -138,7 +140,6 @@ public class CubeMobControl extends AbstractEntityControl {
             return (results.getCollision(1).getDistance() > tdir.length());
         }
         return (results.getCollision(0).getDistance() > tdir.length());
-        //return (results.size() < 2);        
     }
     
     
@@ -185,5 +186,10 @@ public class CubeMobControl extends AbstractEntityControl {
         spatialAngle = random.nextFloat() * FastMath.TWO_PI;
     }
     
+    
+    public void setJustHit(long when) {
+        justHit = true;
+        nextHit = when;
+    }
     
 }

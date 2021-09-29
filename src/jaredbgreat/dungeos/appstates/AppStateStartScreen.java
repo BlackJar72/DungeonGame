@@ -54,7 +54,15 @@ public class AppStateStartScreen extends BaseAppState implements ActionListener 
         int h = app.getContext().getSettings().getHeight();
         int w = app.getContext().getSettings().getWidth();
         
-        addMainButtons(h, w);
+        int mh = Math.min(((h - 96) / 2) + 64, (h / 2) - 96);
+        Mesh backquad = new Quad(w, h);
+        Geometry background = new Geometry("background", backquad);
+        Material mat = MaterialMaker.makeGuiMaterial(app.getAssetManager(), 
+                "Interface/MenuTitle.png");
+        background.setMaterial(mat);
+        app.getGuiNode().attachChild(background);
+        
+        addMainButtons(h, w, mh);
         addDifficultyButtons(h, w);
         
         app.getInputManager().addMapping(CLICK_GUI, LEFT_CLICK);
@@ -89,14 +97,8 @@ public class AppStateStartScreen extends BaseAppState implements ActionListener 
     }
     
     
-    private void addMainButtons(int h, int w) {
-        int mh = Math.min(((h - 96) / 2) + 64, (h / 2) - 96);
-        Mesh backquad = new Quad(w, h);
-        Geometry background = new Geometry("background", backquad);
-        Material mat = MaterialMaker.makeGuiMaterial(app.getAssetManager(), 
-                "Interface/MenuTitle.png");
-        background.setMaterial(mat);
-        app.getGuiNode().attachChild(background);
+    private void addMainButtons(int h, int w, int mh) {
+        Material mat;
         
         CommandNode startNode = new CommandNode(new IGuiCommand() {
             @Override
