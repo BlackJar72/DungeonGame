@@ -66,7 +66,7 @@ public class PlayerControl extends AbstractEntityControl implements PhysicsColli
         physics = bcc;
         physics.setDuckedFactor(0.65f);
         walking = makeSound(appState.getApplications().getAssetManager(), 
-                "Sounds/Walk.wav");
+                "Sounds/Walk10.wav");
         isWalking = false;
     }
     
