@@ -1,5 +1,10 @@
 package jaredbgreat.cubicnightmare.entities.controls;
 
+import com.jme3.asset.AssetManager;
+import com.jme3.audio.AudioData;
+import com.jme3.audio.AudioNode;
+import com.jme3.bullet.collision.PhysicsCollisionEvent;
+import com.jme3.bullet.collision.PhysicsCollisionListener;
 import com.jme3.bullet.control.BetterCharacterControl;
 import com.jme3.light.PointLight;
 import com.jme3.math.FastMath;
@@ -16,7 +21,7 @@ import jaredbgreat.cubicnightmare.appstates.AppStateSinglePlayer;
  *
  * @author Jared Blackburn
  */
-public class PlayerControl extends AbstractEntityControl {
+public class PlayerControl extends AbstractEntityControl implements PhysicsCollisionListener {
     private final BetterCharacterControl physics;
     private final Vector3f position;
     private final Vector3f movement;
@@ -35,6 +40,10 @@ public class PlayerControl extends AbstractEntityControl {
     private float camHeight;
     private float walk;
     private final Quaternion camq;
+    private AudioNode walking;
+    private AudioNode[] sounds;
+    private boolean isWalking;
+    
     
     private PointLight t1, t2;
 
@@ -56,6 +65,9 @@ public class PlayerControl extends AbstractEntityControl {
         camq = new Quaternion();
         physics = bcc;
         physics.setDuckedFactor(0.65f);
+        walking = makeSound(appState.getApplications().getAssetManager(), 
+                "Sounds/Walk.wav");
+        isWalking = false;
     }
     
 
@@ -74,6 +86,17 @@ public class PlayerControl extends AbstractEntityControl {
             } else {
                 movement.set(q.mult(movement.normalizeLocal().multLocal(speed * walk)));
             }
+            boolean onGround = physics.isOnGround();
+            if(!isWalking && onGround) {
+                walking.play();
+                isWalking = true;
+            } else if(!onGround) {                
+                walking.stop();
+                isWalking = false;
+            }
+        } else if(isWalking){
+            walking.stop();
+            isWalking = false;
         }
         //System.out.println(movement);
         physics.setWalkDirection(movement);
@@ -197,6 +220,43 @@ public class PlayerControl extends AbstractEntityControl {
         hRotSpeed = 400f;
         vRotSpeed = 0f;
     }
+    
+    
+    public void setSounds(AudioNode... audio) {
+        sounds = audio;
+    }
+    
+    
+    public void playSound(int i) {
+        sounds[i].setLocalTranslation(spatial.getLocalTranslation());
+        sounds[i].play(); // playInstance()?
+    }
+    
+    
+    public void playSound(int i, float loud) {
+        sounds[i].setLocalTranslation(spatial.getLocalTranslation());
+        sounds[i].setVolume(loud);
+        sounds[i].play(); // playInstance()?
+    }
+    
+    
+    private AudioNode makeSound(AssetManager assetman, String location) {
+        AudioNode out = new AudioNode(assetman, location, AudioData.DataType.Buffer);
+        out.setPositional(false);
+        out.setLooping(true);
+        out.setVolume(speed / 10f);
+        return out;
+    }
+    
+    
+    public void walkingOff() {
+        walking.stop();
+        isWalking = false;
+    }
+    
+
+    @Override
+    public void collision(PhysicsCollisionEvent pce) {}
  
     
 }

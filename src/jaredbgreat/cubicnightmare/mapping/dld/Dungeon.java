@@ -311,9 +311,9 @@ public class Dungeon {
             }
             l.remove(hubRooms[0]);
             Collections.shuffle(l);
-            n1 = (n1 / 3) + level;
+            n1 = Math.min((n1 / 3) + level, l.size());
             for(int i = 0; i < n1; i++) {
-                Room r = l.get(i % l.size());
+                Room r = l.get(i);
                 CubeMob cb = new CubeMob(game, this, game.getApplications().getRootNode(), 
                         game.getPhysics(), r.getCenterAsVec(), "DeathCube." + i);
                 game.getPhysics().getPhysicsSpace().addCollisionListener(cb);

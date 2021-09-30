@@ -1,6 +1,9 @@
 package jaredbgreat.cubicnightmare.entities;
 
 import com.jme3.app.SimpleApplication;
+import com.jme3.asset.AssetManager;
+import com.jme3.audio.AudioData;
+import com.jme3.audio.AudioNode;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.control.BetterCharacterControl;
 import com.jme3.light.PointLight;
@@ -38,6 +41,7 @@ public class Player extends AbstractEntity {
         spatial.addControl(player);
         spatial.setName(NAME);
         ((SimpleApplication)playgame.getApplication()).getRootNode().attachChild(spatial);
+        makeSounds(game.getApplications().getAssetManager());
         alive = true;
         health = 20;
         score = 0;
@@ -96,6 +100,7 @@ public class Player extends AbstractEntity {
             node.detachChild(visual);
         }
         alive = false;
+        player.walkingOff();
         spatial.removeControl(control);
         spatial.removeControl(player);
         game.declareEnd();
@@ -116,14 +121,36 @@ public class Player extends AbstractEntity {
     public int beHurt() {
         health--;
         if(health < 1) {
+            player.playSound(1);
             die();
-        }        
+        } else {
+            player.playSound(0);
+        }
         return health;
     }
     
     
     public void movePlayer(Vector3f location) {
         control.warp(location);
+    }
+    
+    
+    private void makeSounds(AssetManager assetman) {
+        AudioNode pain   = makeSound(assetman, "Sounds/PainGrunt.wav");
+        AudioNode scream = makeSound(assetman, "Sounds/DeathScream.wav");
+        AudioNode spawn  = makeSound(assetman, "Sounds/Spawn.wav");
+        
+        player.setSounds(pain, scream, spawn);
+    }
+    
+    
+    private AudioNode makeSound(AssetManager assetman, String location) {
+        AudioNode out = new AudioNode(assetman, location, AudioData.DataType.Buffer);
+        out.setPositional(true);
+        out.setLooping(false);
+        out.setVolume(5);
+        spatial.getParent().attachChild(out);
+        return out;
     }
     
 }

@@ -18,7 +18,7 @@ import jaredbgreat.cubicnightmare.mapping.dld.Dungeon;
  *
  * @author Jared Blackburn
  */
-public class CubeMob extends AbstractEntity implements PhysicsCollisionListener{
+public class CubeMob extends AbstractEntity implements PhysicsCollisionListener {
     private static final String A_DIE = "Die";
     private final AppStateSinglePlayer game;
     private final CubeMobControl mobControl;

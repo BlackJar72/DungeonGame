@@ -15,14 +15,18 @@ import java.util.Map;
  * Effect names should be held here as static final String constants to be used both in setting 
  * up the map and in defining the spatials representing the pickups.
  * 
+ * These will need to be done per item (not type), added during dungeon generation, and removed 
+ * afterwards, so that the IPickupEffect implementations can reference the exact item (which 
+ * will usually need to be removed after taking effect, so it cannot be used more than once.
+ * 
  * @author Jared Blackburn
  */
 public class PickupEffectMap {
-    private static final Map<String, IPickupEffect> MAP 
+    private final Map<String, IPickupEffect> MAP 
             = new HashMap<>();
     
     
-    public static void applyEffects(String name, Player player) {
+    public void applyEffects(String name, Player player) {
         IPickupEffect effect = MAP.get(name);
         if(effect != null) {
             effect.effect(player);
@@ -30,7 +34,7 @@ public class PickupEffectMap {
     }
     
     
-    public static void setup() {
+    public void setup() {
         //TODO: Setup the effect list
     }
 }

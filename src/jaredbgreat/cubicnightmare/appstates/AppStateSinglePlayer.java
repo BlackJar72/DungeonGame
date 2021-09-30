@@ -3,6 +3,8 @@ package jaredbgreat.cubicnightmare.appstates;
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.asset.AssetManager;
+import com.jme3.audio.AudioData;
+import com.jme3.audio.AudioNode;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.font.BitmapFont;
 import com.jme3.font.BitmapText;
@@ -38,6 +40,7 @@ public class AppStateSinglePlayer extends BaseAppState {
     BaseAppState controls;
     BulletAppState physics;
     Node phynode;
+    AudioNode[] sounds;
     Random random;
     Main app;
     Node rootnode; 
@@ -107,7 +110,9 @@ public class AppStateSinglePlayer extends BaseAppState {
         dungeon = new Dungeon(this, geomanager, level);
         player = new Player(this, phynode, physics, 
                 dungeon.getPlayerStart().add(new Vector3f(0f, 0.2f, 0f)));
+        getPhysics().getPhysicsSpace().addCollisionListener(player.getControl());
         app.getStateManager().attach(new AppStateFirstPerson(player));
+        defineSounds();
                 
         setupTexts();
         
@@ -125,7 +130,6 @@ public class AppStateSinglePlayer extends BaseAppState {
     @Override
     public void update(float tpf) {
         if(player.getLocation().distanceSquared(dungeon.getLevelEndSpot()) < 0.707106781187f) {
-            //app.endGame();
             nextLevel();
         } else if(gameOver && System.currentTimeMillis() > specialTimer) {
             app.endGame();
@@ -134,6 +138,9 @@ public class AppStateSinglePlayer extends BaseAppState {
     
     public void declareEnd() {
         Node gui = app.getGuiNode();
+        healthstr.delete(8, Integer.MAX_VALUE);
+        healthstr.append(0);
+        healthtxt.setText(healthstr);
         gui.attachChild(deathtxt);
         gameOver = true;
         long now = System.currentTimeMillis();
@@ -154,6 +161,8 @@ public class AppStateSinglePlayer extends BaseAppState {
     
     public void nextLevel() {
         level++;
+        player.getControl().walkingOff();
+        playSound(0);
         clearDungeon();
         dungeon = new Dungeon(this, geomanager, level);
         player.movePlayer(dungeon.getPlayerStart().add(new Vector3f(0f, 0.2f, 0f)));
@@ -164,8 +173,7 @@ public class AppStateSinglePlayer extends BaseAppState {
         if(difficulty.tbright > 0) {
             giveTorch(dungeon, player); 
         }
-        addStartEndMarks(dungeon);
-        
+        addStartEndMarks(dungeon);        
     }
     
     
@@ -301,6 +309,54 @@ public class AppStateSinglePlayer extends BaseAppState {
     public Main getApplications() {
         return app;
     }
+    
+    
+    private void defineSounds() {
+        AudioNode tp   = makeSound(assetman, "Sounds/Spawn.wav");
+        setSounds(tp);
+    }
+    
+    
+    private AudioNode makeSound(AssetManager assetman, String location) {
+        AudioNode out = new AudioNode(assetman, location, AudioData.DataType.Buffer);
+        out.setPositional(true);
+        out.setLooping(false);
+        out.setVolume(5);
+        player.getSpatial().getParent().attachChild(out);
+        return out;
+    }
+    
+    
+    public void setSounds(AudioNode... audio) {
+        sounds = audio;
+    }
+    
+    
+    public void playSound(int i) {
+        sounds[i].setLocalTranslation(player.getLocation());
+        sounds[i].play(); // playInstance()?
+    }
+    
+    
+    public void playSound(int i, float loud) {
+        sounds[i].setLocalTranslation(player.getLocation());
+        sounds[i].setVolume(loud);
+        sounds[i].play(); // playInstance()?
+    }
+    
+    
+    public void playSoundAt(int i, Vector3f location) {
+        sounds[i].setLocalTranslation(location);
+        sounds[i].play(); // playInstance()?
+    }
+    
+    
+    public void playSoundAt(int i, float loud, Vector3f location) {
+        sounds[i].setLocalTranslation(location);
+        sounds[i].setVolume(loud);
+        sounds[i].play(); // playInstance()?
+    }
+
     
     
     /**
