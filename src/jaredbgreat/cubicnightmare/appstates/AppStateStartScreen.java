@@ -35,6 +35,7 @@ public class AppStateStartScreen extends BaseAppState implements ActionListener 
             = new MouseButtonTrigger(MouseInput.BUTTON_LEFT);
     private static final Trigger RIGHT_CLICK 
             = new MouseButtonTrigger(MouseInput.BUTTON_RIGHT);
+    static Node diffNode;
     ButtonList difflist;
     CommandFinder interpreter;
     Main app;
@@ -63,7 +64,10 @@ public class AppStateStartScreen extends BaseAppState implements ActionListener 
         app.getGuiNode().attachChild(background);
         
         addMainButtons(h, w, mh);
-        addDifficultyButtons(h, w);
+        if(diffNode == null) {
+            diffNode = addDifficultyButtons(h, w);
+        }
+        app.getGuiNode().attachChild(diffNode);
         
         app.getInputManager().addMapping(CLICK_GUI, LEFT_CLICK);
         app.getInputManager().addListener(this, CLICK_GUI);
@@ -130,9 +134,9 @@ public class AppStateStartScreen extends BaseAppState implements ActionListener 
     }
     
     
-    private void addDifficultyButtons(int h1, int w1) {
+    private Node addDifficultyButtons(int h1, int w1) {
         difflist = new ButtonList();
-        Node gui = app.getGuiNode();
+        Node bignode = new Node();
         int bw = Math.min((w1 / 2) - 112, 256);
         int bh = (72 * bw) / 256;
         int w = w1 - bw;
@@ -155,7 +159,7 @@ public class AppStateStartScreen extends BaseAppState implements ActionListener 
         difflist.addButton(bon, boff);
         node = difflist.getNode(0);
         node.setLocalTranslation(w, h, 1);
-        gui.attachChild(node);
+        bignode.attachChild(node);
         h -= bh;
         
         quad = new Quad(bw, bh);
@@ -171,7 +175,7 @@ public class AppStateStartScreen extends BaseAppState implements ActionListener 
         difflist.addButton(bon, boff);
         node = difflist.getNode(1);
         node.setLocalTranslation(w, h, 1);
-        gui.attachChild(node);
+        bignode.attachChild(node);
         h -= bh;
         
         quad = new Quad(bw, bh);
@@ -187,7 +191,7 @@ public class AppStateStartScreen extends BaseAppState implements ActionListener 
         difflist.addButton(bon, boff);
         node = difflist.getNode(2);
         node.setLocalTranslation(w, h, 1);
-        gui.attachChild(node);
+        bignode.attachChild(node);
         h -= bh;
         
         quad = new Quad(bw, bh);
@@ -203,7 +207,7 @@ public class AppStateStartScreen extends BaseAppState implements ActionListener 
         difflist.addButton(bon, boff);
         node = difflist.getNode(3);
         node.setLocalTranslation(w, h, 1);
-        gui.attachChild(node);
+        bignode.attachChild(node);
         h -= bh;
         
         quad = new Quad(bw, bh);
@@ -219,9 +223,10 @@ public class AppStateStartScreen extends BaseAppState implements ActionListener 
         difflist.addButton(bon, boff);
         node = difflist.getNode(4);
         node.setLocalTranslation(w, h, 1);
-        gui.attachChild(node);
+        bignode.attachChild(node);
         
         difflist.setSelected(2);
+        return bignode;
     }
     
     

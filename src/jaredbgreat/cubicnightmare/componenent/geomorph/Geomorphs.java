@@ -148,7 +148,7 @@ public class Geomorphs {
                 .setMaterials("Floor:Textures/granite-green-hr.jpg"));
         FLOORS.add("SimpleFancyStone", new GeomorphModel("SimpleFancyStone", 
             "Models/geomorphs/walls/simpleb/Geomorph-blank-floor.gltf")
-                .setMaterials("Floor:Textures/FancyStone-01-hr.jpg"));
+                .setMaterialsNm("Floor:Textures/FancyStone-01-hr.jpg:Textures/NoiseNormal.png"));
         FLOORS.add("SimpleFancyStoneLt", new GeomorphModel("SimpleFancyStoneLt", 
             "Models/geomorphs/walls/simpleb/Geomorph-blank-floor.gltf")
                 .setMaterials("Floor:Textures/FancyStone-01-lt-hr.jpg"));
@@ -271,7 +271,7 @@ public class Geomorphs {
        WALLS.add("SimpleSandstoneNm", makeSimpleGeomorph("SimpleSandstone", 
             "Models/geomorphs/walls/simpleb/Geomorph-blank-wall", ".gltf", 1, 20)
             .setMaterials("Wall:Textures/Sandstone-hr.png"));
-       WALLS.add("SimpleSandstoneRed", makeSimpleGeomorph("SimpleSandstoneRed", 
+        WALLS.add("SimpleSandstoneRed", makeSimpleGeomorph("SimpleSandstoneRed", 
             "Models/geomorphs/walls/simpleb/Geomorph-blank-wall", ".gltf", 1, 20)
             .setMaterials("Wall:Textures/Sandstone-red-hr.jpg"));
        
@@ -346,7 +346,7 @@ public class Geomorphs {
                 .setMaterials("Floor:Textures/granite-green-hr.jpg"));
         CIELINGS.add("SimpleFancyStone", new GeomorphModel("SimpleFancyStone", 
             "Models/geomorphs/walls/simpleb/Geomorph-blank-ciel.gltf")
-                .setMaterials("Floor:Textures/FancyStone-01-hr.jpg"));
+                .setMaterialsNm("Floor:Textures/FancyStone-01-hr.jpg:Textures/NoiseNormal.png"));
         CIELINGS.add("SimpleFancyStoneLt", new GeomorphModel("SimpleFancyStoneLt", 
             "Models/geomorphs/walls/simpleb/Geomorph-blank-ciel.gltf")
                 .setMaterials("Floor:Textures/FancyStone-01-lt-hr.jpg"));
