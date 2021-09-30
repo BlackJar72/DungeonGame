@@ -51,10 +51,16 @@ public class AppStateSinglePlayer extends BaseAppState {
     
     Geometry hud;
     BitmapFont font;
+    BitmapFont smallfont;
     BitmapFont bigfont;
     BitmapText healthtxt;
+    BitmapText leveltxt;
+    BitmapText scoretxt;
     BitmapText deathtxt;
     StringBuilder healthstr;
+    StringBuilder levelstr;
+    StringBuilder scorestr;
+    
     Dungeon dungeon;
     static final List<Light> LIGHTS = new ArrayList<>();
     Spatial startMarker, finishMarker;
@@ -163,9 +169,10 @@ public class AppStateSinglePlayer extends BaseAppState {
         level++;
         player.getControl().walkingOff();
         playSound(0);
-        clearDungeon();
+        clearDungeon();        
         dungeon = new Dungeon(this, geomanager, level);
         player.movePlayer(dungeon.getPlayerStart().add(new Vector3f(0f, 0.2f, 0f)));
+        addStartEndMarks(dungeon);   
         // Lastly lights
         if(difficulty.alight > 0) {
             addFourPointLight(difficulty.alight);
@@ -173,7 +180,17 @@ public class AppStateSinglePlayer extends BaseAppState {
         if(difficulty.tbright > 0) {
             giveTorch(dungeon, player); 
         }
-        addStartEndMarks(dungeon);        
+        levelstr.delete(7, Integer.MAX_VALUE);
+        levelstr.append(level);
+        leveltxt.setText(levelstr);
+        player.addScore(100);
+    }
+    
+    
+    public void updateScore(int score) {
+        scorestr.delete(7, Integer.MAX_VALUE);
+        scorestr.append(score);
+        scoretxt.setText(scorestr);
     }
     
     
@@ -190,10 +207,13 @@ public class AppStateSinglePlayer extends BaseAppState {
     
     
     private void setupTexts() {        
-        font = app.getAssetManager().loadFont("Interface/Fonts/Default.fnt");        
+        font = app.getAssetManager().loadFont("Interface/Fonts/Default.fnt"); 
+        smallfont = app.getAssetManager().loadFont("Interface/Fonts/Default.fnt");       
         bigfont = app.getAssetManager().loadFont("Interface/Fonts/Default.fnt");
         healthtxt = new BitmapText(font);
         deathtxt = new BitmapText(bigfont);
+        leveltxt = new BitmapText(smallfont);
+        scoretxt = new BitmapText(smallfont);
         
         int screenWidth = app.getContext().getSettings().getWidth();
         int screenHeight = app.getContext().getSettings().getHeight();
@@ -211,7 +231,22 @@ public class AppStateSinglePlayer extends BaseAppState {
                 * 2.5f, screenHeight / 20f));
         healthtxt.move((screenWidth - healthtxt.getLineWidth()) / 2, 
                        (hudHeight + healthtxt.getLineHeight()) / 2, 0);
-        app.getGuiNode().attachChild(healthtxt);        
+        app.getGuiNode().attachChild(healthtxt); 
+        
+        leveltxt.setText(levelstr = new StringBuilder("Level: " + level));
+        leveltxt.setSize(Math.min(smallfont.getCharSet().getRenderedSize() 
+                * 2f, screenHeight / 25f));
+        leveltxt.move((screenWidth - leveltxt.getLineWidth()) / 10, 
+                       (hudHeight + leveltxt.getLineHeight()) / 2, 0);
+        app.getGuiNode().attachChild(leveltxt);   
+        
+        scoretxt.setText("Score: 00000");
+        scoretxt.setSize(Math.min(smallfont.getCharSet().getRenderedSize() 
+                * 2f, screenHeight / 25f));
+        scoretxt.move((screenWidth * 0.9f)  - scoretxt.getLineWidth(), 
+                       (hudHeight + scoretxt.getLineHeight()) / 2, 0);
+        scoretxt.setText(scorestr = new StringBuilder("Score: 0"));
+        app.getGuiNode().attachChild(scoretxt); 
         
         deathtxt.setText("You Died!");
         deathtxt.setSize(bigfont.getCharSet().getRenderedSize() * 4);

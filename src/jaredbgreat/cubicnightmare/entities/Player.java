@@ -24,7 +24,7 @@ public class Player extends AbstractEntity {
     PlayerControl player;
     BetterCharacterControl control;
     Geometry visual;
-    private static int score;
+    private int score;
     boolean alive;
     int health;
     
@@ -68,18 +68,20 @@ public class Player extends AbstractEntity {
     }
     
 
-    public static int getScore() {
+    public int getScore() {
         return score;
     }
     
 
-    public static void addScore(int points) {
+    public void addScore(int points) {
         score += points;
+        game.updateScore(score);
     }
     
 
-    public static void resetScore() {
+    public void resetScore() {
         score = 0;
+        game.updateScore(score);
     }
     
     
