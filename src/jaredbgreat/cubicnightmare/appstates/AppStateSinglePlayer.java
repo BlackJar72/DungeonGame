@@ -13,6 +13,7 @@ import com.jme3.light.Light;
 import com.jme3.light.PointLight;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
+import com.jme3.math.FastMath;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Mesh;
@@ -22,6 +23,7 @@ import com.jme3.scene.shape.Quad;
 import jaredbgreat.boulders.util.MaterialMaker;
 import jaredbgreat.cubicnightmare.Main;
 import jaredbgreat.cubicnightmare.componenent.GeomorphManager;
+import jaredbgreat.cubicnightmare.componenent.geomorph.GeomorphModel;
 import jaredbgreat.cubicnightmare.componenent.geomorph.Geomorphs;
 import jaredbgreat.cubicnightmare.entities.Player;
 import jaredbgreat.cubicnightmare.mapping.dld.Dungeon;
@@ -121,6 +123,8 @@ public class AppStateSinglePlayer extends BaseAppState {
         defineSounds();
                 
         setupTexts();
+        
+        addBedroom(dungeon.getPlayerStart());
         
         // Lastly lights
         if(difficulty.alight > 0) {
@@ -262,6 +266,16 @@ public class AppStateSinglePlayer extends BaseAppState {
     public void addLight(Light l) {        
         rootnode.addLight(l);
         LIGHTS.add(l);
+    }
+    
+    
+    private void addBedroom(Vector3f center) {        
+        GeomorphModel bedroom = new GeomorphModel("test", 
+                "Models/test/MyIRLBedroom/DetailBedroom-furnished.glb");
+        bedroom.rotateTableScene();
+        GeomorphManager.manager
+                .attachSpatial(bedroom.makeSpatialAt(center.x, center.y + 0.01f, center.z - 3f)
+                        .rotate(0, FastMath.PI, 0));
     }
     
     

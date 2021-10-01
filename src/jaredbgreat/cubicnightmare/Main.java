@@ -139,14 +139,12 @@ public class Main extends SimpleApplication {
     
     
     private void makeTestScene() {
-        addBedroom(Vector3f.ZERO);
         addAnime(Vector3f.ZERO);
         addTableScene(Vector3f.ZERO);
     }
     
     
     public void makeTestScene(Vector3f center) {
-        addBedroom(center);
         addTableScene(center);
         addTestGoblins(center);
     }
@@ -159,15 +157,6 @@ public class Main extends SimpleApplication {
         tabletest = new GeomorphModel("setTable",  
                 "Models/test/TableScene001s/TableScene001s-pbr.j3o");         
         rootNode.attachChild(tabletest.makeSpatialAt(3 + center.x, center.y, 0.5f + center.z));        
-    }
-    
-    
-    private void addBedroom(Vector3f center) {        
-        GeomorphModel bedroom = new GeomorphModel("test", 
-                "Models/test/MyIRLBedroom-furnished/MyIRLBedroom-furnished.j3o");
-        bedroom.rotateTableScene();
-        GeomorphManager.manager
-                .attachSpatial(bedroom.makeSpatialAt(-4 + center.x, center.y + 0.01f, -0.5f + center.z).rotate(0, FastMath.PI, 0));
     }
     
     
@@ -184,20 +173,6 @@ public class Main extends SimpleApplication {
                 "Models/Creatures/goblin/goblin001.glb");        
         rootNode.attachChild(goblin.makeSpatialAt(center.x + 1, center.y, center.z));
         //rootNode.attachChild(goblin.makeSpatialAt(-3.5f + center.x, center.y + 0.01f, -0.8f + center.z));
-    }
-    
-    
-    private void addExtraLights(int num) {
-        Random rand = new Random();
-        for(int i = 0; i < num; i++) {  
-            PointLight pLight = new PointLight(new Vector3f(rand.nextInt(21) - 10, 
-                        rand.nextFloat() + 2, 
-                        rand.nextInt(21) - 10), 
-                    (ColorRGBA.White.add(ColorRGBA.randomColor()))
-                .multLocal(rand.nextFloat() / 10f));
-            pLight.setRadius(rand.nextFloat() * 5 + 5);
-            rootNode.addLight(pLight);
-        }
     }
     
 }
