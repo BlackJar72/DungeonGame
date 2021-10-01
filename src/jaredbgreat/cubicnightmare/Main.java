@@ -33,6 +33,7 @@ public class Main extends SimpleApplication {
     public static final IProfiler  proflogger = new DLDProfile();
     private static AppStateSinglePlayer play;
     private static AppStateStartScreen start;
+    boolean endless;
     EDifficulty difficulty;
     GeomorphManager geomanager;
     BulletAppState physics;
@@ -106,6 +107,7 @@ public class Main extends SimpleApplication {
     
     
     public void startGame() {
+        endless = start.getEndless();
         difficulty = start.getDifficulty();
         if(stateManager.hasState(start)) {
             stateManager.detach(start);
@@ -128,6 +130,11 @@ public class Main extends SimpleApplication {
     
     public EDifficulty getDifficulty() {
         return difficulty;
+    }
+    
+    
+    public boolean getEndless() {
+        return endless;
     }
     
     

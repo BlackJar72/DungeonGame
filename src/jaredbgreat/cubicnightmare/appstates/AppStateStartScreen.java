@@ -24,6 +24,7 @@ import jaredbgreat.gui.ButtonList;
 import jaredbgreat.gui.CommandFinder;
 import jaredbgreat.gui.CommandNode;
 import jaredbgreat.gui.IGuiCommand;
+import jaredbgreat.gui.ToggleButton;
 
 /**
  *
@@ -36,6 +37,7 @@ public class AppStateStartScreen extends BaseAppState implements ActionListener 
     private static final Trigger RIGHT_CLICK 
             = new MouseButtonTrigger(MouseInput.BUTTON_RIGHT);
     static Node diffNode;
+    static ToggleButton endlessNode;
     ButtonList difflist;
     CommandFinder interpreter;
     Main app;
@@ -68,6 +70,10 @@ public class AppStateStartScreen extends BaseAppState implements ActionListener 
             diffNode = addDifficultyButtons(h, w);
         }
         app.getGuiNode().attachChild(diffNode);
+        if(endlessNode == null) {
+            endlessNode = addEndlessButton(h, w);
+        }
+        app.getGuiNode().attachChild(endlessNode);
         
         app.getInputManager().addMapping(CLICK_GUI, LEFT_CLICK);
         app.getInputManager().addListener(this, CLICK_GUI);
@@ -98,6 +104,11 @@ public class AppStateStartScreen extends BaseAppState implements ActionListener 
     
     public EDifficulty getDifficulty() {
         return EDifficulty.setCurrent(difflist.getSelected());
+    }
+    
+    
+    public boolean getEndless() {
+        return endlessNode.getState();
     }
     
     
@@ -227,6 +238,35 @@ public class AppStateStartScreen extends BaseAppState implements ActionListener 
         
         difflist.setSelected(2);
         return bignode;
+    }
+    
+    
+    private ToggleButton addEndlessButton(int h1, int w1) {
+        int bw = Math.min((w1 / 2) - 112, 256);
+        int bh = (72 * bw) / 256;
+        int w = w1 - bw;
+        int h = Math.min((h1 / 2) + bh, (h1 / 2));
+        Material mat;
+        Geometry bon, boff;
+        Mesh quad;
+        Node node;
+        
+        endlessNode = new ToggleButton("endlessButton");       
+        endlessNode.setLocalTranslation(16, 16, 1);       
+        quad = new Quad(bw, bh);
+        bon = new Geometry("endlessOn", quad);
+        mat = MaterialMaker.makeGuiMaterial(app.getAssetManager(), "Interface/Endless-on.png");
+        bon.setMaterial(mat);
+        bon.setLocalTranslation(Vector3f.ZERO);
+        quad = new Quad(bw, bh);
+        boff = new Geometry("endlessOff", quad);
+        mat = MaterialMaker.makeGuiMaterial(app.getAssetManager(), "Interface/Endless-off.png");
+        boff.setMaterial(mat);
+        bon.setLocalTranslation(Vector3f.ZERO);
+        endlessNode.attachGeometries(bon, boff);
+        endlessNode.setState(false);        
+        
+        return endlessNode;
     }
     
     

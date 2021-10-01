@@ -37,7 +37,7 @@ import java.util.Random;
  * @author jared
  */
 public class AppStateSinglePlayer extends BaseAppState {
-    private static final int TO_WIN = 12;
+    private static final int TO_WIN = 1;
     GeomorphManager geomanager;
     AssetManager assetman;
     BaseAppState controls;
@@ -118,6 +118,7 @@ public class AppStateSinglePlayer extends BaseAppState {
     protected void onEnable() {
         level = 1;
         gameOver = false;
+        endless = app.getEndless();
         difficulty = app.getDifficulty();
         dungeon = new Dungeon(this, geomanager, level);
         player = new Player(this, phynode, physics, 
@@ -189,7 +190,7 @@ public class AppStateSinglePlayer extends BaseAppState {
     
     public void nextLevel() {
         level++;
-        if(level > TO_WIN) {
+        if(!endless && (level > TO_WIN)) {
             player.addScore(100);
             declareVictory();
         } else {
