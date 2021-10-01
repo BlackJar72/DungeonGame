@@ -37,6 +37,7 @@ import java.util.Random;
  * @author jared
  */
 public class AppStateSinglePlayer extends BaseAppState {
+    private static final int TO_WIN = 12;
     GeomorphManager geomanager;
     AssetManager assetman;
     BaseAppState controls;
@@ -59,6 +60,7 @@ public class AppStateSinglePlayer extends BaseAppState {
     BitmapText leveltxt;
     BitmapText scoretxt;
     BitmapText deathtxt;
+    BitmapText wintxt;
     StringBuilder healthstr;
     StringBuilder levelstr;
     StringBuilder scorestr;
@@ -68,8 +70,9 @@ public class AppStateSinglePlayer extends BaseAppState {
     Spatial startMarker, finishMarker;
     long specialTimer;
     boolean gameOver;
+    boolean endless;
     int level;
-    
+        
     
     public static final class VolatileVec {
         volatile float x, y, z;
@@ -113,8 +116,9 @@ public class AppStateSinglePlayer extends BaseAppState {
     
     @Override
     protected void onEnable() {
-        difficulty = app.getDifficulty();
         level = 1;
+        gameOver = false;
+        difficulty = app.getDifficulty();
         dungeon = new Dungeon(this, geomanager, level);
         player = new Player(this, phynode, physics, 
                 dungeon.getPlayerStart().add(new Vector3f(0f, 0.2f, 0f)));
@@ -139,14 +143,14 @@ public class AppStateSinglePlayer extends BaseAppState {
     
     @Override
     public void update(float tpf) {
-        if(player.getLocation().distanceSquared(dungeon.getLevelEndSpot()) < 0.707106781187f) {
+        if(!gameOver && (player.getLocation().distanceSquared(dungeon.getLevelEndSpot()) < 0.707106781187f)) {
             nextLevel();
         } else if(gameOver && System.currentTimeMillis() > specialTimer) {
             app.endGame();
         }
     }
     
-    public void declareEnd() {
+    public void declareDefeat() {
         Node gui = app.getGuiNode();
         healthstr.delete(8, Integer.MAX_VALUE);
         healthstr.append(0);
@@ -155,6 +159,20 @@ public class AppStateSinglePlayer extends BaseAppState {
         gameOver = true;
         long now = System.currentTimeMillis();
         specialTimer = now + 1500;
+        if(now > specialTimer) {
+            app.endGame();
+        }
+    }
+    
+    public void declareVictory() {
+        gameOver = true;
+        Node gui = app.getGuiNode();
+        gui.attachChild(wintxt);
+        dungeon.removeMobs();
+        player.win();
+        gameOver = true;
+        long now = System.currentTimeMillis();
+        specialTimer = now + 2500;
         if(now > specialTimer) {
             app.endGame();
         }
@@ -171,23 +189,28 @@ public class AppStateSinglePlayer extends BaseAppState {
     
     public void nextLevel() {
         level++;
-        player.getControl().walkingOff();
-        playSound(0);
-        clearDungeon();        
-        dungeon = new Dungeon(this, geomanager, level);
-        player.movePlayer(dungeon.getPlayerStart().add(new Vector3f(0f, 0.2f, 0f)));
-        addStartEndMarks(dungeon);   
-        // Lastly lights
-        if(difficulty.alight > 0) {
-            addFourPointLight(difficulty.alight);
+        if(level > TO_WIN) {
+            player.addScore(100);
+            declareVictory();
+        } else {
+            player.getControl().walkingOff();
+            playSound(0);
+            clearDungeon();        
+            dungeon = new Dungeon(this, geomanager, level);
+            player.movePlayer(dungeon.getPlayerStart().add(new Vector3f(0f, 0.2f, 0f)));
+            addStartEndMarks(dungeon);   
+            // Lastly lights
+            if(difficulty.alight > 0) {
+                addFourPointLight(difficulty.alight);
+            }
+            if(difficulty.tbright > 0) {
+                giveTorch(dungeon, player); 
+            }
+            levelstr.delete(7, Integer.MAX_VALUE);
+            levelstr.append(level);
+            leveltxt.setText(levelstr);
+            player.addScore(100);
         }
-        if(difficulty.tbright > 0) {
-            giveTorch(dungeon, player); 
-        }
-        levelstr.delete(7, Integer.MAX_VALUE);
-        levelstr.append(level);
-        leveltxt.setText(levelstr);
-        player.addScore(100);
     }
     
     
@@ -216,6 +239,7 @@ public class AppStateSinglePlayer extends BaseAppState {
         bigfont = app.getAssetManager().loadFont("Interface/Fonts/Default.fnt");
         healthtxt = new BitmapText(font);
         deathtxt = new BitmapText(bigfont);
+        wintxt = new BitmapText(bigfont);
         leveltxt = new BitmapText(smallfont);
         scoretxt = new BitmapText(smallfont);
         
@@ -258,8 +282,15 @@ public class AppStateSinglePlayer extends BaseAppState {
                               - deathtxt.getLineWidth()) / 2, 
                       app.getContext().getSettings().getHeight() 
                               - deathtxt.getLineHeight() * 2,
-                      0);
+                      0); 
         
+        wintxt.setText("You escapaed!\n   You Won!");
+        wintxt.setSize(bigfont.getCharSet().getRenderedSize() * 4);
+        wintxt.move((app.getContext().getSettings().getWidth() 
+                              - wintxt.getLineWidth()) / 2, 
+                      app.getContext().getSettings().getHeight() 
+                              - wintxt.getLineHeight() * 2,
+                      0);        
     }
     
     

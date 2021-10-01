@@ -105,7 +105,19 @@ public class Player extends AbstractEntity {
         player.walkingOff();
         spatial.removeControl(control);
         spatial.removeControl(player);
-        game.declareEnd();
+        game.declareDefeat();
+    }
+    
+    
+    public void win() {
+        Node node = (Node)spatial;
+        if(node.hasChild(visual)) {
+            node.detachChild(visual);
+        }
+        alive = false;
+        player.walkingOff();
+        spatial.removeControl(control);
+        spatial.removeControl(player);
     }
     
     
