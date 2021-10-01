@@ -25,8 +25,8 @@ public class Player extends AbstractEntity {
     BetterCharacterControl control;
     Geometry visual;
     private int score;
-    boolean alive;
-    int health;
+    private boolean alive;
+    private int health;
     
     public Player(AppStateSinglePlayer playgame, Node parent, BulletAppState physics, Vector3f playerStart) {     
         game = playgame;
@@ -140,6 +140,11 @@ public class Player extends AbstractEntity {
         } else {
             player.playSound(0);
         }
+        return health;
+    }
+    
+
+    public int getHealth() {
         return health;
     }
     

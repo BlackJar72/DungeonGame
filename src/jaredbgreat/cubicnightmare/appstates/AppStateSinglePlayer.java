@@ -25,6 +25,7 @@ import jaredbgreat.cubicnightmare.Main;
 import jaredbgreat.cubicnightmare.componenent.GeomorphManager;
 import jaredbgreat.cubicnightmare.componenent.geomorph.GeomorphModel;
 import jaredbgreat.cubicnightmare.componenent.geomorph.Geomorphs;
+import jaredbgreat.cubicnightmare.componenent.pickups.PickupEffectMap;
 import jaredbgreat.cubicnightmare.entities.Player;
 import jaredbgreat.cubicnightmare.mapping.dld.Dungeon;
 import java.util.ArrayList;
@@ -37,7 +38,7 @@ import java.util.Random;
  * @author jared
  */
 public class AppStateSinglePlayer extends BaseAppState {
-    private static final int TO_WIN = 1;
+    private static final int TO_WIN = 12;
     GeomorphManager geomanager;
     AssetManager assetman;
     BaseAppState controls;
@@ -66,6 +67,7 @@ public class AppStateSinglePlayer extends BaseAppState {
     StringBuilder scorestr;
     
     Dungeon dungeon;
+    PickupEffectMap pickups;
     static final List<Light> LIGHTS = new ArrayList<>();
     Spatial startMarker, finishMarker;
     long specialTimer;
@@ -120,13 +122,15 @@ public class AppStateSinglePlayer extends BaseAppState {
         gameOver = false;
         endless = app.getEndless();
         difficulty = app.getDifficulty();
+        pickups = new PickupEffectMap();
         dungeon = new Dungeon(this, geomanager, level);
+        dungeon.addPickups(pickups, this);
         player = new Player(this, phynode, physics, 
                 dungeon.getPlayerStart().add(new Vector3f(0f, 0.2f, 0f)));
         getPhysics().getPhysicsSpace().addCollisionListener(player.getControl());
         app.getStateManager().attach(new AppStateFirstPerson(player));
         defineSounds();
-                
+        
         setupTexts();
         
         addBedroom(dungeon.getPlayerStart());
@@ -188,16 +192,22 @@ public class AppStateSinglePlayer extends BaseAppState {
     protected void cleanup(Application app) {}
     
     
+    public int getLevel() {
+        return level;
+    }
+    
+    
     public void nextLevel() {
         level++;
         if(!endless && (level > TO_WIN)) {
-            player.addScore(100);
+            player.addScore(80 + player.getHealth());
             declareVictory();
         } else {
             player.getControl().walkingOff();
             playSound(0);
             clearDungeon();        
-            dungeon = new Dungeon(this, geomanager, level);
+            dungeon = new Dungeon(this, geomanager, level);            
+            dungeon.addPickups(pickups, this);
             player.movePlayer(dungeon.getPlayerStart().add(new Vector3f(0f, 0.2f, 0f)));
             addStartEndMarks(dungeon);   
             // Lastly lights
@@ -209,8 +219,8 @@ public class AppStateSinglePlayer extends BaseAppState {
             }
             levelstr.delete(7, Integer.MAX_VALUE);
             levelstr.append(level);
-            leveltxt.setText(levelstr);
-            player.addScore(100);
+            leveltxt.setText(levelstr);            
+            player.addScore(80 + player.getHealth());
         }
     }
     
@@ -226,11 +236,18 @@ public class AppStateSinglePlayer extends BaseAppState {
         dungeon.clear();
         dungeon = null;
         removeAllLights();
+        pickups.clear();
     }
     
     
     public EDifficulty getDifficulty() {
         return difficulty;
+    }
+    
+    
+    public void applyPickupEffect(String pickup) {
+        pickups.applyEffects(pickup, player);
+        updateScore(player.getScore());
     }
     
     

@@ -2,10 +2,15 @@ package jaredbgreat.cubicnightmare.mapping.dld;
 
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.math.Vector3f;
+import com.jme3.scene.Node;
+import com.jme3.scene.Spatial;
 import jaredbgreat.cubicnightmare.Main;
 import jaredbgreat.cubicnightmare.appstates.AppStateSinglePlayer;
 import jaredbgreat.cubicnightmare.componenent.GeomorphManager;
+import jaredbgreat.cubicnightmare.componenent.geomorph.GeomorphModel;
 import jaredbgreat.cubicnightmare.componenent.geomorph.Geomorphs;
+import jaredbgreat.cubicnightmare.componenent.pickups.BookStand;
+import jaredbgreat.cubicnightmare.componenent.pickups.PickupEffectMap;
 import jaredbgreat.cubicnightmare.entities.CubeMob;
 import jaredbgreat.cubicnightmare.mapping.decorator.AreaZone;
 import java.util.ArrayList;
@@ -37,7 +42,8 @@ public class Dungeon {
     Room room;
     
     
-    public Dungeon(AppStateSinglePlayer playing, GeomorphManager geoman, int level) {
+    public Dungeon(AppStateSinglePlayer playing, GeomorphManager geoman, 
+                    int level) {
         game = playing;
         random = new Random();
         this.geoman = geoman;
@@ -127,15 +133,15 @@ public class Dungeon {
         hubRooms = new HubRoom[num];
         List<Sector> sectors = Sector.getShuffledList(random);
         int j = 0;
-        for(int i = 0; (i < hubRooms.length) && ((i + j) < sectors.size()); i++) {            
+        for(int i = 0; (i < hubRooms.length) && ((i+j) < sectors.size()); i++) {            
             do {
                 Sector sector = sectors.get(i + j);
                 int x = random.nextInt(16) + (sector.x * 16);
                 int z = random.nextInt(16) + (sector.z * 16);
                 RoomSeed seed = new RoomSeed(x, 0, z);
                 // Hubrooms are bigger than average
-                hubRooms[i] = seed.growHubRoom(random.nextInt(5) + 4, random.nextInt(5) + 4, 
-                        1, this, null, room);
+                hubRooms[i] = seed.growHubRoom(random.nextInt(5) + 4, 
+                        random.nextInt(5) + 4, 1, this, null, room);
                 if(hubRooms[i] != null) {
                     RoomList rl = areas.getList(0);
                     rl.add(hubRooms[i]);
@@ -211,7 +217,8 @@ public class Dungeon {
                 disconnected.remove(start);
 		while(!disconnected.isEmpty()) {
 			first = connected.get(random.nextInt(connected.size()));
-			other = disconnected.get(random.nextInt(disconnected.size()));
+			other = disconnected.get(random
+                                .nextInt(disconnected.size()));
 			connector.connect(first, other);
 			connected.add(other);
 			disconnected.remove(other);
@@ -248,7 +255,8 @@ public class Dungeon {
             ArrayList<AreaZone> tzones = new ArrayList<>();
             for(int i = 0; i < hubRooms.length; i++) {
                 if(hubRooms[i] != null) {
-                    tzones.add(hubRooms[i].setAreaZone(this, Geomorphs.REGISTRY.getRandomID(random)));
+                    tzones.add(hubRooms[i].setAreaZone(this, 
+                            Geomorphs.REGISTRY.getRandomID(random)));
                     nzones++;
                 }
             }
@@ -278,7 +286,8 @@ public class Dungeon {
             float dist = 0;
             for(int i = 1; i < hubRooms.length; i++) {
                float d = playerStart.distanceSquared(new 
-                         Vector3f(hubRooms[i].centerx * 3, hubRooms[i].y1 * 3, hubRooms[i].centerz * 3));
+                         Vector3f(hubRooms[i].centerx * 3, hubRooms[i].y1 * 3, 
+                                 hubRooms[i].centerz * 3));
                if(d > dist) {
                    dist = d;
                    endRoom = hubRooms[i];
@@ -293,7 +302,8 @@ public class Dungeon {
         
         
         public Vector3f getLevelEndSpot() {
-            return new Vector3f(endRoom.centerx * 3, endRoom.y1 * 3, endRoom.centerz * 3);
+            return new Vector3f(endRoom.centerx * 3, endRoom.y1 * 3, 
+                    endRoom.centerz * 3);
         }
         
         
@@ -314,8 +324,9 @@ public class Dungeon {
             n1 = Math.min((n1 / 3) + level, l.size());
             for(int i = 0; i < n1; i++) {
                 Room r = l.get(i);
-                CubeMob cb = new CubeMob(game, this, game.getApplications().getRootNode(), 
-                        game.getPhysics(), r.getCenterAsVec(), "DeathCube." + i);
+                CubeMob cb = new CubeMob(game, this, game.getApplications().
+                        getRootNode(), 
+                game.getPhysics(), r.getCenterAsVec(), "DeathCube." + i);
                 game.getPhysics().getPhysicsSpace().addCollisionListener(cb);
                 mobs.add(cb);
             }
@@ -334,6 +345,35 @@ public class Dungeon {
         public void clear() {
             removeMobs();
             geoman.removeSpatials();
+        }
+        
+        
+        public void addPickups(PickupEffectMap effectMap, 
+                    AppStateSinglePlayer game) {
+            RoomList rl = areas.getRoomList();
+            int n1 = rl.realSize();
+            ArrayList<Room> l = new ArrayList<>(n1);
+            for(int j = 0; j < n1;) {
+                l.add(rl.get(++j));
+            }
+            l.remove(hubRooms[0]);
+            l.remove(endRoom);
+            Collections.shuffle(l);
+            n1 = 5;
+            //n1 = l.size();
+            for(int i = 0; i < n1; i++) {
+                Spatial s = addPickup(effectMap, l.get(i), "BookL" 
+                        + game.getLevel() + "P" + i);
+                GeomorphManager.manager.attachSpatial(s);
+            }
+        }
+        
+        
+        public Spatial addPickup(PickupEffectMap effectMap, Room r, String name) {
+            GeomorphModel model = Geomorphs.getDecor().getFromName("BookStand");
+            Node node = model.makeSpatialAt(r.getCenterAsVec());
+            effectMap.add(name, new BookStand(name, node));
+            return node;
         }
     
     

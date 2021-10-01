@@ -1,4 +1,4 @@
-package jaredbgreat.cubicnightmare.pickups;
+package jaredbgreat.cubicnightmare.componenent.pickups;
 
 import jaredbgreat.cubicnightmare.entities.Player;
 import java.util.HashMap;
@@ -22,7 +22,7 @@ import java.util.Map;
  * @author Jared Blackburn
  */
 public class PickupEffectMap {
-    private final Map<String, IPickupEffect> MAP 
+    private final Map<String, IPickupEffect> MAP
             = new HashMap<>();
     
     
@@ -34,7 +34,12 @@ public class PickupEffectMap {
     }
     
     
-    public void setup() {
-        //TODO: Setup the effect list
+    public void clear() {
+        MAP.clear();
+    }
+    
+    
+    public void add(String name, IPickupEffect pickup) {
+        MAP.put(name, pickup);
     }
 }

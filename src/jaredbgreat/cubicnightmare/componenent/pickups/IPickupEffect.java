@@ -1,4 +1,4 @@
-package jaredbgreat.cubicnightmare.pickups;
+package jaredbgreat.cubicnightmare.componenent.pickups;
 
 import jaredbgreat.cubicnightmare.entities.Player;
 

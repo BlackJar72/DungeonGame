@@ -15,6 +15,7 @@ import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
 import jaredbgreat.cubicnightmare.Main;
 import jaredbgreat.cubicnightmare.appstates.AppStateSinglePlayer;
+import jaredbgreat.cubicnightmare.entities.Player;
 
 
 /**
@@ -256,7 +257,17 @@ public class PlayerControl extends AbstractEntityControl implements PhysicsColli
     
 
     @Override
-    public void collision(PhysicsCollisionEvent pce) {}
+    public void collision(PhysicsCollisionEvent event) {        
+        try{
+                String A = event.getNodeA().getName();
+            String B = event.getNodeB().getName();
+            if(A == Player.NAME) {
+                game.applyPickupEffect(B); 
+            } else {
+                game.applyPickupEffect(A); 
+            } 
+        } catch (NullPointerException e) {}
+    }
  
     
 }

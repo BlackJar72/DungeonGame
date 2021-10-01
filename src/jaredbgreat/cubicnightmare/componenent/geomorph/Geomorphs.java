@@ -105,6 +105,8 @@ public class Geomorphs {
             "Models/geomorphs/gameplay/StartPad.glb")); 
         DECOR.add("EndPad", new GeomorphModel("EndPad", 
             "Models/geomorphs/gameplay/EndPad.glb"));
+        DECOR.add("BookStand", new GeomorphModel("BookStand", 
+            "Models/geomorphs/gameplay/ItemStandwBook.glb"));
     }
     
     
