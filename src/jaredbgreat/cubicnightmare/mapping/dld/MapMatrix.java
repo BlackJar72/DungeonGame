@@ -130,6 +130,7 @@ public class MapMatrix {
         for(int i = 1; i < tunnels.size(); i++) {
             dungeon.geoman.attachNode(tunnels.get(i).roomSpace);
         }
+        findPillars();
     }    
     
     
