@@ -14,6 +14,7 @@ public class Geomorphs {
     static final Registry<GeomorphModel>  CIELINGS = new Registry<>();
     static final Registry<SimpleGeomorph> WALLS    = new Registry<>();
     static final Registry<GeomorphModel>  DECOR    = new Registry<>();
+    static final Registry<GeomorphModel>  PILLARS  = new Registry<>();
     
     
     private Geomorphs() {}
@@ -107,6 +108,41 @@ public class Geomorphs {
             "Models/geomorphs/gameplay/EndPad.glb"));
         DECOR.add("BookStand", new GeomorphModel("BookStand", 
             "Models/geomorphs/gameplay/ItemStandwBook.glb"));
+    }
+    
+    
+    /**
+     * Methods calls to add pillar/endcap models.
+     */
+    private void addPillars() {
+        PILLARS.add("Concrete", new GeomorphModel("Concrete", 
+            "Models/geomorphs/pillars/SimplePost-concrete.glb")); 
+        PILLARS.add("BlackGranite", new GeomorphModel("BlackGranite", 
+            "Models/geomorphs/pillars/SimplePillar-bgranite.glb"));
+        PILLARS.add("BlackMarble", new GeomorphModel("BlackMarble", 
+            "Models/geomorphs/pillars/SimplePillar-bmarble.glb"));  
+        PILLARS.add("Lapis", new GeomorphModel("Lapis", 
+            "Models/geomorphs/pillars/SimplePillar-lapis.glb"));  
+        PILLARS.add("Log", new GeomorphModel("Log", 
+            "Models/geomorphs/pillars/SimplePillar-log.glb"));  
+        PILLARS.add("Marble", new GeomorphModel("Marble", 
+            "Models/geomorphs/pillars/SimplePillar-marble.glb"));  
+        PILLARS.add("PetrifiedWood", new GeomorphModel("PetrifiedWood", 
+            "Models/geomorphs/pillars/SimplePillar-pwood.glb"));  
+        PILLARS.add("Gneiss", new GeomorphModel("Gneiss", 
+            "Models/geomorphs/pillars/SimplePillar-rough.glb"));  
+        PILLARS.add("Sandstone", new GeomorphModel("Sandstone", 
+            "Models/geomorphs/pillars/SimplePillar-sandstone.glb"));   
+        PILLARS.add("Stone", new GeomorphModel("Stone", 
+            "Models/geomorphs/pillars/SimplePillar-stone.glb"));
+        PILLARS.add("Wood", new GeomorphModel("Wood", 
+            "Models/geomorphs/pillars/SimplePillar-wood.glb"));
+        PILLARS.add("Concrete", new GeomorphModel("Concrete", 
+            "Models/geomorphs/pillars/SimplePost-concrete.glb"));
+        PILLARS.add("GraniteBrick", new GeomorphModel("GraniteBrick", 
+            "Models/geomorphs/pillars/SimplePost-gb.glb"));
+        PILLARS.add("Beam", new GeomorphModel("Beam", 
+            "Models/geomorphs/pillars/SimplePost-wood.glb"));
     }
     
     
@@ -414,36 +450,61 @@ public class Geomorphs {
         addCielings();
         addWalls();
         addDecor();
+        addPillars();
         
         // Then, make the actual geomorphs!
         // First, pure stone...
-        register(new Geomorph("SimpleStone", "SimpleStone", "SimpleStone", "SimpleStone"));
-        register(new Geomorph("Marble", "SimpleMarble", "SimpleMarble", "SimpleMarble"));
-        register(new Geomorph("DarkStone", "SimpleDarkStone", "SimpleDarkStone", "SimpleDarkStone"));
-        register(new Geomorph("RoughGneiss", "SimpleGneiss", "SimpleGneiss", "SimpleGneiss"));
-        register(new Geomorph("Mudstone", "SimpleMudstone", "SimpleMudstone", "SimpleMudstone"));
-        register(new Geomorph("BlackGranite", "SimpleGraniteBlack", "SimpleGraniteBlack", "SimpleGraniteBlack"));
-        register(new Geomorph("GreenGranite", "SimpleGraniteGreen", "SimpleGraniteGreen", "SimpleGraniteGreen"));
-        register(new Geomorph("FancyBlackStone", "SimpleFancyStone", "SimpleFancyStone", "SimpleFancyStone"));
-        register(new Geomorph("FancyPaleStone", "SimpleFancyStoneLt", "SimpleFancyStoneLt", "SimpleFancyStoneLt"));
-        register(new Geomorph("RedSandstone", "SimpleSandstoneRed", "SimpleSandstoneRed", "SimpleSandstoneRed"));
+        register(new Geomorph("SimpleStone", "SimpleStone", "SimpleStone", "SimpleStone")
+                    .addPillars("Stone:Gneiss:Beam:Wood:Log"));
+        register(new Geomorph("Marble", "SimpleMarble", "SimpleMarble", "SimpleMarble")
+                    .addPillars("Marble:BlackMarble:BlackGranite"));
+        register(new Geomorph("DarkStone", "SimpleDarkStone", "SimpleDarkStone", "SimpleDarkStone")
+                    .addPillars("Log:Gneiss:Beam:Wood"));
+        register(new Geomorph("RoughGneiss", "SimpleGneiss", "SimpleGneiss", "SimpleGneiss")
+                    .addPillars("Gneiss:Beam:Log:Gneiss:Wood"));
+        register(new Geomorph("Mudstone", "SimpleMudstone", "SimpleMudstone", "SimpleMudstone")
+                    .addPillars("Wood:Beam:GraniteBrick"));
+        register(new Geomorph("BlackGranite", "SimpleGraniteBlack", "SimpleGraniteBlack", "SimpleGraniteBlack")
+                    .addPillars("BlackGranite:Beam:Wood"));
+        register(new Geomorph("GreenGranite", "SimpleGraniteGreen", "SimpleGraniteGreen", "SimpleGraniteGreen")
+                    .addPillars("BlackGranite:Marble:Lapis:Beam"));
+        register(new Geomorph("FancyBlackStone", "SimpleFancyStone", "SimpleFancyStone", "SimpleFancyStone")
+                    .addPillars("BlackGranite:BlackMarble:Log:Beam:Wood"));
+        register(new Geomorph("FancyPaleStone", "SimpleFancyStoneLt", "SimpleFancyStoneLt", "SimpleFancyStoneLt")
+                    .addPillars("Stone:Gneiss:Beam:Log:Stone:Wood"));
+        register(new Geomorph("RedSandstone", "SimpleSandstoneRed", "SimpleSandstoneRed", "SimpleSandstoneRed")
+                    .addPillars("Log:Beam:PetrifiedWood:PetrifiedWood:Wood"));
         
         // Mixed/Fancy themes featuring stone textures
-        register(new Geomorph("WhiteMarbleCarpet", "SimpleCarpet01", "SimpleMarble", "SimpleMarble"));
-        register(new Geomorph("FancyBlue", "SimpleCarpet01", "SimpleBlueStone", "SimpleBlueStone"));
-        register(new Geomorph("DirtNStone", "SimpleDirt", "SimpleStoneDark", "SimpleStoneDark"));
-        register(new Geomorph("DarkStone", "SimpleDirt", "SimpleOldWood", "SimpleOldWood"));
+        register(new Geomorph("WhiteMarbleCarpet", "SimpleCarpet01", "SimpleMarble", "SimpleMarble")
+                    .addPillars("Marble:BlackMarble:BlackGranite:Lapis"));
+        register(new Geomorph("FancyBlue", "SimpleCarpet01", "SimpleBlueStone", "SimpleBlueStone")
+                    .addPillars("Lapis:BlackMarble:BlackGranite:Lapis"));
+        register(new Geomorph("DirtNStone", "SimpleDirt", "SimpleStoneDark", "SimpleStoneDark")
+                    .addPillars("Log:Wood:Beam"));
+        register(new Geomorph("DarkStone", "SimpleDirt", "SimpleOldWood", "SimpleOldWood")
+                    .addPillars("Log:Wood:Beam:Beam"));
         
         //Bricks
-        register(new Geomorph("BrickNStone", "Concrete01", "RedBrick", "Concrete03"));
-        register(new Geomorph("BrickNCarpet", "SimpleCarpet02", "RedBrick", "SimpleOldWood"));
-        register(new Geomorph("StoneBrick02", "CobbleStone", "StoneBrick", "SimpleOldWood"));
-        register(new Geomorph("SandstoneBrick01", "SmoothSandstoneLt", "SandstoneBrick", "SmoothSandstoneLt"));
-        register(new Geomorph("SandstoneBrick02", "SmoothSandstone", "SandstoneBrickDk", "SmoothSandstone"));
+        register(new Geomorph("BrickNStone", "Concrete01", "RedBrick", "Concrete03")
+                    .addPillars("Concrete:Concrete:Beam:Beam:Stone:Concrete"));
+        register(new Geomorph("BrickNCarpet", "SimpleCarpet02", "RedBrick", "SimpleOldWood")
+                    .addPillars("Wood:Beam:Beam"));
+        register(new Geomorph("StoneBrick02", "CobbleStone", "StoneBrick", "SimpleOldWood")
+                    .addPillars("Stone:Wood:Wood:Beam:Beam:GraniteBrick:Concrete"));
+        register(new Geomorph("SandstoneBrick01", "SmoothSandstoneLt", "SandstoneBrick", "SmoothSandstoneLt")
+                    .addPillars("Sandstone:Sandstone:Sandstone:BlackMarble:Log:Beam"));
+        register(new Geomorph("SandstoneBrick02", "SmoothSandstone", "SandstoneBrickDk", "SmoothSandstone")
+                    .addPillars("Sandstone:Sandstone:Sandstone:BlackMarble:Log:Beam"));
     }
     
     
     public static Registry<GeomorphModel> getDecor() {
         return DECOR;
+    }
+    
+    
+    public static Registry<GeomorphModel> gePillars() {
+        return PILLARS;
     }
 }

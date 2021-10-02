@@ -49,10 +49,11 @@ public class AreaZone {
             }
         }
         r.setBaseGeomorph(n[index].value);
+        r.setPillar(n[index].hub);
     }
     
     
-    public static int summateEffect(AreaZone[] n, float x, float z) {
+    public static HubRoom summateEffect(AreaZone[] n, float x, float z) {
         double effect = 0.0;
         int index = 0;
         double power;
@@ -63,7 +64,8 @@ public class AreaZone {
                     index = i;
             }
         }
-        return n[index].value;
+        //return n[index].value;
+        return n[index].hub;
     }
     
 }

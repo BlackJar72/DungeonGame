@@ -4,6 +4,7 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import jaredbgreat.cubicnightmare.componenent.GeomorphManager;
+import jaredbgreat.cubicnightmare.componenent.geomorph.GeomorphModel;
 import jaredbgreat.cubicnightmare.componenent.geomorph.Geomorphs;
 import jaredbgreat.cubicnightmare.mapping.tables.ECardinal;
 import static jaredbgreat.cubicnightmare.mapping.tables.ECardinal.*;
@@ -23,6 +24,7 @@ public class Room {
     final int ix, iz, width, length, height, x1, x2, z1, z2, y1, y2;
     final float centerx, centerz;
     private int baseGeomorph;
+    private GeomorphModel pillar;
     int id;
     
     ArrayList<Doorway> exits;
@@ -41,8 +43,8 @@ public class Room {
         exits = new ArrayList<>();
         x1 = startx; x2 = endx;
         z1 = startz; z2 = endz;
-        width = x2 - x1; 
-        length = z2 - z1;
+        width  = x2 - x1 + 1; 
+        length = z2 - z1 + 1;
         centerx = ((float)width / 2.0f) + (float)x1;
         centerz = ((float)length/ 2.0f) + (float)z1;
         ix = (int)centerx;
@@ -146,11 +148,7 @@ public class Room {
             exits.add(d);
         }
         return d;
-    }
-    
-    
-    
-    
+    }    
     
     
     
@@ -185,10 +183,6 @@ public class Room {
             tids[j + ((sz - 1) * sx)] 
                     = S.addWall(tids[j + ((sz - 1) * sx)]);
         }
-        //if(doors != null) for(Doorway door : doors) {
-        //    int location = door.z * sx + door.x;
-        //    tids[location] 
-        //}
         for(int i = 0; i < tids.length; i++) {
             Spatial tile = Geomorphs.REGISTRY.makeSpatialAt(tids[i], 
                    (x1 + (i % sx)) * 3, 0, (z1 + (i / sx)) * 3);
@@ -259,6 +253,16 @@ public class Room {
 
     public void setBaseGeomorph(int baseGeomorph) {
         this.baseGeomorph = baseGeomorph;
+    }
+    
+    
+    public void setPillar(HubRoom hub) {
+        pillar = hub.getPillar();
+    }
+    
+    
+    public GeomorphModel getPillar() {
+        return pillar;
     }
     
     

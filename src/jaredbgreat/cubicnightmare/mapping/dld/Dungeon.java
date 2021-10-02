@@ -86,7 +86,6 @@ public class Dungeon {
     }
     
     
-    //TODO: This is a prototype, not sure if its the best way!
     private void doorFixer() {
         ArrayList<Doorway> toRemove = new ArrayList<>();
         for(Room r : areas.getDoorways()) {
@@ -257,6 +256,7 @@ public class Dungeon {
                 if(hubRooms[i] != null) {
                     tzones.add(hubRooms[i].setAreaZone(this, 
                             Geomorphs.REGISTRY.getRandomID(random)));
+                    hubRooms[i].setPillar(random);
                     nzones++;
                 }
             }
@@ -276,7 +276,12 @@ public class Dungeon {
         
         
         public int getThemeIDforLoc(float x, float y, float z) {
-            return AreaZone.summateEffect(zones, x, z);
+            return AreaZone.summateEffect(zones, x, z).themeID;
+        }
+        
+        
+        public GeomorphModel getTPillarforLoc(float x, float y, float z) {
+            return AreaZone.summateEffect(zones, x, z).getPillar();
         }
         
         

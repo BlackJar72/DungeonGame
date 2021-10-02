@@ -2,7 +2,6 @@ package jaredbgreat.cubicnightmare.mapping.dld;
 
 import jaredbgreat.cubicnightmare.componenent.geomorph.Geomorphs;
 import jaredbgreat.cubicnightmare.mapping.tables.ECardinal;
-import jaredbgreat.cubicnightmare.mapping.tables.EDir;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;

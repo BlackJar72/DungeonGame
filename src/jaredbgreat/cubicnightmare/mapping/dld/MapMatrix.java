@@ -2,6 +2,7 @@ package jaredbgreat.cubicnightmare.mapping.dld;
 
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
+import jaredbgreat.cubicnightmare.componenent.GeomorphManager;
 import jaredbgreat.cubicnightmare.componenent.geomorph.Geomorphs;
 import jaredbgreat.cubicnightmare.mapping.tables.ECardinal;
 
@@ -23,7 +24,7 @@ public class MapMatrix {
     int[][] type;     // What kind of "room"; is it a room, doorway, etc. (What table to reference.)
     int[][] passable; // Is this an area that can be normally entered? (Treated as numeric for special reasons.)
     int[][] dirs;     // Is this an area that can be normally entered? (Treated as numeric for special reasons.)
-    int[][] pillars;  // pillars used to endcap walls
+    boolean[][] pillars;  // pillars used to endcap walls
     
     
     public MapMatrix() {
@@ -37,7 +38,7 @@ public class MapMatrix {
         type     = new int[size][size];
         passable = new int[size][size];
         dirs     = new int[size][size];
-        pillars  = new int[size-1][size-1];
+        pillars  = new boolean[size-1][size-1];
     }
     
     
@@ -72,7 +73,7 @@ public class MapMatrix {
             dl.add(dw);            
             room[x][z] = dl.realSize();
             dw.setID(room[x][z]);
-            { // FIXME/TODO: Temporary code for testing
+            { 
                 int geo;
                 switch(dungeon.random.nextInt(3)) {
                     case 0: geo = dungeon.a; break;
@@ -99,12 +100,13 @@ public class MapMatrix {
     
     public void buildMap(Dungeon dungeon) {
         simpleRefineMap();
+        findPillars();
         RoomList rooms = dungeon.areas.getList(0);
         for(int i = 0; i < geomorph.length; i++) {
             for(int j = 0; j < geomorph[i].length; j++) {
                 if(room[i][j] > 0) {
                     Room theRoom = dungeon.areas.getArea(type[i][j], room[i][j]);
-                    Spatial tile;
+                    Node tile;
                     if(type[i][j] == AreaType.TUNNEL.tid) {
                         tile = Geomorphs.REGISTRY.makeSpatialAt(geomorph[i][j] + 
                                 dungeon.getThemeIDforLoc((i * 3) + 1.5f, theRoom.y1, (j * 3) + 1.5f), 
@@ -114,10 +116,39 @@ public class MapMatrix {
                                 i * 3, theRoom.y1 * 3, j * 3);
                     }
                     tile.setName("Dungeon: Room " + theRoom.id + " at " + i + ", " + j);
-                    dungeon.geoman.attachSpatial(tile, theRoom.roomSpace);                
+                    dungeon.geoman.attachSpatial(tile, theRoom.roomSpace);
                 }
             }
-            //System.out.println();
+        }
+        for(int i = 0; i < pillars.length; i++) {
+            for(int j = 0; j < pillars[i].length; j++) {
+                if(pillars[i][j]) {
+                    Room theRoom;
+                    if(room[i][j] > 0) {
+                        theRoom = dungeon.areas.getArea(type[i][j], room[i][j]);
+                        if(type[i][j] == AreaType.TUNNEL.tid) {
+                            Spatial pillar = dungeon.getTPillarforLoc((i * 3) + 1.5f, 
+                                    theRoom.y1, (j * 3) + 1.5f).getSpatial();
+                            GeomorphManager.manager.attachSpatial(pillar);
+                        } else {
+                            Spatial pillar = theRoom.getPillar().getSpatial();
+                            pillar.setLocalTranslation(i * 3, theRoom.y1 * 3, j * 3);
+                            GeomorphManager.manager.attachSpatial(pillar);
+                        }
+                    } else {
+                        theRoom = dungeon.areas.getArea(type[i+1][j+1], room[i+1][j+1]);
+                        if(type[i+1][j+1] == AreaType.TUNNEL.tid) {
+                            Spatial pillar = dungeon.getTPillarforLoc((i * 3) + 1.5f, 
+                                    theRoom.y1, (j * 3) + 1.5f).getSpatial();
+                            GeomorphManager.manager.attachSpatial(pillar);
+                        } else {
+                            Spatial pillar = theRoom.getPillar().getSpatial();
+                            pillar.setLocalTranslation(i * 3, theRoom.y1 * 3, j * 3);
+                            GeomorphManager.manager.attachSpatial(pillar);
+                    }
+                    }
+                }
+            }
         }
         for(int i = 1; i < rooms.size(); i++) {
             dungeon.geoman.attachNode(rooms.get(i).roomSpace);
@@ -130,7 +161,6 @@ public class MapMatrix {
         for(int i = 1; i < tunnels.size(); i++) {
             dungeon.geoman.attachNode(tunnels.get(i).roomSpace);
         }
-        findPillars();
     }    
     
     
@@ -139,6 +169,9 @@ public class MapMatrix {
         for(int i = 0; i < room.length; i++) 
             for(int j = 0; j < room[i].length; j++) {
                 geomorph[i][j] += (findRotationFromBorders(i, j) << 16);
+                if(room[i][j] < 0) {
+                    room[i][j] = 0;
+                }
             }
     }
     
@@ -193,6 +226,7 @@ public class MapMatrix {
         }
         System.out.println();
     }
+    
 
     void addTunnelStep(int x, int z, Tunnel tunnel, ECardinal heading) {
         room[x][z] = tunnel.id;
@@ -211,14 +245,15 @@ public class MapMatrix {
      * @return true is there is a corner, false otherwise
      */
     private boolean shouldHavePillar(int x, int z) {
-        int ew, ns;
-        int nw = geomorph[x][z]     >> 16;
-        int ne = geomorph[x+1][z]   >> 16; 
-        int se = geomorph[x+1][z+1] >> 16; 
-        int sw = geomorph[x][z+1]   >> 16;
-        ew = ((ne | se) ^ 1) | ((nw | sw) ^ 16);
-        ns = ((se | sw) ^ 4) | ((ne | nw) ^ 64);
-        return (ew > 0) && (ns > 0);
+        boolean nw = room[x][z]      >  0;
+        boolean ne = room[x+1][z]    >  0; 
+        boolean se = room[x+1][z+1]  >  0; 
+        boolean sw = room[x][z+1]    >  0;
+        boolean out = (!nw &&  ne  &&  se &&  sw)
+                   ||  (nw && !ne  &&  se &&  sw)
+                   ||  (nw &&  ne  && !se &&  sw)
+                   ||  (nw &&  ne  &&  se && !sw);
+        return out;
     }
     
     
@@ -226,8 +261,7 @@ public class MapMatrix {
         for(int i = 0; i < pillars.length; i++)
             for(int j = 0; j < pillars[i].length; j++) {
                 if(shouldHavePillar(i, j)) {
-                    // TODO: Make pillar variants and a way to select them
-                    pillars[i][j] = 1;
+                    pillars[i][j] = true;
                 }
             }
     }

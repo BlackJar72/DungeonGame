@@ -2,6 +2,10 @@ package jaredbgreat.cubicnightmare.componenent.geomorph;
 
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.StringTokenizer;
 
 /**
  * This is a replacement for the original Geomorph classs to better
@@ -16,6 +20,7 @@ public class Geomorph implements IGeomorph {
     private final GeomorphModel  floor;
     private final SimpleGeomorph walls;
     private final GeomorphModel  cieling;
+    private final List<GeomorphModel> pillars;
     
     
     public Geomorph(String name, GeomorphModel floor, SimpleGeomorph walls, GeomorphModel cieling) {
@@ -23,6 +28,7 @@ public class Geomorph implements IGeomorph {
         this.floor   = floor;
         this.walls   = walls;
         this.cieling = cieling;
+        pillars = new ArrayList<>();
     }
     
     
@@ -31,6 +37,7 @@ public class Geomorph implements IGeomorph {
         this.floor   = Geomorphs.MORPHS.getFloor(floor);
         this.walls   = Geomorphs.MORPHS.getWalls(walls);
         this.cieling = Geomorphs.MORPHS.getCieling(cieling);
+        pillars = new ArrayList<>();
     }
     
     
@@ -108,6 +115,34 @@ public class Geomorph implements IGeomorph {
     @Override
     public String getName() {
         return name;
+    }
+    
+    
+    public Geomorph addPillars(String list) {
+        StringTokenizer tokens = new StringTokenizer(list, ":");
+        while(tokens.hasMoreTokens()) {
+            pillars.add(Geomorphs.PILLARS.getFromName(tokens.nextToken()));
+        }
+        return this;
+    }
+    
+    
+    public Geomorph addPillarsByArray(String... list) {
+        for(String name : list) {
+            pillars.add(Geomorphs.PILLARS.getFromName(name));
+        }
+        return this;
+    }
+    
+    
+    public GeomorphModel getPillar(Random random) {
+        if(pillars == null || pillars.isEmpty()) {
+            return Geomorphs.PILLARS.get(0);
+        } else if(pillars.size() > 0 ) {            
+            return pillars.get(random.nextInt(pillars.size()));
+        } else {
+            return pillars.get(random.nextInt(0));
+        }
     }
     
 }

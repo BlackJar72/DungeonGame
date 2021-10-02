@@ -1,13 +1,19 @@
 package jaredbgreat.cubicnightmare.mapping.dld;
 
+import jaredbgreat.cubicnightmare.componenent.geomorph.Geomorph;
+import jaredbgreat.cubicnightmare.componenent.geomorph.GeomorphModel;
+import jaredbgreat.cubicnightmare.componenent.geomorph.Geomorphs;
 import jaredbgreat.cubicnightmare.mapping.decorator.AreaZone;
+import java.util.Random;
 
 /**
  *
  * @author Jared Blackburn
  */
-public class HubRoom extends Room {
+public class HubRoom extends Room {  
+    int themeID;
     AreaZone zone;
+    GeomorphModel pillar;
     
     
     public HubRoom(int startx, int endx, int startz, int endz, int starty, int endy) {
@@ -16,8 +22,19 @@ public class HubRoom extends Room {
     
     
     public AreaZone setAreaZone(Dungeon dungeon, int themeID) {
+        this.themeID = themeID;
         return zone = new AreaZone(this, themeID, dungeon.random.nextDouble() + 1, dungeon);        
-    }    
+    }
+    
+    
+    public void setPillar(Random random) {
+        pillar = ((Geomorph)Geomorphs.REGISTRY.getGeomorph(themeID)).getPillar(random);
+    }
+    
+    
+    public GeomorphModel getPillar() {
+        return pillar;
+    }
     
     
     public AreaZone getAreaZone() {
