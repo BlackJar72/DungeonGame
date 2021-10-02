@@ -61,7 +61,7 @@ public class AppStateStartScreen extends BaseAppState implements ActionListener 
         Mesh backquad = new Quad(w, h);
         Geometry background = new Geometry("background", backquad);
         Material mat = MaterialMaker.makeGuiMaterial(app.getAssetManager(), 
-                "Interface/MenuTitle.png");
+                "Interface/NewCNBG.png");
         background.setMaterial(mat);
         app.getGuiNode().attachChild(background);
         
