@@ -4,5 +4,9 @@ full voxel games).  The plan for this is to create a kind of Roguelike FPS game
 with fast play and simple mechanics.  It turned into something like a horror 
 walking simulator becuase of a mix if engine shortcoming and my inaptitude.
 
-A basically complete binary (126 MB worth) can be found here (and alpha):
-https://www.mediafire.com/file/sy76aar2xhnu1rb/CubicNightmare.jar/file
+Unfortunately, it doesn't work outside the dev environment.  Its time to try 
+one of the pro engines, even if it means switching to Windows instead of 
+Linux.
+
+This is not released, no permission is granted to use this -- its here to look-at. 
+It is very much broken.
