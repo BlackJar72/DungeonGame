@@ -1,4 +1,4 @@
-== Cubic Nightmare ==
+### Cubic Nightmare ###
 
 This is my first 3D indie game, Cubic Nightmare. ​This is a simple game.  You wake up to find you and your room have been transported to an endless dungeon, and your goal is to find your way out while avoiding the Deathcubes (find your way through 12 levels to win).  You can find and pick up randomly scattered books along the way for bonus points.  (Requires Java 8 or newer.)
 
