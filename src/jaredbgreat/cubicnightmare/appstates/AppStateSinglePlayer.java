@@ -73,7 +73,8 @@ public class AppStateSinglePlayer extends BaseAppState {
     long specialTimer;
     boolean gameOver;
     boolean endless;
-    int level;
+    int level;    
+    float gameTime, levelTime;
         
     
     public static final class VolatileVec {
