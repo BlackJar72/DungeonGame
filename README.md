@@ -6,8 +6,6 @@ To compile the code you will need JMonkeyEngine 3.2 (not 3.3!); it must be loade
 
 https://jaredbgreat.itch.io/cubic-nightmare
 
-The first, last, and only release, as I have moved on to more ambitious projects that should be much more fun.
-
 Cubic Nightmare (C) Jared Blackurn 2021 is now under the Gnu General Public license version 3.0.
 
     This program is free software: you can redistribute it and/or modify
