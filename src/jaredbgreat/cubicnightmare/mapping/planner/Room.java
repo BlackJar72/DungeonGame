@@ -126,18 +126,18 @@ public class Room {
         switch(dir) {
             case W:
                 x = x1 + dir.incx;
-                z = z1 + dungeon.random.nextInt(length + 1);
+                z = z1 + dungeon.random.nextInt(length);
                 break;
             case N:
-                x = x1 + dungeon.random.nextInt(width + 1);
+                x = x1 + dungeon.random.nextInt(width);
                 z = z2 + dir.incz;
                 break;
             case E:
                 x = x2 + dir.incx;
-                z = z1 + dungeon.random.nextInt(length + 1);
+                z = z1 + dungeon.random.nextInt(length);
                 break;
             case S:
-                x = x1 + dungeon.random.nextInt(width + 1);
+                x = x1 + dungeon.random.nextInt(width);
                 z = z1 + dir.incz;
                 break;
             default:

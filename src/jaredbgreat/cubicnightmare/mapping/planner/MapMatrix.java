@@ -50,14 +50,18 @@ public class MapMatrix {
                 this.type[i][j] = type;
                 passable[i][j] = 1;
             }
-        int xboundl = Math.max(minx - 1, 0);
+        int xboundl = Math.max(minx, 0);
         int zboundl = Math.max(minz - 1, 0);
-        int xboundh = Math.min(maxx + 1, room.length - 1);
+        int xboundh = Math.min(maxx, room.length - 1);
         int zboundh = Math.min(maxz + 1, room.length - 1);
         for(int i = xboundl; i <= xboundh; i++) {
             if(room[i][zboundl] == 0) room[i][zboundl] = BOUNDARY;
             if(room[i][zboundh] == 0) room[i][zboundh] = BOUNDARY;
         }
+        xboundl = Math.max(minx - 1, 0);
+        zboundl = Math.max(minz, 0);
+        xboundh = Math.min(maxx + 1, room.length - 1);
+        zboundh = Math.min(maxz, room.length - 1);
         for(int i = zboundl; i <= zboundh; i++) {
             if(room[xboundl][i] == 0) room[xboundl][i] = BOUNDARY;
             if(room[xboundh][i] == 0) room[xboundh][i] = BOUNDARY;
@@ -104,7 +108,7 @@ public class MapMatrix {
         RoomList rooms = dungeon.areas.getList(0);
         for(int i = 0; i < geomorph.length; i++) {
             for(int j = 0; j < geomorph[i].length; j++) {
-                if(room[i][j] > 0) {
+                if((room[i][j] > 0) || (type[i][j] > 0)) {
                     Room theRoom = dungeon.areas.getArea(type[i][j], room[i][j]);
                     Node tile;
                     if(type[i][j] == AreaType.TUNNEL.tid) {
@@ -178,10 +182,10 @@ public class MapMatrix {
     
     private int findRotationFromBorders(int x, int z) {
         int out = 96;
-        if(((x - 1) < 1) || (room[x - 1][z] < 1)) out+= 1;
+        if(((x - 1) < 0) || (room[x - 1][z] < 1)) out+= 1;
         if(((z + 1) == room[x].length) || (room[x][z + 1] < 1)) out+= 8;
         if(((x + 1) == room.length) || (room[x + 1][z] < 1)) out+= 4;
-        if(((z - 1) < 1) || (room[x][z - 1] < 1)) out+= 2;
+        if(((z - 1) < 0) || (room[x][z - 1] < 1)) out+= 2;
         return out;
     }
     

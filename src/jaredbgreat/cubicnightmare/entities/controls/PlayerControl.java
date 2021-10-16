@@ -75,7 +75,6 @@ public class PlayerControl extends AbstractEntityControl implements PhysicsColli
     @Override
     protected void controlUpdate(float tpf) {
         game.setPlayerPos(position);
-        //System.out.println(spatial.getWorldTranslation() + " = " + game.getPlayerPos() + "?");
         position.set(spatial.getWorldTranslation());
         Main app = (Main) game.getApplication();
         movement.set(0, 0, 0);

@@ -6,8 +6,6 @@ package jaredbgreat.cubicnightmare.mapping.planner;
  * Copyright (c) 2014-2018 Jared Blackburn
  */
 
-import com.jme3.math.ColorRGBA;
-import com.jme3.math.Vector3f;
 import jaredbgreat.cubicnightmare.mapping.tables.ECardinal;
 import java.util.ArrayList;
 import java.util.Random;
@@ -70,7 +68,7 @@ public class Route {
 	
 	
 	/**
-	 * This will attempt to draw the connecting serious of rooms by 
+	 * This will attempt to draw the connecting series of rooms by 
 	 * calling drawConnection until either the connection is flagged as 
 	 * complete or the dungeon has reach the maximum number of rooms. 
 	 * 

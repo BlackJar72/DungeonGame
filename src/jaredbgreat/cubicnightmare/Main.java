@@ -3,10 +3,8 @@ package jaredbgreat.cubicnightmare;
 import com.jme3.app.SimpleApplication;
 import com.jme3.asset.AssetManager;
 import com.jme3.bullet.BulletAppState;
-import com.jme3.light.PointLight;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
-import com.jme3.math.FastMath;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 import com.jme3.scene.Node;
@@ -22,7 +20,6 @@ import jaredbgreat.cubicnightmare.util.debug.IProfiler;
 import java.awt.DisplayMode;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
-import java.util.Random;
 
 /**
  * This is the Main Class of your Game. You should only do initialization here.

@@ -148,10 +148,13 @@ public class AppStateSinglePlayer extends BaseAppState {
     
     @Override
     public void update(float tpf) {
-        if(!gameOver && (player.getLocation().distanceSquared(dungeon.getLevelEndSpot()) < 0.707106781187f)) {
+        Vector3f ploc = player.getLocation();
+        if(!gameOver && (ploc.distanceSquared(dungeon.getLevelEndSpot()) < 0.707106781187f)) {
             nextLevel();
         } else if(gameOver && System.currentTimeMillis() > specialTimer) {
             app.endGame();
+        } else if(ploc.y < -256) {
+            player.die();
         }
     }
     
