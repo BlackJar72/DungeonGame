@@ -1,9 +1,9 @@
 package jaredbgreat.cubicnightmare.mapping.decorator;
 
 import com.jme3.math.Vector3f;
-import jaredbgreat.cubicnightmare.mapping.dld.Dungeon;
-import jaredbgreat.cubicnightmare.mapping.dld.HubRoom;
-import jaredbgreat.cubicnightmare.mapping.dld.Room;
+import jaredbgreat.cubicnightmare.mapping.planner.Dungeon;
+import jaredbgreat.cubicnightmare.mapping.planner.HubRoom;
+import jaredbgreat.cubicnightmare.mapping.planner.Room;
 
 /**
  *

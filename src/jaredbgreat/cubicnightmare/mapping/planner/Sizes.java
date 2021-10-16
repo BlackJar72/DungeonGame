@@ -1,4 +1,4 @@
-package jaredbgreat.cubicnightmare.mapping.dld;
+package jaredbgreat.cubicnightmare.mapping.planner;
 
 /* 
  * Doomlike Dungeons by is licensed the MIT License

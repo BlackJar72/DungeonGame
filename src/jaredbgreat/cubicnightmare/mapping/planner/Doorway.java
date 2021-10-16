@@ -1,4 +1,4 @@
-package jaredbgreat.cubicnightmare.mapping.dld;
+package jaredbgreat.cubicnightmare.mapping.planner;
 
 import jaredbgreat.cubicnightmare.mapping.tables.ECardinal;
 import jaredbgreat.cubicnightmare.mapping.tables.Tables;

@@ -27,7 +27,7 @@ import jaredbgreat.cubicnightmare.componenent.geomorph.GeomorphModel;
 import jaredbgreat.cubicnightmare.componenent.geomorph.Geomorphs;
 import jaredbgreat.cubicnightmare.componenent.pickups.PickupEffectMap;
 import jaredbgreat.cubicnightmare.entities.Player;
-import jaredbgreat.cubicnightmare.mapping.dld.Dungeon;
+import jaredbgreat.cubicnightmare.mapping.planner.Dungeon;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;

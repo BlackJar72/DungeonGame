@@ -1,7 +1,7 @@
 package jaredbgreat.cubicnightmare.mapping.tables;
 
 
-import jaredbgreat.cubicnightmare.mapping.dld.Room;
+import jaredbgreat.cubicnightmare.mapping.planner.Room;
 import java.util.Random;
 
 /**

@@ -123,7 +123,7 @@ public class CubeMobControl extends AbstractEntityControl {
     private boolean canSeePlayer() {
         Vector3f ploc = new Vector3f();
         game.getPlayerPos().get(ploc);
-        Vector3f mloc = physics.getSpatial().getLocalTranslation();
+        Vector3f mloc = getSpatial().getLocalTranslation();
         Vector3f tdir  = ploc.subtract(mloc);
         if(tdir.lengthSquared() > 5184) return false; // Too far (over 24^2 units)
         Vector3f vdir = physics.getViewDirection();
@@ -146,7 +146,7 @@ public class CubeMobControl extends AbstractEntityControl {
     private float angToPlayer() {
         Vector3f ploc = new Vector3f();
         game.getPlayerPos().get(ploc);
-        Vector3f mloc = physics.getSpatial().getLocalTranslation();
+        Vector3f mloc = getSpatial().getLocalTranslation();
         Vector3f tdir  = ploc.subtract(mloc);
         float tan = tdir.x / tdir.z;
         return FastMath.atan(tan);
@@ -156,7 +156,7 @@ public class CubeMobControl extends AbstractEntityControl {
     private Vector3f toPlayer() {
         Vector3f ploc = new Vector3f();
         game.getPlayerPos().get(ploc);
-        Vector3f mloc = physics.getSpatial().getLocalTranslation();
+        Vector3f mloc = getSpatial().getLocalTranslation();
         ploc.subtractLocal(mloc);
         ploc.setY(0f);
         ploc.normalizeLocal().multLocal(speed);
@@ -167,7 +167,7 @@ public class CubeMobControl extends AbstractEntityControl {
     private float distToPlayer() {
         Vector3f ploc = new Vector3f();
         game.getPlayerPos().get(ploc);
-        Vector3f mloc = physics.getSpatial().getLocalTranslation();
+        Vector3f mloc = getSpatial().getLocalTranslation();
         return ploc.subtract(mloc).length();
     }
     

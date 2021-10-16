@@ -12,7 +12,7 @@ import jaredbgreat.cubicnightmare.appstates.AppStateSinglePlayer;
 import jaredbgreat.cubicnightmare.appstates.EDifficulty;
 import jaredbgreat.cubicnightmare.componenent.geomorph.GeomorphModel;
 import jaredbgreat.cubicnightmare.entities.controls.CubeMobControl;
-import jaredbgreat.cubicnightmare.mapping.dld.Dungeon;
+import jaredbgreat.cubicnightmare.mapping.planner.Dungeon;
 
 /**
  *
