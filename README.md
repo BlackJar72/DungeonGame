@@ -1,15 +1,25 @@
-At this point I'm simply prototyping and experimenting with a system for using 
-small prefab dungeon geomorphs as the basis for a tiles based 3D game (not a 
-full voxel games).  The plan for this is to create a kind of Roguelike FPS game 
-with fast play and simple mechanics.  It turned into something like a horror 
-walking simulator becuase of a mix if engine shortcoming and my inaptitude.
+## Cubic Nightmare ##
 
-Unfortunately, it doesn't work outside the dev environment.  Its time to try 
-one of the pro engines, even if it means switching to Windows instead of 
-Linux.
+This is my first 3D indie game, Cubic Nightmare. ​This is a simple game.  You wake up to find you and your room have been transported to an endless dungeon, and your goal is to find your way out while avoiding the Deathcubes (find your way through 12 levels to win).  You can find and pick up randomly scattered books along the way for bonus points.  (Requires Java 8 or newer.)
 
-This is not released, no permission is granted to use this -- its here to look-at. 
-It is very much broken.
+https://jaredbgreat.itch.io/cubic-nightmare
 
-Run from the dev environment it looked like this:
-https://youtu.be/Jn0ml1Mpu6E
+The first, last, and only release, as I have moved on to more ambitious projects that should be much more fun.
+
+Cubic Nightmare (C) Jared Blackurn 2021 is now under the Gnu General Public license version 3.0.
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+
+  
