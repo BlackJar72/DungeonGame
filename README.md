@@ -4,8 +4,6 @@ This is my first 3D indie game, Cubic Nightmare. ​This is a simple game.  You 
 
 To compile the code you will need JMonkeyEngine 3.2 (not 3.3!); it must be loaded as a JME3 project or otherwise linked to JME3.
 
-https://jaredbgreat.itch.io/cubic-nightmare
-
 Cubic Nightmare (C) Jared Blackurn 2021 is now under the Gnu General Public license version 3.0.
 
     This program is free software: you can redistribute it and/or modify
@@ -24,3 +22,4 @@ Cubic Nightmare (C) Jared Blackurn 2021 is now under the Gnu General Public lice
 This does not include art assets!  All rights are reserved on included art assets, 
 Copyright (C) Jared Blackburn 2020-2021.
   
+
