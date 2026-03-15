@@ -1,6 +1,6 @@
-## Cubic Nightmare ##
+# Cubic Nightmare #
 
-# Do to the flurry of new age verification laws I do not have the infrastructure to comply with, I will not be making or working on videogames or any other standalone software applications.
+## Do to the flurry of new age verification laws I do not have the infrastructure to comply with, I will not be making or working on videogames or any other standalone software applications. ##
 
 This is my first 3D indie game, Cubic Nightmare. ​This is a simple game.  You wake up to find you and your room have been transported to an endless dungeon, and your goal is to find your way out while avoiding the Deathcubes (find your way through 12 levels to win).  You can find and pick up randomly scattered books along the way for bonus points.  (Requires Java 8 or newer.)
 
